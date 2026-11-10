@@ -540,16 +540,67 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
 .steps button.done::before{content:"";background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 12.4l3.3 3.3L17 9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;color:transparent;box-shadow:0 0 0 4px var(--bg)}
 .steps button[aria-current="step"]::before{box-shadow:0 0 0 4px var(--bg),0 0 0 7px var(--blue-soft)}
 .steps button:not(.done):not([aria-current="step"])::before{background:var(--panel);box-shadow:inset 0 0 0 1.5px var(--line),0 0 0 4px var(--bg)}
+/* Ebene v32: Kopf, Hallen-Inhalt, Wand-Tabelle, Solar */
+.hero{position:relative;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px 32px;padding:24px 32px 22px}
+.hero::before{top:0;height:4px}
+.logo{height:64px;padding:0;background:none;border-radius:0}
+.herotext{padding-left:32px;border-left:1px solid var(--line-2);align-self:stretch;display:flex;flex-direction:column;flex-wrap:nowrap;justify-content:center;gap:4px}
+.herotext .sub{margin:0}
+h1{font-size:30px}
+.sub{margin-top:4px}
+.usp{display:flex;gap:0;flex-wrap:nowrap;justify-content:flex-end;align-self:stretch;align-items:center}
+.usp li{display:grid;grid-template-columns:22px auto;grid-template-rows:auto auto;column-gap:10px;row-gap:1px;align-items:center;padding:0 24px;border-left:1px solid var(--line-2);white-space:nowrap}
+.usp li:first-child{border-left:0}.usp li:last-child{padding-right:0}
+.usp li::before{grid-row:1/3;width:22px;height:22px;background-size:22px}
+.usp li b{font:700 14.5px/1.2 var(--display);letter-spacing:-.01em;color:var(--ink)}
+.usp li span{font:400 13px/1.3 var(--body);color:var(--muted)}
+@media (max-width:1280px){.usp li:nth-child(n+3){display:none}}
+@media (min-width:901px) and (max-width:1180px){.usp li:nth-child(n+2){display:none}}
+@media (max-width:1040px){.usp{display:none}}
+@media (max-width:640px){.hero{padding:14px 16px;gap:8px 16px}.logo{height:44px}.herotext{padding-left:16px}h1{font-size:22px}}
+.inwrap{display:grid;grid-template-columns:1fr;gap:16px;margin-top:4px}
+.ingrp{min-width:0}
+.inhd{margin:0 0 4px;font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.inrows{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));column-gap:28px}
+.inrows .inrow,.inrows .veh{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;margin:0;border:0;border-bottom:1px solid var(--line-2);border-radius:0;background:transparent;box-shadow:none;font-size:15px;min-width:0}
+.inrow .nm{display:flex;flex-direction:column;min-width:0;font-weight:600;color:var(--ink)}
+.inrow .nm small{font:400 12.5px var(--body);color:var(--muted);margin-top:1px}
+.inrows .veh.on{background:transparent;box-shadow:none}
+.inrows .veh.on .nm{color:var(--blue)}
+.inrows .veh .ctl{margin:0;width:auto;flex:none}
+.inrow .qty{display:flex;align-items:center;gap:8px;flex:none}
+.inrow .qty input{width:96px;text-align:right;font:600 17px var(--body);font-variant-numeric:tabular-nums;padding:7px 10px;background:var(--fill-2);border:0;border-radius:10px}
+.inrow .qty i{font-style:normal;font-size:13px;color:var(--muted);width:44px}
+.wtab{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.wrow{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));align-items:center;gap:8px;padding:8px 10px;border-radius:12px;cursor:pointer;transition:background .15s}
+.wrow:hover{background:var(--fill-2)}
+.wrow.cur{background:var(--blue-soft);box-shadow:inset 3px 0 0 var(--blue)}
+.wrow b{font-weight:600;font-size:14.5px}
+.wrow.wh{cursor:default;padding-block:0 2px;background:none;box-shadow:none}
+.wrow.wh span{font:600 12px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:center}
+.wrow .ctl{justify-self:center;display:flex;align-items:center;background:var(--fill);border-radius:10px;overflow:hidden}
+.wrow .ctl button{width:32px;height:32px;border:0;background:transparent;color:var(--ink);font-size:17px;cursor:pointer}
+.wrow .ctl button:hover:not(:disabled){background:var(--blue-soft);color:var(--blue)}
+.wrow .ctl button:disabled{opacity:.3;cursor:default}
+.wrow .ctl output{min-width:2ch;text-align:center;font:600 16px var(--body);font-variant-numeric:tabular-nums}
+.wrow .opn{grid-column:2/5;color:var(--muted);font-size:13.5px;text-align:center}
+.wtip{margin-top:8px}
+.pvbox{background:var(--blue-soft);border-radius:16px;padding:20px 22px}
+.pvnum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:12px}
+.pvnum b{display:block;font:800 28px/1.1 var(--display);letter-spacing:-.025em;color:var(--blue-deep);font-variant-numeric:tabular-nums}
+.pvnum span{font-size:13px;color:var(--muted)}
+.pvbox p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
+@media (max-width:640px){.pvnum b{font-size:22px}.wrow{grid-template-columns:repeat(3,minmax(0,1fr));padding:8px 6px;row-gap:6px}.wrow b{grid-column:1/-1}.wrow.wh span:first-child{display:none}.wrow .opn{grid-column:1/-1}.wrow .ctl button{width:30px}}
 </style>
 
 <div class="wrap">
   <header class="hero">
-    <img class="logo" src="assets/logo.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG">
+    <img class="logo" src="assets/logo-blau.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG">
     <div class="herotext">
       <h1>Hallenplaner</h1>
       <p class="sub"><span id="miniStep">Planen Sie Ihre Halle. Wir bauen sie.</span></p>
     </div>
-    <ul class="usp"><li>Eigene Fertigung in Vechta</li><li>Montage mit eigenem Team</li><li>Bis 50 m Spannweite, stützenfrei</li></ul>
+    <ul class="usp"><li><b>Eigene Fertigung</b><span>in Vechta</span></li><li><b>Eigene Montage</b><span>mit eigenem Team</span></li><li><b>Bis 50 m</b><span>Spannweite, stützenfrei</span></li></ul>
   </header>
 
   <div class="grid">
@@ -603,17 +654,19 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
         <fieldset><legend>Vorlage</legend>
           <div class="choices wide" id="presetChoices"></div>
         </fieldset>
-        <fieldset><legend>Oder: Was soll in die Halle?</legend>
-          <div class="vehicles" id="vehicles"></div>
-          <div class="store">
-            <label>Rundballen Ø 1,50 m<small>3 hoch gestapelt</small><input type="number" id="stRund" min="0" max="5000" step="10" value="0" data-st="rund"></label>
-            <label>Quaderballen 2,4 × 1,2 m<small>4 hoch gestapelt</small><input type="number" id="stQuader" min="0" max="5000" step="10" value="0" data-st="quader"></label>
-            <label>Europaletten<small>Stellplätze, 2 hoch</small><input type="number" id="stPal" min="0" max="2000" step="5" value="0" data-st="pal"></label>
-            <label>Pkw-Stellplätze<small>5,0 × 2,5 m</small><input type="number" id="stPkw" min="0" max="200" step="1" value="0" data-st="pkw"></label>
-          </div>
-          <div class="suggest" id="suggest" hidden></div>
-        </fieldset>
-        <fieldset><legend>Projektart</legend>
+        <h3 class="sub">Oder: Was soll in die Halle?</h3>
+        <p class="hint">Tragen Sie ein, was hinein soll. Wir rechnen die Mindestgröße mit Fahrgassen aus und übernehmen sie auf Wunsch.</p>
+        <div class="inwrap">
+          <div class="ingrp"><p class="inhd">Fahrzeuge und Maschinen</p><div class="inrows" id="vehicles"></div></div>
+          <div class="ingrp"><p class="inhd">Lager</p><div class="inrows" id="storeRows">
+            <label class="inrow"><span class="nm">Rundballen Ø 1,50 m<small>3 hoch gestapelt</small></span><span class="qty"><input type="number" id="stRund" min="0" max="5000" step="10" value="0" data-st="rund" inputmode="numeric"><i>Stück</i></span></label>
+            <label class="inrow"><span class="nm">Quaderballen 2,4 × 1,2 m<small>4 hoch gestapelt</small></span><span class="qty"><input type="number" id="stQuader" min="0" max="5000" step="10" value="0" data-st="quader" inputmode="numeric"><i>Stück</i></span></label>
+            <label class="inrow"><span class="nm">Europaletten<small>2 hoch gestapelt</small></span><span class="qty"><input type="number" id="stPal" min="0" max="2000" step="5" value="0" data-st="pal" inputmode="numeric"><i>Stück</i></span></label>
+            <label class="inrow"><span class="nm">Pkw-Stellplätze<small>je 5,0 × 2,5 m</small></span><span class="qty"><input type="number" id="stPkw" min="0" max="200" step="1" value="0" data-st="pkw" inputmode="numeric"><i>Plätze</i></span></label>
+          </div></div>
+        </div>
+        <div class="suggest" id="suggest" hidden></div>
+        <fieldset style="margin-top:24px"><legend>Projektart</legend>
           <div class="choices">
             <label class="choice"><input type="radio" name="art" value="Neubau" checked><span>Neubau</span></label>
             <label class="choice"><input type="radio" name="art" value="Erweiterung / Anbau"><span>Erweiterung / Anbau</span></label>
@@ -694,9 +747,13 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
           </div>
         </fieldset>
         <fieldset><legend>Vordach</legend>
-          <div class="checks">
-            <label><input type="checkbox" name="extra" value="Vordach 4 m an der Vorderseite"> Vordach 4 m an der Vorderseite</label>
+          <div class="row2">
+            <div class="field"><label for="vdSide">Wo?</label>
+              <select id="vdSide"><option value="">Kein Vordach</option><option value="front">Vorderseite (Torseite)</option><option value="left">Giebel links</option><option value="right">Giebel rechts</option></select></div>
+            <div class="field"><label for="vdD">Tiefe</label>
+              <select id="vdD"><option value="1.5">1,5 m</option><option value="2">2,0 m</option><option value="2.5">2,5 m</option><option value="3" selected>3,0 m</option><option value="4">4,0 m</option><option value="5">5,0 m</option></select></div>
           </div>
+          <p class="note" id="vdNote">Frei auskragend, ohne Stützen. Das Dach läuft einfach weiter, am Giebel als Satteldach. Getragen wird es von Kragträgern, die seitlich an den Stützen der Halle angeschlossen sind.</p>
         </fieldset>
         <fieldset><legend>Wandfarbe (RAL)</legend><div class="swatches" id="swWall"></div></fieldset>
         <fieldset><legend>Dachfarbe (RAL)</legend><div class="swatches" id="swRoof"></div></fieldset>
@@ -706,7 +763,7 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
       <!-- 4 Öffnungen -->
       <div class="card" data-step="3" hidden>
         <h2>Tore, Türen, Fenster</h2>
-        <p class="hint">Erst Art und Größe festlegen, dann je Wand die Anzahl. Die gewählte Wand blinkt im Modell, Tore lassen sich dort mit der Maus verschieben.</p>
+        <p class="hint">Erst Art und Größe festlegen, dann je Wand die Anzahl. Die Wand, an der Sie gerade sind, blinkt im Modell.</p>
         <h3 class="sub">1. Was wird eingebaut?</h3>
         <div class="row2">
           <div class="field"><label for="torTyp">Torart</label>
@@ -721,8 +778,9 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
             <select id="tuerTyp"><option value="1">Nebeneingangstür 1,0 × 2,1 m</option><option value="2">Doppelflügeltür 2,0 × 2,1 m</option><option value="1f">Fluchttür mit Panikbeschlag 1,0 × 2,1 m</option></select></div>
         </div>
         <h3 class="sub">2. Wie viele an welcher Wand?</h3>
-        <div class="walls" id="wallTabs" role="tablist"></div>
-        <div id="wallEditor"></div>
+        <div class="walls" id="wallTabs" role="tablist" hidden></div>
+        <div id="wallEditor" class="wtab"></div>
+        <p class="note wtip">Im Modell: Tor mit der Maus an die gewünschte Stelle ziehen. Für genaue Abstände „Maßkette“ einschalten und die blaue Zahl anklicken.</p>
         <p class="err" id="torErr"></p>
         <h3 class="sub">3. Zubehör und Sonderwünsche</h3>
         <div class="checks">
@@ -815,10 +873,10 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
         <div class="zone" id="planHint" hidden></div>
       </div>
 
-      <!-- 6 Licht und Technik -->
+      <!-- 6 Licht und Solar -->
       <div class="card" data-step="5" hidden>
-        <h2>Licht und Technik</h2>
-        <p class="hint">Tageslicht, Lüftung, Heizung, Strom und Solar. Das Lichtband sitzt immer im First. Alles ist optional.</p>
+        <h2>Licht und Solar</h2>
+        <p class="hint">Tageslicht und Lüftung wählen Sie hier. Darunter sehen Sie, wie viel Strom Ihr Hallendach erzeugen kann.</p>
         <details class="acc" open><summary><span>Tageslicht und Lüftung</span><em class="cnt"></em></summary><fieldset><legend>Tageslicht und Lüftung</legend>
           <div class="row2">
             <div class="field"><label for="kuppel">Lichtkuppeln: Anzahl</label>
@@ -836,7 +894,7 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
             <label><input type="checkbox" name="lichtX" value="Wandlichtband Polycarbonat"> Wandlichtband aus Polycarbonat, 1,5 m hoch, Rückseite</label>
           </div>
         </fieldset></details>
-        <details class="acc"><summary><span>Heizung, Licht, Strom, Solar</span><em class="cnt"></em></summary><fieldset><legend>Heizung, Licht, Strom, Solar</legend>
+        <div hidden><details class="acc"><summary><span>Heizung, Licht, Strom, Solar</span><em class="cnt"></em></summary><fieldset><legend>Heizung, Licht, Strom, Solar</legend>
           <div class="row2">
             <div class="field"><label for="heiz">Heizung</label>
               <select id="heiz" data-a="heiz"><option value="">Keine (Kalthalle)</option><option>Gas-Dunkelstrahler (zonal, Werkstatt)</option><option>Warmlufterzeuger (Öl/Gas)</option><option>Fußbodenheizung mit Wärmepumpe</option><option>Luft-Wärmepumpe mit Luftheizern</option></select></div>
@@ -845,15 +903,15 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
             <div class="field"><label for="elek">Elektro-Paket</label>
               <select id="elek" data-a="elek"><option value="">Basis: Licht, Tore, Steckdosen</option><option>Werkstatt: CEE 16/32/63 A alle 6 m</option><option>Werkstatt + Wallbox 22 kW</option><option>Werkstatt + Lkw-Ladepunkt 150 kW</option></select></div>
             <div class="field"><label for="pv">Photovoltaik</label>
-              <select id="pv" data-a="pv"><option value="">Keine</option><option value="statik">Nur Statik für spätere PV auslegen</option><option value="sued">Module auf der Vorderseite (Süd)</option><option value="beide">Module auf beiden Dachseiten</option></select></div>
+              <select id="pv" data-a="pv"><option value="">Keine</option><option value="statik" selected>Dachstatik für Solarmodule ausgelegt</option><option value="sued">Module auf der Vorderseite (Süd)</option><option value="beide">Module auf beiden Dachseiten</option></select></div>
           </div>
           <div class="checks">
             <label><input type="checkbox" name="extra" value="Statik für spätere PV-Anlage"> Statik für eine spätere PV-Anlage auslegen</label>
             <label><input type="checkbox" name="wunsch" value="Sprinkler / Brandmeldeanlage"> Sprinkler / Brandmeldeanlage</label>
             <label><input type="checkbox" name="wunsch" value="Blitzschutz"> Blitzschutz</label>
           </div>
-          <div class="zone" id="pvHint" hidden></div>
-        </fieldset></details>
+        </fieldset></details></div>
+        <fieldset><legend>Solar auf dem Dach</legend><div class="pvbox" id="pvHint"></div></fieldset>
         <div class="zone" id="ausHint2" hidden></div>
       </div>
 
@@ -971,7 +1029,7 @@ legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppe
     <p>Drei Antworten, und das Modell steht. Alles lässt sich danach ändern.</p>
     <div class="lbl">1. Wofür ist die Halle?</div><div class="chips" id="q1"><button type="button" data-v="agrar">Landwirtschaft</button><button type="button" data-v="lkw">Lkw und Fahrzeuge</button><button type="button" data-v="werk">Werkstatt / Produktion</button><button type="button" data-v="lager">Lager</button></div>
     <div class="lbl">2. Wie groß ungefähr?</div><div class="chips" id="q2"><button type="button" data-v="20x12">klein, ca. 20 × 12 m</button><button type="button" data-v="30x15">mittel, ca. 30 × 15 m</button><button type="button" data-v="42x20">groß, ca. 42 × 20 m</button><button type="button" data-v="50x25">sehr groß, ca. 50 × 25 m</button></div>
-    <div class="lbl">3. Wird darin gearbeitet oder geheizt?</div><div class="chips" id="q3"><button type="button" data-v="warm">Ja, gedämmt</button><button type="button" data-v="kalt">Nein, Kalthalle</button></div>
+    <div class="lbl">3. Welche Dachform?</div><div class="chips" id="q3"><button type="button" data-v="Satteldach">Satteldach</button><button type="button" data-v="Pultdach">Pultdach</button><button type="button" data-v="Flachdach">Flachdach</button></div>
     <div class="plantools" style="margin-top:14px"><button type="button" class="btn primary" id="quickGo" disabled>Vorschlag ansehen</button><button type="button" class="btn ghost" data-close>Lieber selbst planen</button></div></div></dialog>
   <dialog id="dlgElev"><div class="dlg"><button type="button" class="x" data-close>×</button><h3>Ansichtszeichnungen mit Maßketten</h3>
     <p>Jede Wand von außen gesehen. Die Maßkette unten zeigt die Lage jedes Tores und jeder Tür von der linken Ecke aus, rechts die Höhen. Tore lassen sich im 3D-Modell verschieben, die Zeichnung folgt.</p>
@@ -1014,8 +1072,8 @@ const PRESETS=[
 const RAL=[["RAL 9002 Grauweiß","#e7ebe3"],["RAL 7035 Lichtgrau","#c5c7c4"],["RAL 9006 Weißaluminium","#a5a8a6"],["RAL 7016 Anthrazitgrau","#383e42"],["RAL 6011 Resedagrün","#587246"],["RAL 3009 Oxidrot","#6d342d"],["RAL 8012 Rotbraun","#592321"],["RAL 5010 Enzianblau","#0e4c8c"]];
 const FRAME=[["RAL 7016 Anthrazitgrau","#383e42"],["RAL 3020 Verkehrsrot","#b8232f"],["RAL 5010 Enzianblau","#0e4c8c"],["RAL 9006 Weißaluminium","#a5a8a6"]];
 const WALLS=[["front","Vorderseite (lang)"],["back","Rückseite (lang)"],["left","Giebel links"],["right","Giebel rechts"]];
-const STEPS=["Nutzung","Maße und Dach","Wände und Farben","Tore und Fenster","Innenraum","Licht und Technik","Bauort","Kontakt"];const ST_PLAN=4,ST_CONTACT=7,ST_RESULT=8;
-const AUS0=()=>({boden:"Normal 18 cm",bodenX:[],grube:"",grubeN:"1",buehne:"",wasch:"",werkX:[],kuppel:"0",kupB:"120",kupL:"120",kupA:"0",lueft:"",lichtX:[],heiz:"",licht:"",elek:"",pv:"",schuett:"0",lager:"0",agrX:[],anbau:"0",buero:"",wunsch:[]});
+const STEPS=["Nutzung","Maße und Dach","Wände und Farben","Tore und Fenster","Innenraum","Licht und Solar","Bauort","Kontakt"];const ST_PLAN=4,ST_CONTACT=7,ST_RESULT=8;
+const AUS0=()=>({boden:"Normal 18 cm",bodenX:[],grube:"",grubeN:"1",buehne:"",wasch:"",werkX:[],kuppel:"0",kupB:"120",kupL:"120",kupA:"0",lueft:"",lichtX:[],heiz:"",licht:"",elek:"",pv:"statik",schuett:"0",lager:"0",agrX:[],anbau:"0",buero:"",wunsch:[]});
 const VEH=[
   {k:"transporter",n:"Transporter",l:6,w:2.2,h:2.6,c:0xe3e6e8},
   {k:"traktor",n:"Traktor",l:5.5,w:2.6,h:3.2,c:0x3f8a3a},
@@ -1028,7 +1086,7 @@ const VEH=[
 ];
 
 const S={reserve:false,grund:{lage:"",bplan:"",nachbar:"",zufahrt:""},gpos:{},form:"Rechteck",fL:12,fB:10,fSide:"right",fG:1,L:30,B:15,H:6,P:12,dach:"Satteldach",wand:"Trapezblech ungedämmt",dh:"Trapezblech",cw:1,cr:2,cf:0,extras:[],sockelH:1,pHigh:"back",osides:{front:false,back:false,left:false,right:false},kran:"",torTyp:"Sektionaltor",torGr:"4x4.5",torE:true,fGr:"1.5x1",tuerTyp:"1",schlupf:false,ramm:false,aus:AUS0(),
-  walls:{front:{g:2,d:1,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}},preset:0,art:"Neubau",veh:{},store:{rund:0,quader:0,pal:0,pkw:0},layout:[],layoutAuto:true};
+  walls:{front:{g:2,d:1,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}},preset:0,art:"Neubau",vdSide:"",vdD:3,veh:{},store:{rund:0,quader:0,pal:0,pkw:0},layout:[],layoutAuto:true};
 let step=0,curWall="front";
 document.querySelectorAll("dialog [data-close]").forEach(b=>b.onclick=()=>b.closest("dialog").close());
 document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{if(e.target===d)d.close()}));
@@ -1051,8 +1109,8 @@ PRESETS.forEach((p,i)=>$("presetChoices").insertAdjacentHTML("beforeend",
   `<label class="choice"><input type="radio" name="preset" value="${i}" ${i===0?"checked":""}><span>${presetPic(p)}${p.n}<em>${p.d}</em><i>${fmt(p.L)} × ${fmt(p.B)} m · Traufe ${fmt(p.H,1)} m · ${p.dach}</i></span></label>`));
 const sw=(el,name,list,cur)=>list.forEach((c,i)=>$(el).insertAdjacentHTML("beforeend",`<label class="sw" title="${c[0]}"><input type="radio" name="${name}" value="${i}" ${i===cur?"checked":""}><span style="background:${c[1]}"></span></label>`));
 sw("swWall","cw",RAL,S.cw);sw("swRoof","cr",RAL,S.cr);sw("swFrame","cf",FRAME,S.cf);
-VEH.forEach(v=>$("vehicles").insertAdjacentHTML("beforeend",`<div class="veh" data-v="${v.k}"><span>${v.n}</span><small>${fmt(v.l,1)} × ${fmt(v.w,1)} × ${fmt(v.h,1)} m</small><div class="ctl"><button type="button" data-d="-1" aria-label="weniger">−</button><output>0</output><button type="button" data-d="1" aria-label="mehr">+</button></div></div>`));
-$("vehicles").addEventListener("click",e=>{const b=e.target.closest("button[data-d]");if(!b)return;const k=b.closest(".veh").dataset.v;S.veh[k]=Math.max(0,Math.min(12,(S.veh[k]||0)+ +b.dataset.d));if(!S.veh[k])delete S.veh[k];renderVeh();draw()});
+VEH.forEach(v=>$(v.k==="regal"?"storeRows":"vehicles").insertAdjacentHTML(v.k==="regal"?"afterbegin":"beforeend",`<div class="veh inrow" data-v="${v.k}"><span class="nm">${v.n}<small>${v.k==="regal"?"Regalfeld 2,8 × 1,1 m":fmt(v.l,1)+" × "+fmt(v.w,1)+" × "+fmt(v.h,1)+" m (L × B × H)"}</small></span><div class="ctl"><button type="button" data-d="-1" aria-label="weniger">−</button><output>0</output><button type="button" data-d="1" aria-label="mehr">+</button></div></div>`));
+document.querySelector(".inwrap").addEventListener("click",e=>{const b=e.target.closest("button[data-d]");if(!b)return;const k=b.closest(".veh").dataset.v;S.veh[k]=Math.max(0,Math.min(12,(S.veh[k]||0)+ +b.dataset.d));if(!S.veh[k])delete S.veh[k];renderVeh();draw()});
 document.querySelectorAll("[data-st]").forEach(el=>el.addEventListener("input",()=>{S.store[el.dataset.st]=Math.max(0,+el.value||0);renderVeh();draw()}));
 function renderVeh(){
   document.querySelectorAll("[data-st]").forEach(el=>{el.value=S.store[el.dataset.st]||0});
@@ -1091,13 +1149,16 @@ WALLS.forEach(w=>$("wallTabs").insertAdjacentHTML("beforeend",`<button type="but
 $("wallTabs").addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(b){curWall=b.dataset.w;renderWallEditor();draw()}});
 
 function renderWallEditor(){
-  $("wallTabs").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.w===curWall));
-  const w=S.walls[curWall];
-  if(sideOpen(curWall)){$("wallEditor").innerHTML=`<p class="note">Diese Seite ist offen (ohne Wand). Ändern lässt sich das in Schritt 3 unter „Welche Seiten bleiben offen?“.</p>`;return}
-  $("wallEditor").innerHTML=[["g","Tore","gewählte Torgröße"],["d","Türen",$("tuerTyp").selectedOptions[0].textContent],["w","Fenster",S.fGr==="band"?"ein Fensterband (Anzahl = Felder)":$("fGr").selectedOptions[0].textContent+", Brüstung 1,5 m"]].map(([k,t,sub])=>
-    `<div class="stepper"><div>${t}<small>${sub}</small></div><div class="ctl"><button type="button" data-k="${k}" data-d="-1" aria-label="weniger">−</button><output>${w[k]}</output><button type="button" data-k="${k}" data-d="1" aria-label="mehr">+</button></div></div>`).join("");
+  const cols=[["g","Tore"],["d","Türen"],["w",S.fGr==="band"?"Fensterfelder":"Fenster"]];
+  const ctl=(k,key,v)=>`<div class="ctl"><button type="button" data-w="${key}" data-k="${k}" data-d="-1" aria-label="weniger"${v<=0?" disabled":""}>−</button><output>${v}</output><button type="button" data-w="${key}" data-k="${k}" data-d="1" aria-label="mehr"${v>=8?" disabled":""}>+</button></div>`;
+  $("wallEditor").innerHTML=`<div class="wrow wh"><span></span>${cols.map(c=>`<span>${c[1]}</span>`).join("")}</div>`+WALLS.map(([key,name])=>{const w=S.walls[key],cur=key===curWall?" cur":"";
+    if(sideOpen(key))return `<div class="wrow off${cur}" data-row="${key}"><b>${name}</b><span class="opn">offen, ohne Wand</span></div>`;
+    return `<div class="wrow${cur}" data-row="${key}"><b>${name}</b>${cols.map(c=>ctl(c[0],key,w[c[0]])).join("")}</div>`}).join("");
 }
-$("wallEditor").addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(!b)return;const w=S.walls[curWall];w[b.dataset.k]=Math.max(0,Math.min(8,w[b.dataset.k]+ +b.dataset.d));renderWallEditor();draw()});
+$("wallEditor").addEventListener("click",e=>{const row=e.target.closest("[data-row]");const b=e.target.closest("button[data-k]");
+  if(row&&row.dataset.row!==curWall){curWall=row.dataset.row}
+  if(b){const w=S.walls[b.dataset.w];w[b.dataset.k]=Math.max(0,Math.min(8,w[b.dataset.k]+ +b.dataset.d));if(S.gpos)delete S.gpos[b.dataset.w]}
+  renderWallEditor();draw()});
 
 function go(n){
   $("cfg").dataset.dir=n>=(go.prev??0)?"fwd":"back";go.prev=n;
@@ -1132,7 +1193,8 @@ function syncForm(){
   ["L","B","H","P","fL","fB"].forEach(k=>{$(k).value=S[k];$(k+"n").value=S[k]});
   const set=(name,v)=>{const el=document.querySelector(`input[name="${name}"][value="${v}"]`);if(el)el.checked=true};
   set("dach",S.dach);set("wand",S.wand);set("dachhaut",S.dh);set("cw",S.cw);set("cr",S.cr);set("cf",S.cf);set("art",S.art);set("preset",S.preset);set("form",S.form);$("fSide").value=S.fSide;$("fG").value=String(S.fG);
-  document.querySelectorAll('input[name="extra"]').forEach(e=>e.checked=S.extras.includes(e.value));
+  if(S.extras.includes("Vordach 4 m an der Vorderseite")){S.extras=S.extras.filter(e=>e!=="Vordach 4 m an der Vorderseite");S.vdSide="front";S.vdD=4}
+  document.querySelectorAll('input[name="extra"]').forEach(e=>e.checked=S.extras.includes(e.value));$("vdSide").value=S.vdSide||"";$("vdD").value=String(S.vdD||3);$("vdD").disabled=!S.vdSide;
   document.querySelectorAll('input[name="oside"]').forEach(e=>e.checked=!!S.osides[e.value]);$("sockelH").value=String(S.sockelH);$("pHigh").value=S.pHigh;
   ["kuppel","kupB","kupL","kupA"].forEach(k=>$(k).value=S.aus[k]);
   $("kran").value=S.kran;$("torTyp").value=S.torTyp;$("torGr").value=S.torGr;$("torE").checked=S.torE;$("fGr").value=S.fGr;$("tuerTyp").value=S.tuerTyp;$("schlupf").checked=S.schlupf;$("rammschutz").checked=S.ramm;
@@ -1144,13 +1206,14 @@ function syncForm(){
 function readForm(){
   const val=n=>{const el=document.querySelector(`input[name="${n}"]:checked`);return el?el.value:""};
   S.dach=val("dach");S.wand=val("wand");S.dh=val("dachhaut");S.cw=+val("cw");S.cr=+val("cr");S.cf=+val("cf");S.art=val("art");S.form=val("form")||"Rechteck";S.fSide=$("fSide").value;S.fG=+$("fG").value;
-  S.extras=[...document.querySelectorAll('input[name="extra"]:checked')].map(e=>e.value);
+  S.extras=[...document.querySelectorAll('input[name="extra"]:checked')].map(e=>e.value);S.vdSide=$("vdSide").value;S.vdD=+$("vdD").value||3;$("vdD").disabled=!S.vdSide;
   document.querySelectorAll('input[name="oside"]').forEach(e=>S.osides[e.value]=e.checked);S.sockelH=r10(Math.max(0.3,Math.min(3,+$("sockelH").value||1)));$("sockelH").value=S.sockelH;S.pHigh=$("pHigh").value||"back";
   S.kran=$("kran").value;S.torTyp=$("torTyp").value;S.torGr=$("torGr").value;S.torE=$("torE").checked;S.fGr=$("fGr").value;S.tuerTyp=$("tuerTyp").value;S.schlupf=$("schlupf").checked;S.ramm=$("rammschutz").checked;
   document.querySelectorAll("select[data-g]").forEach(el=>S.grund[el.dataset.g]=el.value);grundCheck();zeitplan();
   const A=S.aus;A.boden=val("boden");document.querySelectorAll("select[data-a]").forEach(el=>A[el.dataset.a]=el.value);
   const ki=(k,lo,hi,d)=>{let v=+$(k).value;if(!isFinite(v)||$(k).value==="")v=d;v=Math.max(lo,Math.min(hi,v));$(k).value=v;A[k]=String(v)};ki("kuppel",0,40,0);A.kuppel=String(Math.round(+A.kuppel));ki("kupB",40,400,120);ki("kupL",40,600,120);ki("kupA",0,50,0);A.kupA=String(r10(+A.kupA));$("kupA").value=A.kupA;A.kupB=String(Math.round(+A.kupB/10)*10);A.kupL=String(Math.round(+A.kupL/10)*10);$("kupB").value=A.kupB;$("kupL").value=A.kupL;
   ["bodenX","werkX","lichtX","agrX","wunsch"].forEach(n=>A[n]=[...document.querySelectorAll(`input[name="${n}"]:checked`)].map(e=>e.value));
+  A.heiz="";A.licht="";A.elek="";A.pv="statik";
 }
 [["L","Ln"],["B","Bn"],["H","Hn"],["P","Pn"],["fL","fLn"],["fB","fBn"]].forEach(([r,n])=>{
   $(r).addEventListener("input",()=>{S[r]=r==="P"?+$(r).value:r10(+$(r).value);$(n).value=S[r];draw()});
@@ -1353,7 +1416,8 @@ function placeFree(it,gap=0.5){const f=foot(it);const sx=it.x,sz=it.z;
   const bd=bounds();for(let z=bd.z1+0.5+f.w/2;z<=bd.z2-f.w/2;z+=0.5)for(let x=bd.x1+0.5+f.l/2;x<=bd.x2-f.l/2;x+=0.5){it.x=x;it.z=z;if(!outside(it)&&!S.layout.some(o=>o!==it&&o.x<900&&overlapG(it,o,gap)))return}
   it.x=isFinite(sx)&&sx<900?sx:0;it.z=sz<900?sz:0}
 function overlapG(a,b,gap){if(a.k==="lager"||b.k==="lager")return false;const fa=foot(a),fb=foot(b);return Math.abs(a.x-b.x)<(fa.l+fb.l)/2+gap-0.01&&Math.abs(a.z-b.z)<(fa.w+fb.w)/2+gap-0.01}
-function extrasText(sep){return S.extras.map(e=>e==="Betonsockel 1 m"?`Betonsockel ${fmt(S.sockelH||1,2)} m`:e).join(sep)}
+function vdText(){return S.vdSide?`Vordach ${fmt(S.vdD,1)} m ${{front:"an der Vorderseite",left:"am Giebel links",right:"am Giebel rechts"}[S.vdSide]}, frei auskragend ohne Stützen`:""}
+function extrasText(sep){return [...S.extras.map(e=>e==="Betonsockel 1 m"?`Betonsockel ${fmt(S.sockelH||1,2)} m`:e),vdText()].filter(Boolean).join(sep)}
 function roomList(){return S.layout.filter(it=>it.k==="raum"||it.k==="twand").map(it=>it.k==="twand"?`Trennwand ${fmt(it.l,1)} m`:`${it.n} ${fmt(it.l,1)} × ${fmt(it.w,1)} m`).join(", ")}
 function overlap(a,b){if(a.k==="lager"||b.k==="lager")return false;if((a.k==="raum"||a.k==="twand")!==(b.k==="raum"||b.k==="twand"))return false;const fa=foot(a),fb=foot(b);return Math.abs(a.x-b.x)<(fa.l+fb.l)/2-0.01&&Math.abs(a.z-b.z)<(fa.w+fb.w)/2-0.01}
 function outside(it){const f=foot(it);return![[-1,-1],[1,-1],[1,1],[-1,1]].every(([a,b])=>inRects(it.x+a*f.l/2,it.z+b*f.w/2))||(wings().length>0&&!inRects(it.x,it.z))}
@@ -1965,7 +2029,7 @@ function buildHall(){
   const roofY=(x,z)=>flat?Y0+H+0.25:topAt(z,G,x)+Y0;      // Unterkante Dachhaut
   const wallTop=(x,z)=>topAt(z,G,x)+Y0;                    // Oberkante Wand (Flachdach: Attika)
   const V=(x,y,z)=>new THREE.Vector3(x,y,z);
-  const WG=wings(),ov=0.35,ovg=0.25,vordach=S.extras.includes("Vordach 4 m an der Vorderseite");
+  const WG=wings(),ov=0.35,ovg=0.25,vdOn=!!S.vdSide&&!open,vdD=vdOn?(+S.vdD||3):0,vdF=S.vdSide==="front"?vdD:0,gL=S.vdSide==="left"?vdD:0,gR=S.vdSide==="right"?vdD:0,vordach=vdF>0;
   LAYER=0;hall.add(box(L+2*tW+0.3,0.25,B+2*tW+0.3,MAT.floor(),0,0.125,0,false));
 
   /* ----- Bauteile für Öffnungen, in Wandkoordinaten (x entlang der Wand, z nach außen) ----- */
@@ -2140,41 +2204,58 @@ function buildHall(){
   const kups=+A.kuppel?kuppelPos(L,B):[],xe=L/2+tW+ovg,ze=B/2+tW+ovg,PL=[];
   const kupHoles=(pl,zAxis,c,sMin,sMax,xMax)=>kups.map(k=>{const rel=V(k.x,roofY(k.x,k.z),k.z).sub(pl.O),x=rel.dot(pl.X),s=rel.dot(pl.Sd),hx=(zAxis?k.l:k.b)/2,hs=(zAxis?k.b:k.l)/2/c;return[x-hx,x+hx,s-hs,s+hs]}).filter(h=>h[2]>sMin+0.2&&h[3]<sMax-0.2&&Math.abs(h[0])<xMax-0.2&&Math.abs(h[1])<xMax-0.2);
   const eaves=[]; /* {P: Punkt an der Traufkante, hd: waagerechte Richtung nach außen, half: halbe Länge, along: Achse */
+  const xa=-xe-gL,xb=xe+gR,VDP=[];
   if(sattel){const ang=Math.atan2(G.rise,B/2),c=Math.cos(ang),sn=Math.sin(ang),O=V(0,roofY(0,0),0),nb=bw/2/c,lx=L*0.43;
-    for(const s of[-1,1]){const ext=s>0&&vordach?4:0,len=(B/2+ov+ext)/c,Sd=V(0,-sn,s*c),N=V(0,c,s*sn);
-      const pts=lbOn?[[-xe,0],[-lx,0],[-lx,nb],[lx,nb],[lx,0],[xe,0],[xe,len],[-xe,len]]:[[-xe,0],[xe,0],[xe,len],[-xe,len]];
-      const tmp={O,Sd,N,X:new THREE.Vector3().crossVectors(Sd,N)};const pl=roofPlane(hadd,O,Sd,N,pts,kupHoles(tmp,true,c,lbOn?nb:0,len-ov/c,L/2));pl.use={hx:L/2,s0:(lbOn?nb:0)+0.35,s1:B/2/c-0.35,front:s>0};PL.push(pl);
-      for(const k of[-1,1]){const vt=new THREE.Mesh(boxGeo(0.035,len,0.2),mFrame);vt.position.set(k*xe,len/2,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
-      eaves.push({P:V(0,O.y-len*sn,s*len*c),hd:V(0,0,s),half:xe,key:s>0?"front":"back",post:ext>0})}
-    for(const [a,b] of lbOn?[[-xe,-lx],[lx,xe]]:[[-xe,xe]])for(const s of[-1,1]){const r=box(b-a,0.02,0.3,mTrim,(a+b)/2,O.y+tR/c+0.02-0.15*sn,s*0.15*c,false);r.rotation.x=s*ang;hall.add(r)}
+    for(const s of[-1,1]){const ext=s>0?vdF:0,len=(B/2+ov+ext)/c,Sd=V(0,-sn,s*c),N=V(0,c,s*sn);
+      const tmp={O,Sd,N,X:new THREE.Vector3().crossVectors(Sd,N)},sx=Math.sign(tmp.X.x)||1,la=sx>0?xa:-xb,lb=sx>0?xb:-xa;
+      const pts=lbOn?[[la,0],[-lx,0],[-lx,nb],[lx,nb],[lx,0],[lb,0],[lb,len],[la,len]]:[[la,0],[lb,0],[lb,len],[la,len]];
+      const pl=roofPlane(hadd,O,Sd,N,pts,kupHoles(tmp,true,c,lbOn?nb:0,len-ov/c,L/2));pl.use={hx:L/2,s0:(lbOn?nb:0)+0.35,s1:B/2/c-0.35,front:s>0};PL.push(pl);
+      for(const k of[la,lb]){const vt=new THREE.Mesh(boxGeo(0.035,len,0.2),mFrame);vt.position.set(k,len/2,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
+      VDP.push({O,Sd,N,X:tmp.X,sW:(B/2+tW)/c,sE:len-0.12,front:s>0,s0:0.25,s1:len-0.12,xAxis:true});
+      eaves.push({P:V(0,O.y-len*sn,s*len*c),hd:V(0,0,s),half:xe,a:xa,b:xb,key:s>0?"front":"back",post:false})}
+    for(const [a,b] of lbOn?[[xa,-lx],[lx,xb]]:[[xa,xb]])for(const s of[-1,1]){const r=box(b-a,0.02,0.3,mTrim,(a+b)/2,O.y+tR/c+0.02-0.15*sn,s*0.15*c,false);r.rotation.x=s*ang;hall.add(r)}
     if(lbOn){const m4=new THREE.Matrix4().makeBasis(V(-1,0,0),V(0,0,1),V(0,1,0)).setPosition(V(0,O.y-(bw/2)*sn/c+tR/c+0.16,0));vault(hadd,m4,-lx,lx,-bw/2,bw/2,0.2)}
-  }else if(pult&&!xs){const hf=S.pHigh==="front",zh=hf?B/2:-B/2,d=hf?-1:1,ang=Math.atan2(G.rise,B),c=Math.cos(ang),sn=Math.sin(ang),vd=vordach&&!hf;
-    const O=V(0,roofY(0,zh),zh),Sd=V(0,-sn,d*c),N=V(0,c,d*sn),s0=-ov/c,s1=(B+ov+(vd?4:0))/c,lx=L*0.43,tmp={O,Sd,N,X:new THREE.Vector3().crossVectors(Sd,N)};
+  }else if(pult&&!xs){const hf=S.pHigh==="front",zh=hf?B/2:-B/2,d=hf?-1:1,ang=Math.atan2(G.rise,B),c=Math.cos(ang),sn=Math.sin(ang);
+    const O=V(0,roofY(0,zh),zh),Sd=V(0,-sn,d*c),N=V(0,c,d*sn),s0=-(ov+(hf?vdF:0))/c,s1=(B+ov+(hf?0:vdF))/c,lx=L*0.43,tmp={O,Sd,N,X:new THREE.Vector3().crossVectors(Sd,N)},sx=Math.sign(tmp.X.x)||1,la=sx>0?xa:-xb,lb=sx>0?xb:-xa;
     const holes=kupHoles(tmp,true,c,lbOn?(0.4+bw)/c:0,B/c,L/2);if(lbOn)holes.push([-lx,lx,0.4/c,(0.4+bw)/c]);
-    const pl=roofPlane(hadd,O,Sd,N,[[-xe,s0],[xe,s0],[xe,s1],[-xe,s1]],holes);pl.use={hx:L/2,s0:(lbOn?(0.4+bw)/c:0)+0.35,s1:B/c-0.35,front:true};PL.push(pl);
-    for(const k of[-1,1]){const vt=new THREE.Mesh(boxGeo(0.035,s1-s0,0.2),mFrame);vt.position.set(k*xe,(s0+s1)/2,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
-    {const vt=new THREE.Mesh(boxGeo(2*xe,0.035,0.2),mFrame);vt.position.set(0,s0,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
-    eaves.push({P:O.clone().addScaledVector(Sd,s1),hd:V(0,0,d),half:xe,key:d>0?"front":"back",post:vd});
+    const pl=roofPlane(hadd,O,Sd,N,[[la,s0],[lb,s0],[lb,s1],[la,s1]],holes);pl.use={hx:L/2,s0:(lbOn?(0.4+bw)/c:0)+0.35,s1:B/c-0.35,front:true};PL.push(pl);
+    for(const k of[la,lb]){const vt=new THREE.Mesh(boxGeo(0.035,s1-s0,0.2),mFrame);vt.position.set(k,(s0+s1)/2,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
+    {const vt=new THREE.Mesh(boxGeo(lb-la,0.035,0.2),mFrame);vt.position.set((la+lb)/2,s0,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
+    VDP.push({O,Sd,N,X:tmp.X,sW:hf?-tW/c:(B+tW)/c,sE:hf?s0+0.12:s1-0.12,front:true,s0:s0+0.12,s1:s1-0.12,xAxis:true});
+    eaves.push({P:O.clone().addScaledVector(Sd,s1),hd:V(0,0,d),half:xe,a:xa,b:xb,key:d>0?"front":"back",post:false});
     if(lbOn)vault(hadd,pl.m4.clone().multiply(new THREE.Matrix4().makeTranslation(0,0,tR+0.14)),-lx,lx,0.4/c,(0.4+bw)/c,0.14)
   }else if(pult){const hr=S.pHigh==="right",xh=hr?L/2:-L/2,d=hr?-1:1,ang=Math.atan2(G.rise,L),c=Math.cos(ang),sn=Math.sin(ang),bwx=Math.min(2.5,L*0.12);
-    const O=V(xh,roofY(xh,0),0),Sd=V(d*c,-sn,0),N=V(d*sn,c,0),s0=-ov/c,s1=(L+ov)/c,lz=B*0.43,tmp={O,Sd,N,X:new THREE.Vector3().crossVectors(Sd,N)};
+    const gHi=hr?gR:gL,gLo=hr?gL:gR;
+    const O=V(xh,roofY(xh,0),0),Sd=V(d*c,-sn,0),N=V(d*sn,c,0),s0=-(ov+gHi)/c,s1=(L+ov+gLo)/c,lz=B*0.43,tmp={O,Sd,N,X:new THREE.Vector3().crossVectors(Sd,N)},sz=Math.sign(tmp.X.z)||1,za=sz>0?-ze:-(ze+vdF),zb=sz>0?ze+vdF:ze;
     const holes=kupHoles(tmp,false,c,lbOn?(0.4+bwx)/c:0,L/c,B/2);if(lbOn)holes.push([-lz,lz,0.4/c,(0.4+bwx)/c]);
-    const pl=roofPlane(hadd,O,Sd,N,[[-ze,s0],[ze,s0],[ze,s1],[-ze,s1]],holes);pl.use={hx:B/2,s0:(lbOn?(0.4+bwx)/c:0)+0.35,s1:L/c-0.35,front:true};PL.push(pl);
-    for(const k of[-1,1]){const vt=new THREE.Mesh(boxGeo(0.035,s1-s0,0.2),mFrame);vt.position.set(k*ze,(s0+s1)/2,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
-    {const vt=new THREE.Mesh(boxGeo(2*ze,0.035,0.2),mFrame);vt.position.set(0,s0,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
-    eaves.push({P:O.clone().addScaledVector(Sd,s1),hd:V(d,0,0),half:ze,key:d>0?"right":"left"});
+    const pl=roofPlane(hadd,O,Sd,N,[[za,s0],[zb,s0],[zb,s1],[za,s1]],holes);pl.use={hx:B/2,s0:(lbOn?(0.4+bwx)/c:0)+0.35,s1:L/c-0.35,front:true};PL.push(pl);
+    for(const k of[za,zb]){const vt=new THREE.Mesh(boxGeo(0.035,s1-s0,0.2),mFrame);vt.position.set(k,(s0+s1)/2,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
+    {const vt=new THREE.Mesh(boxGeo(zb-za,0.035,0.2),mFrame);vt.position.set((za+zb)/2,s0,tR/2-0.04);vt.castShadow=false;hall.add(xf(vt,pl.m4))}
+    VDP.push({O,Sd,N,X:tmp.X,xs:true,c,hiG:gHi,loG:gLo,s0:s0+0.12,s1:s1-0.12,sHiW:-tW/c,sLoW:(L+tW)/c});
+    eaves.push({P:O.clone().addScaledVector(Sd,s1),hd:V(d,0,0),half:ze,a:-ze,b:ze+vdF,key:d>0?"right":"left"});
     if(lbOn)vault(hadd,pl.m4.clone().multiply(new THREE.Matrix4().makeTranslation(0,0,tR+0.14)),-lz,lz,0.4/c,(0.4+bwx)/c,0.14)
   }else{const O=V(0,roofY(0,0),0),Sd=V(0,0,1),N=V(0,1,0),lx=L*0.43,tmp={O,Sd,N,X:V(-1,0,0)};const holes=kupHoles(tmp,true,1,-B/2,B/2,L/2).filter(h=>!lbOn||h[3]<-bw/2-0.2||h[2]>bw/2+0.2);if(lbOn)holes.push([-lx,lx,-bw/2,bw/2]);
-    const pl=roofPlane(hadd,O,Sd,N,[[-L/2,-B/2],[L/2,-B/2],[L/2,B/2],[-L/2,B/2]],holes);pl.use={hx:L/2,s0:lbOn?bw/2+0.4:-B/2+0.5,s1:B/2-0.5,front:true};PL.push(pl);
+    const sx=Math.sign(tmp.X.x)||1,la=sx>0?-L/2-gL:-(L/2+gR),lb=sx>0?L/2+gR:L/2+gL;
+    const pl=roofPlane(hadd,O,Sd,N,[[la,-B/2],[lb,-B/2],[lb,B/2+vdF],[la,B/2+vdF]],holes);VDP.push({O,Sd,N,X:tmp.X,flat:true});pl.use={hx:L/2,s0:lbOn?bw/2+0.4:-B/2+0.5,s1:B/2-0.5,front:true};PL.push(pl);
     for(const [w,dd,x,z] of[[L+2*tW+0.1,tW+0.1,0,B/2+tW/2],[L+2*tW+0.1,tW+0.1,0,-B/2-tW/2],[tW+0.1,B+0.1,L/2+tW/2,0],[tW+0.1,B+0.1,-L/2-tW/2,0]])hall.add(box(w,0.05,dd,mTrim,x,wallTop(0,0)+0.025,z,false));
     if(lbOn)vault(hadd,pl.m4.clone().multiply(new THREE.Matrix4().makeTranslation(0,0,tR+0.16)),-lx,lx,-bw/2,bw/2,0.16)}
-  // separates Vordach (wenn es nicht Teil der Dachfläche ist)
-  if(vordach&&!(sattel||(pult&&!xs&&S.pHigh!=="front"))){const y=Y0+Math.max(2.6,Math.min(H-0.35,(LAY.front.items.reduce((a,o)=>Math.max(a,o.h),2.2))+0.45)),w=L*0.6;
-    hall.add(box(w,0.1,4,sheet("tz",roofHex,xr),0,y,B/2+tW+2));hall.add(box(w,0.16,0.08,mFrame,0,y-0.02,B/2+tW+4,false));
-    for(let i=0;i<=Math.round(w/5);i++){const x=-w/2+0.2+i*(w-0.4)/Math.max(1,Math.round(w/5));hall.add(column(x,B/2+tW+3.85,y-0.06-Y0,0.16,0.16,mSteel))}}
+  // Vordach frei auskragend: Kragträger unter der Dachfläche, seitlich an Stützen bzw. Giebel angeschlossen, mit Kopfband
+  if(vdOn&&st>=3){const P=(q,lx,sv,n)=>q.O.clone().addScaledVector(q.X,lx).addScaledVector(q.Sd,sv).addScaledVector(q.N,n);
+    const ib=(p,q,h,b)=>{const len=p.distanceTo(q);if(len<0.2)return;const o=new THREE.Mesh(beamGeo(h,b,len),mSteel);o.position.copy(p).add(q).multiplyScalar(0.5);o.lookAt(q);o.castShadow=true;hall.add(o)};
+    const kopf=(p,q)=>{const dd=q.clone().sub(p);const hz=dd.clone().setY(0).length();const w=p.clone();w.y-=Math.min(1.6,hz*0.45);ib(w,p.clone().lerp(q,0.42),0.14,0.1)};
+    const hb=Math.min(0.42,0.18+vdD*0.05),nB=-(tR+hb/2+0.02);
+    const xsF=[];for(let i=0;i<=G.bays;i++)xsF.push(-L/2+i*G.raster);
+    for(const q of VDP){const lxOf=x=>q.flat?x*(Math.sign(q.X.x)||1):x*(Math.sign(q.X.x)||1);
+      if(vdF>0&&!q.xs&&!q.flat&&q.front){for(const x of xsF){const xx=Math.max(-L/2+0.15,Math.min(L/2-0.15,x));const a=P(q,lxOf(xx),q.sW,nB),b=P(q,lxOf(xx),q.sE,nB);ib(a,b,hb,0.16);kopf(a,b)}}
+      if(vdF>0&&(q.xs||q.flat)){for(const x of xsF){const xx=Math.max(-L/2+0.15,Math.min(L/2-0.15,x));const y=roofY(xx,B/2)-0.02-hb/2;const a=V(xx,y,B/2+tW),b=V(xx,y,B/2+vdF-0.12);ib(a,b,hb,0.16);kopf(a,b)}}
+      const gx=gL||gR;if(!gx)continue;const sg=gR?1:-1,xw=sg*(L/2+tW),xo=sg*(L/2+gx-0.12);
+      if(q.xs){const hiSide=(S.pHigh==="right")===(sg>0),sW=hiSide?q.sHiW:q.sLoW,sE=hiSide?q.s0:q.s1;const zs=[];const nz=Math.max(2,Math.round(B/5)+1);for(let i=0;i<nz;i++)zs.push(-B/2+0.15+(B-0.3)*i/(nz-1));
+        for(const z of zs){const lz=z*(Math.sign(q.X.z)||1);const a=P(q,lz,sW,nB),b=P(q,lz,sE,nB);ib(a,b,hb,0.16);kopf(a,b)}continue}
+      if(q.flat){const zs=[];const nz=Math.max(2,Math.round(B/5)+1);for(let i=0;i<nz;i++)zs.push(-B/2+0.15+(B-0.3)*i/(nz-1));for(const z of zs){const y=roofY(0,0)-0.02-hb/2;const a=V(xw,y,z),b=V(xo,y,z);ib(a,b,hb,0.16);kopf(a,b)}continue}
+      const ns=Math.max(2,Math.round((q.s1-q.s0)/3)+1);for(let i=0;i<ns;i++){const sv=q.s0+(q.s1-q.s0)*i/(ns-1);const a=P(q,lxOf(xw),sv,nB),b=P(q,lxOf(xo),sv,nB);ib(a,b,i===0||i===ns-1?hb:hb*0.7,0.14);if(i===ns-1||i===0)kopf(a,b)}}}
   // Kastenrinne und Fallrohre
   if(st>=4)for(const e of eaves){const gx=Math.abs(e.hd.z)>0.5,P=e.P,gy=P.y-0.09;
-    const segs=e.key==="back"&&WG.length?wallSegs(L,WG):[[-e.half,e.half]];
+    const segs=e.key==="back"&&WG.length?wallSegs(L,WG):[[e.a??-e.half,e.b??e.half]];
     for(const [a,b] of segs){const len=b-a,m=(a+b)/2;hall.add(gx?box(len,0.13,0.15,mZinc,m,gy,P.z+e.hd.z*0.085,false):box(0.15,0.13,len,mZinc,P.x+e.hd.x*0.085,gy,m,false));
       if(e.post){for(let i=0;i<=G.bays;i++){const x=Math.max(-L/2+0.2,Math.min(L/2-0.2,-L/2+i*G.raster));hall.add(column(x,P.z-e.hd.z*0.25,P.y-0.25-Y0,0.18,0.18,mSteel));hall.add(cyl(0.05,P.y-0.2-GROUND,mZinc,x+0.18,(P.y-0.2+GROUND)/2,P.z-e.hd.z*0.25,10,false))}hall.add(box(L,0.24,0.12,mSteel,0,P.y-0.3,P.z-e.hd.z*0.25));continue}
       const n=Math.max(2,Math.round(len/13)+1),wallOff=tW+0.08;
@@ -2334,10 +2415,9 @@ function ausHints(G){
   if(+A.kuppel){const kp=kuppelPos(S.L,S.B);if(!kp.fit)h.push(`${A.kuppel} Lichtkuppeln mit ${A.kupB} × ${A.kupL} cm${+A.kupA?` im Abstand von ${fmt(+A.kupA,1)} m`:""} passen so nicht auf das Dach. Wir haben sie enger gesetzt; bitte Anzahl, Größe oder Abstand verringern.`);if(+A.kupB>250||+A.kupL>300)h.push("Lichtkuppeln über 2,5 × 3 m sind Sonderanfertigungen. Ab dieser Größe planen wir meist ein Lichtband im First.")}
   if(+A.kuppel&&S.dach==="Satteldach"&&S.extras.includes("Lichtband im Dach"))h.push("Lichtkuppeln ergänzen das First-Lichtband an den Traufseiten, zum Beispiel über Arbeitsplätzen.");
   for(const el of[$("ausHint"),$("ausHint2")]){el.hidden=!h.length;el.innerHTML=h.length?`<span>ℹ️</span><div>${h.join("<br>")}</div>`:""}
-  const pv=$("pvHint");if(A.pv==="sued"||A.pv==="beide"){const area=S.dach==="Satteldach"?(A.pv==="beide"?G.roofArea:G.roofArea/2):G.roofArea;const kwp=area*0.85/6.5;pv.hidden=false;
-    pv.innerHTML=`<span>☀️</span><div>Etwa <strong>${fmt(kwp,0)} kWp</strong> auf ${fmt(area*0.85,0)} m² Modulfläche, grob <strong>${fmt(kwp*950,0)} kWh</strong> im Jahr für Vechta. Wir legen die Dachstatik mit Reserve für die Module aus.</div>`}
-  else if(A.pv==="statik"){pv.hidden=false;pv.innerHTML=`<span>☀️</span><div>Dachstatik mit Reserve für spätere Module. Bei ${fmt(G.roofArea,0)} m² Dach wären später bis etwa <strong>${fmt(G.roofArea*0.85/6.5,0)} kWp</strong> möglich.</div>`}
-  else{pv.hidden=false;pv.innerHTML=`<span>☀️</span><div>Ihr Dach hat ${fmt(G.roofArea,0)} m². Platz für etwa <strong>${fmt(G.roofArea*0.85/6.5*1000/430,0)} Module</strong>, rund ${fmt(G.roofArea*0.85/6.5,0)} kWp und grob ${fmt(G.roofArea*0.85/6.5*950,0)} kWh im Jahr. Wenn Sie das später nutzen wollen, wählen Sie oben mindestens „Statik auslegen“.</div>`}
+  const pv=$("pvHint");if(pv){const area=G.roofArea*0.85,kwp=area/5.5,kwh=kwp*(S.dach==="Satteldach"?880:920),hh=kwh/3500;
+    pv.innerHTML=`<div class="pvnum"><div><b>${fmt(Math.round(kwh/1000)*1000,0)}</b><span>kWh Strom im Jahr</span></div><div><b>${fmt(kwp,0)}</b><span>kWp Leistung</span></div><div><b>${fmt(hh,0)}</b><span>Haushalte versorgt</span></div></div>
+    <p>So viel Solarstrom kann Ihr Dach mit ${fmt(G.roofArea,0)} m² ungefähr erzeugen, gerechnet für den Raum Vechta mit Modulen auf ${S.dach==="Satteldach"?"beiden Dachseiten":"der ganzen Dachfläche"}. Bei neuen Gewerbehallen in Niedersachsen ist Solar auf mindestens der Hälfte des Dachs Pflicht (§ 32a NBauO). Deshalb legen wir die Dachstatik immer für Solarmodule aus.</p>`}
 }
 
 /* ---------- Draw ---------- */
@@ -2599,7 +2679,7 @@ document.querySelectorAll("[data-exp]").forEach(b=>b.onclick=()=>doExport(b.data
 const QA={};["q1","q2","q3"].forEach(q=>$(q).querySelectorAll("button").forEach(b=>b.onclick=()=>{$(q).querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));QA[q]=b.dataset.v;$("quickGo").disabled=!(QA.q1&&QA.q2&&QA.q3)}));
 $("quickBtn").onclick=e=>{e.preventDefault();$("dlgQuick").showModal()};
 $("quickGo").onclick=()=>{const pre={agrar:3,lkw:0,werk:1,lager:2}[QA.q1];applyPreset(pre);const [L,B]=QA.q2.split("x").map(Number);S.L=L;S.B=B;
-  if(QA.q3==="warm"){S.wand="Sandwichpaneel gedämmt";S.dh="Sandwichpaneel gedämmt";if(!S.aus.heiz)S.aus.heiz="Gas-Dunkelstrahler (zonal, Werkstatt)"}else{S.wand="Trapezblech ungedämmt";S.dh="Trapezblech mit Antikondensvlies";S.aus.heiz=""}
+  S.dach=QA.q3;S.P=QA.q3==="Satteldach"?12:QA.q3==="Pultdach"?7:S.P;
   if(QA.q1==="lkw"){S.torGr="4x4.5";S.H=Math.max(S.H,6)}if(QA.q1==="agrar"){S.torGr="5x5";S.H=Math.max(S.H,6)}
   syncForm();readForm();fitCamera();$("dlgQuick").close();go(1);draw()};
 try{if(!location.hash&&!sessionStorage.getItem("gh_quick")){sessionStorage.setItem("gh_quick","1");setTimeout(()=>{if(step===0)$("dlgQuick").showModal()},900)}}catch(e){}
