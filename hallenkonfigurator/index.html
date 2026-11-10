@@ -3,7 +3,7 @@
 <meta name="robots" content="noindex, nofollow"><!-- © 2026 Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH & Co. KG, Vechta. Hallenplaner. Alle Rechte vorbehalten. Nutzung nur auf gellhaus.eu. -->
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Inter:opsz,wght@14..32,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500..800&family=Barlow+Semi+Condensed:wght@500;600&family=Inter:opsz,wght@14..32,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 /* Konzept „Werkhalle in Glas“: Apple-Systematik für einen Stahlbauer. Ruhige Gruppenflächen, schwebende Material-Leisten über dem Modell, Systemschrift mit größenabhängiger Laufweite. Gellhaus-Blau führt, Tor-Rot bleibt Signal. */
@@ -493,11 +493,53 @@ legend,.lbl{font:600 13.5px var(--display);letter-spacing:.09em;text-transform:u
   .card{padding:30px 32px 32px}
 }
 @media (min-width:901px) and (max-width:1180px){.grid{grid-template-columns:minmax(0,1.15fr) minmax(400px,1fr)}}
+/* Ebene „Rahmen“ (v20): Gestaltung rund um den Planer. Eine Schrift für Überschriften (Manrope), eine für Text und Zahlen (Inter); die DIN-nahe Schrift bleibt nur in den Zeichnungen. Abstände im 8-px-Raster, Logo groß im Kopf. */
+:root{--display:"Manrope","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+body{font-size:15px;line-height:1.55}
+.wrap{padding-block:24px 112px}
+.hero{position:static;grid-template-columns:auto minmax(0,1fr) auto;gap:8px 32px;padding:20px 32px;margin-bottom:24px;border:0;border-radius:22px;background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:var(--shadow)}
+.hero::before{height:4px;opacity:1}
+.logo{height:68px;background:#fff;padding:4px 8px;border-radius:10px}
+.herotext{display:block;border-left:1px solid var(--line-2);padding-left:32px}
+h1{font:800 32px/1.05 var(--display);letter-spacing:-.03em;text-transform:none}
+.sub{font-size:15px;letter-spacing:0;margin-top:6px}
+.usp{gap:8px 28px;font:500 14px var(--body);color:var(--ink);flex-wrap:wrap;justify-content:flex-end}
+.usp li{gap:8px}
+.usp li::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--blue-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5 9.4l2.6 2.6L13 6.6' fill='none' stroke='%232c68ae' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+@media (max-width:1280px){.usp li:nth-child(n+3){display:none}}
+@media (max-width:1040px){.hero{grid-template-columns:auto minmax(0,1fr)}.usp{display:none}}
+@media (max-width:640px){.wrap{padding-block:12px 104px}.hero{padding:14px 16px;gap:8px 16px;margin-bottom:16px;border-radius:18px}.logo{height:46px;padding:3px 6px}.herotext{padding-left:16px}h1{font-size:22px}.sub{font-size:13px;margin-top:3px}}
+.stage{top:calc(env(safe-area-inset-top,0px) + 16px)}
+.card{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 16px)}
+.card h2{font:800 31px/1.12 var(--display);letter-spacing:-.03em;margin-bottom:8px}
+.card>.hint{font-size:15.5px;line-height:1.55;max-width:62ch}
+.dlg h3{font:800 24px/1.15 var(--display);letter-spacing:-.025em}
+h3.sub{font:700 19px/1.25 var(--display);letter-spacing:-.015em}
+legend,.lbl{font:600 12.5px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.facts dt{font:600 12px var(--body);letter-spacing:.07em;text-transform:uppercase}
+.facts dd{font:800 26px/1.1 var(--display);letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.facts dd small{font:500 13px var(--body);letter-spacing:0}
+.steps button{font:600 13px/1.25 var(--body);letter-spacing:0}
+.steps button::before{font:700 13px var(--body)}
+@media (min-width:901px){.steps button{font-size:13px}}
+.num input,.stepper output,.veh output,.store input{font:600 18px var(--body);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.seg button,.tools2 button{font:600 13.5px var(--body);letter-spacing:0}
+.caption span{font:500 13px var(--body);letter-spacing:0}
+.choice span{font-weight:650;font-size:15px}
+.choice span em{font-weight:400;font-size:14px}
+.choice span i{font:600 13px var(--body);letter-spacing:0;font-variant-numeric:tabular-nums}
+.choice .pic{display:block;width:64px;height:40px;margin:2px 0 10px;color:var(--blue)}
+.navinfo{font:600 12px var(--body);letter-spacing:.07em}
+.dimedit label{font:600 12px var(--body);letter-spacing:.07em}
+.dimedit input{font:600 18px var(--body);font-variant-numeric:tabular-nums}
+.proto{background:transparent;color:var(--muted);text-align:center;font-size:13px;margin:24px 0 0;padding:0}
+.proto strong{color:var(--ink);font-size:13px}
+@media (min-width:901px){.grid{gap:24px}.card{padding:32px}}
+.facts dd{white-space:nowrap}
+@media (min-width:901px) and (max-width:1180px){.usp li:nth-child(n+2){display:none}.steps button{font-size:12px}.facts dd{font-size:21px}.facts dd small{font-size:11.5px}}
 </style>
 
 <div class="wrap">
-  <div class="proto"><strong>Prototyp</strong> · Anfragen werden hier noch nicht verschickt. Am Ende sehen Sie das Datenblatt, das später per E-Mail ins Büro geht.</div>
-
   <header class="hero">
     <img class="logo" src="assets/logo.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG">
     <div class="herotext">
@@ -909,7 +951,7 @@ legend,.lbl{font:600 13.5px var(--display);letter-spacing:.09em;text-transform:u
       </div>
     </form>
   </div>
-  <button type="button" class="ai" id="aiBtn" hidden><span>✦</span> Hallen-Assistent</button>
+  <p class="proto"><strong>Prototyp</strong> · Anfragen werden hier noch nicht verschickt. Am Ende sehen Sie das Datenblatt, das später per E-Mail ins Büro geht.</p>
 
   <dialog id="dlgCmp"><div class="dlg"><button type="button" class="x" data-close>×</button><h3>Varianten vergleichen</h3><p>Gespeicherte Varianten dieses Browsers. Laden setzt die Planung auf die Variante.</p><div id="cmpBody"></div></div></dialog>
   <dialog id="dlgCode"><div class="dlg"><button type="button" class="x" data-close>×</button><h3>Hallen-Code</h3>
@@ -940,12 +982,6 @@ legend,.lbl{font:600 13.5px var(--display);letter-spacing:.09em;text-transform:u
     <p>Für Kalkulation und CAD. Die DXF-Datei enthält den Grundriss mit Wänden, Toren, Binderraster und Innenflächen in Metern.</p>
     <div class="plantools"><button type="button" class="btn small primary" data-exp="dxf">Grundriss als DXF (MegaCAD)</button><button type="button" class="btn small" data-exp="csv">Positionsliste als CSV (Excel)</button><button type="button" class="btn small" data-exp="json">Alle Daten als JSON</button><button type="button" class="btn small" data-exp="glb">3D-Modell als GLB</button></div>
     <p id="expMsg" style="margin-top:8px"></p></div></dialog>
-  <dialog id="dlgAI"><div class="dlg"><button type="button" class="x" data-close>×</button><h3>Hallen-Assistent</h3>
-    <p>Beschreiben Sie Ihren Betrieb und was in die Halle soll. Der Assistent schlägt Maße, Tore und Ausstattung vor und kann sie direkt in den Planer übernehmen.</p>
-    <div class="chips" id="aiChips"><button type="button">Ich habe 3 Schlepper, einen Mähdrescher und 500 Rundballen</button><button type="button">Lkw-Werkstatt für 4 Sattelzüge mit Grube und Waschplatz</button><button type="button">Welche Traufhöhe brauche ich für einen Teleskoplader?</button><button type="button">Was fehlt in meiner Planung noch?</button></div>
-    <div class="chat" id="chat"></div>
-    <div class="chatin"><textarea id="aiIn" rows="2" placeholder="Ihre Frage oder Beschreibung"></textarea><button type="button" class="btn primary" id="aiSend">Senden</button></div>
-    <p id="aiMsg" style="margin-top:8px"></p></div></dialog>
 
   <footer class="ft"><span>© 2026 Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG · Hallenplaner, alle Rechte vorbehalten</span><span>Visbeker Damm 158, 49377 Vechta</span><span>0 44 41 / 38 04</span><span>info@gellhaus.eu</span></footer>
 </div>
@@ -968,8 +1004,8 @@ const fmt=(n,d=0)=>n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFrac
 
 /* ---------- Daten ---------- */
 const PRESETS=[
-  {n:"Fahrzeughalle",d:"Lkw, Busse, Landmaschinen",ref:"Referenz",img:"assets/halle-aussen.jpg",L:42,B:16,H:6,dach:"Pultdach",P:6,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:1,walls:{front:{g:7,d:0,w:0},back:{g:0,d:0,w:0},left:{g:0,d:1,w:0},right:{g:0,d:0,w:0}},torGr:"4x4.5",torTyp:"Sektionaltor mit Verglasung",aus:{boden:"Stapler/Lkw 22 cm Stahlfaser",licht:"Lager 150 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m"}},
-  {n:"Werkstatt / Produktion",d:"beheizt, Kran, Tageslicht",ref:"Referenz",img:"assets/halle-innen.jpg",L:36,B:20,H:7.5,dach:"Satteldach",P:8,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:0,walls:{front:{g:2,d:1,w:4},back:{g:0,d:1,w:4},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}},extra:["Lichtband im Dach"],kran:"Brückenkran bis 5 t",aus:{boden:"Schwerlast 25–30 cm",bodenX:["Beschichtung (Epoxid/PUR)","Bodenabläufe mit Ölabscheider"],grube:"lkw12",buehne:"2s",werkX:["Druckluft-Ringleitung","Abgasabsaugung"],heiz:"Gas-Dunkelstrahler (zonal, Werkstatt)",licht:"Werkstatt 300 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m",buero:"60"}},
+  {n:"Fahrzeughalle",d:"Lkw, Busse, Landmaschinen",L:42,B:16,H:6,dach:"Pultdach",P:6,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:1,walls:{front:{g:7,d:0,w:0},back:{g:0,d:0,w:0},left:{g:0,d:1,w:0},right:{g:0,d:0,w:0}},torGr:"4x4.5",torTyp:"Sektionaltor mit Verglasung",aus:{boden:"Stapler/Lkw 22 cm Stahlfaser",licht:"Lager 150 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m"}},
+  {n:"Werkstatt / Produktion",d:"beheizt, Kran, Tageslicht",L:36,B:20,H:7.5,dach:"Satteldach",P:8,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:0,walls:{front:{g:2,d:1,w:4},back:{g:0,d:1,w:4},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}},extra:["Lichtband im Dach"],kran:"Brückenkran bis 5 t",aus:{boden:"Schwerlast 25–30 cm",bodenX:["Beschichtung (Epoxid/PUR)","Bodenabläufe mit Ölabscheider"],grube:"lkw12",buehne:"2s",werkX:["Druckluft-Ringleitung","Abgasabsaugung"],heiz:"Gas-Dunkelstrahler (zonal, Werkstatt)",licht:"Werkstatt 300 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m",buero:"60"}},
   {n:"Lagerhalle",d:"Paletten, Material",L:30,B:15,H:6,dach:"Satteldach",P:12,wand:"Trapezblech ungedämmt",dh:"Trapezblech",walls:{front:{g:2,d:1,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}}},
   {n:"Maschinenhalle Landwirtschaft",d:"hohe Tore, Pultdach",L:40,B:20,H:6.5,dach:"Pultdach",P:8,wand:"Trapezblech ungedämmt",dh:"Trapezblech",walls:{front:{g:4,d:1,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:0,d:0,w:0}},torGr:"6x5.5",aus:{schuett:"3",agrX:["Traufgitter gegen Vögel und Nager"],pv:"statik"}},
   {n:"Offener Unterstand",d:"nur Dach und Stützen",L:24,B:12,H:5,dach:"Pultdach",P:7,wand:"Offen (Unterstand)",dh:"Trapezblech",walls:{front:{g:0,d:0,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:0,d:0,w:0}}},
@@ -996,18 +1032,23 @@ const S={reserve:false,grund:{lage:"",bplan:"",nachbar:"",zufahrt:""},gpos:{},fo
 let step=0,curWall="front";
 document.querySelectorAll("dialog [data-close]").forEach(b=>b.onclick=()=>b.closest("dialog").close());
 document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{if(e.target===d)d.close()}));
-/* Laufzeit-Fähigkeiten der Claude-Ansicht (Assistent, Hallen-Code, Download). Ohne sie läuft die Seite normal weiter. */
-const CAP={sample:null,db:null,downloads:null};
+/* Laufzeit-Fähigkeiten der Claude-Ansicht (Hallen-Code, Download). Ohne sie läuft die Seite normal weiter. */
+const CAP={db:null,downloads:null};
 if(window.claude&&window.claude.use){
-  claude.use("sample").then(x=>{CAP.sample=x;$("aiBtn").hidden=!x}).catch(()=>{});
   claude.use("db").then(x=>{CAP.db=x;if(pendingCode)loadCode(pendingCode)}).catch(()=>{});
   claude.use("downloads").then(x=>{CAP.downloads=x}).catch(()=>{});
 }
 let pendingCode=null;
 
 /* ---------- UI ---------- */
+function presetPic(p){
+  const open=p.wand.startsWith("Offen"),leer=p.n==="Leer starten";
+  const roof=p.dach==="Satteldach"?"M6 16 L32 6 L58 16":p.dach==="Pultdach"?"M6 9 L58 17":"M6 13 L58 13";
+  const yl=p.dach==="Pultdach"?9:p.dach==="Satteldach"?16:13,yr=p.dach==="Pultdach"?17:yl;
+  const body=open?`<path d="M10 ${yl+1} V34 M26 ${p.dach==="Pultdach"?12:yl} V34 M42 ${p.dach==="Pultdach"?15:yl} V34 M54 ${yr} V34"/>`:`<path d="M8 ${yl} V34 H56 V${yr}"${leer?' stroke-dasharray="3 3"':""}/>${leer?"":'<path d="M16 34 V23 H28 V34 M36 34 V23 H48 V34"/>'}`;
+  return `<svg class="pic" viewBox="0 0 64 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="${roof}"${leer?' stroke-dasharray="3 3"':""}/>${body}<path d="M2 34 H62" opacity=".35"/></svg>`}
 PRESETS.forEach((p,i)=>$("presetChoices").insertAdjacentHTML("beforeend",
-  `<label class="choice"><input type="radio" name="preset" value="${i}" ${i===0?"checked":""}><span>${p.img?`<img src="${p.img}" alt="">`:""}${p.ref?`<b>${p.ref}</b>`:""}${p.n}<em>${p.d}</em><i>${fmt(p.L)} × ${fmt(p.B)} m · Traufe ${fmt(p.H,1)} m · ${p.dach}</i></span></label>`));
+  `<label class="choice"><input type="radio" name="preset" value="${i}" ${i===0?"checked":""}><span>${presetPic(p)}${p.n}<em>${p.d}</em><i>${fmt(p.L)} × ${fmt(p.B)} m · Traufe ${fmt(p.H,1)} m · ${p.dach}</i></span></label>`));
 const sw=(el,name,list,cur)=>list.forEach((c,i)=>$(el).insertAdjacentHTML("beforeend",`<label class="sw" title="${c[0]}"><input type="radio" name="${name}" value="${i}" ${i===cur?"checked":""}><span style="background:${c[1]}"></span></label>`));
 sw("swWall","cw",RAL,S.cw);sw("swRoof","cr",RAL,S.cr);sw("swFrame","cf",FRAME,S.cf);
 VEH.forEach(v=>$("vehicles").insertAdjacentHTML("beforeend",`<div class="veh" data-v="${v.k}"><span>${v.n}</span><small>${fmt(v.l,1)} × ${fmt(v.w,1)} × ${fmt(v.h,1)} m</small><div class="ctl"><button type="button" data-d="-1" aria-label="weniger">−</button><output>0</output><button type="button" data-d="1" aria-label="mehr">+</button></div></div>`));
@@ -2444,50 +2485,6 @@ async function openAR(){
   try{await loadScript("https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js",true)}catch(e){const mv=$("mv");if(mv)mv.remove();body.insertAdjacentHTML("beforeend","<p>Die 3D-Vorschau konnte nicht geladen werden. Die GLB-Datei lässt sich trotzdem herunterladen.</p>")}
 }
 $("tAR").onclick=openAR;
-
-/* ---------- Hallen-Assistent (Claude über die Seite) ---------- */
-const AI_TURNS=[];
-function aiContext(){
-  const A=S.aus;const G=geometry();
-  return `Du bist der Hallen-Assistent im Online-Hallenplaner der Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH & Co. KG, Vechta (Stahlhallen nach EN 1090-2, eigene Fertigung und Montage, auch Fahrzeugbau und Werkstatt). Du hilfst Kunden (Landwirte, Lkw-Betriebe, Gewerbe), ihren Bedarf zu klären, und schlägst konkrete Werte vor. Sprich Deutsch, per Sie, kurz und konkret, höchstens 6 Sätze, keine Aufzählungen länger als 5 Punkte. Nenne NIE Preise oder Kosten, auch keine Schätzungen; bei Preisfragen: das Büro meldet sich nach der Anfrage. Grenzen: Länge 3 bis 50 m, Breite 3 bis 50 m stützenfrei (beliebige Zwischenwerte, unter 6 m Breite nur ohne Lkw), Traufe 2 bis 8 m, First max. 10 m. Alle Maße in 10-cm-Schritten. Faustwerte: Schlepper 5,5×2,6×3,2 m, Mähdrescher 10×4,2×4,2 m (Tor 6×5,5), Sattelzug 16,5×2,55×4,0 m (Tor 4×4,5 oder 5×5, Traufe ab 6 m, Lkw-Grube 1,0×1,7×12 bis 20 m), Teleskoplader ca. 3,0 m hoch, Rundballen Ø1,5 m 3 hoch, Quaderballen 2,4×1,2×0,9 m 4 hoch, Rangierfläche ca. 40 % frei lassen, Tiefe für Gespanne mindestens 12 m. Lichtband sitzt im First. Regel für Gruben: Jede Arbeitsgrube liegt in der Achse eines Tores (Fahrzeug fährt gerade darüber), also höchstens so viele Gruben wie Tore an dieser Seite, und zwischen zwei Gruben bleibt ein Laufweg von mindestens 1,5 m (Annahme). Bei mehreren Gruben also entsprechend viele Tore vorschlagen. Flügel und Anbauten haben immer dieselbe Höhe wie die Haupthalle (gleiche Traufe, gleicher First). Vechta: Schneelastzone 2 Norddeutsches Tiefland, Windzone 2.
-Grundriss: form Rechteck|L|T|U, bei L/T/U ein oder zwei Flügel (fL Länge, fB Breite, je 6 bis 50 m) hinten an der Halle, fSide left|right bei L, fG Tore im Flügelgiebel 0 bis 3.
-Aktuelle Planung (JSON): ${JSON.stringify({form:S.form,fL:S.fL,fB:S.fB,fSide:S.fSide,fG:S.fG,L:S.L,B:S.B,H:S.H,P:S.P,first:+G.ridge.toFixed(2),dach:S.dach,wand:S.wand,dachhaut:S.dh,torGr:S.torGr,torTyp:S.torTyp,tore:S.walls,extras:S.extras,kran:S.kran,fahrzeuge:S.veh,lager:S.store,ausstattung:A,layoutObjekte:S.layout.length})}
-Erlaubte Werte für Änderungen: dach: Satteldach|Pultdach|Flachdach; pHigh (hohe Seite beim Pultdach): back|front|left|right; osides (offene Seiten): {front,back,left,right: true|false}; sockelH (Betonsockel-Höhe in m, nur mit Extra "Betonsockel 1 m"): 0.5 bis 3; aus.kupB/aus.kupL (Lichtkuppelgröße in cm), aus.kupA (Abstand in m, 0 = gleichmäßig), aus.kuppel (Anzahl 0 bis 40); wand: "Offen (Unterstand)"|"Trapezblech ungedämmt"|"Sandwichpaneel gedämmt"; dh: Trapezblech|"Trapezblech mit Antikondensvlies"|"Sandwichpaneel gedämmt"; torGr: 3x3.5|4x4.5|5x5|6x5.5; torTyp: Sektionaltor|"Sektionaltor mit Verglasung"|Rolltor|Schiebetor; extras: Liste aus "Betonsockel 1 m","Lichtband im Dach","Statik für spätere PV-Anlage","Vordach 4 m an der Vorderseite"; kran: ""|"Vorbereitung für späteren Kran"|"Säulenschwenkkran 1 t"|"Brückenkran bis 5 t"|"Brückenkran 5 bis 10 t"; veh: Objekt mit Anzahl je Schlüssel transporter,traktor,anhaenger,lkw,maehdrescher,radlader,wohnmobil,regal; store: {rund,quader,pal,pkw} Stückzahlen; walls: {front:{g,d,w},back:{...},left:{...},right:{...}} Anzahl Tore g, Türen d, Fenster w (front/back sind die langen Seiten); aus: {boden:"Normal 18 cm"|"Stapler/Lkw 22 cm Stahlfaser"|"Schwerlast 25–30 cm", grube:""|pkw|lkw12|lkw16|lkw20, grubeN:"1".."4", buehne:""|2s|4s|schere|rad, wasch:""|i12|i18|a, heiz:""|"Gas-Dunkelstrahler (zonal, Werkstatt)"|"Warmlufterzeuger (Öl/Gas)"|"Fußbodenheizung mit Wärmepumpe", licht:""|"Lager 150 lx"|"Werkstatt 300 lx"|"Montage/Produktion 500 lx", pv:""|statik|sued|beide, schuett:"0"|"2"|"3"|"4", lager:"0"|"50"|"100"|"200", anbau:"0"|"4"|"6"|"8", buero:""|"25"|"60", kuppel:"0"|"2"|"4"|"6"|"8"}.
-Antworte NUR mit einem JSON-Objekt: {"reply": "Text für den Kunden", "changes": {…nur die Felder, die sich ändern sollen, gleiche Struktur wie die Planung: form,fL,fB,fSide,fG,L,B,H,P,dach,pHigh,wand,osides,sockelH,dh,torGr,torTyp,extras,kran,veh,store,walls,aus…} oder null, "why": "ein Satz, warum"}. Schlage Änderungen nur vor, wenn der Kunde Bedarf beschreibt oder danach fragt. Stelle höchstens eine Rückfrage pro Antwort.`;
-}
-function aiAdd(role,text,changes){const el=document.createElement("div");el.className="msg "+(role==="u"?"u":"a");el.textContent=text;
-  if(changes){const b=document.createElement("button");b.type="button";b.className="btn small primary apply";b.textContent="Vorschlag in den Planer übernehmen";b.onclick=()=>{applyChanges(changes);b.textContent="Übernommen";b.disabled=true};el.appendChild(b)}
-  $("chat").appendChild(el);$("chat").scrollTop=1e6;return el}
-function applyChanges(c){
-  if(!c||typeof c!=="object")return;const num=(v,lo,hi)=>Math.max(lo,Math.min(hi,+v));
-  if(["Rechteck","L","T","U"].includes(c.form))S.form=c.form;if(c.fL!=null)S.fL=num(c.fL,3,50);if(c.fB!=null)S.fB=num(c.fB,3,50);if(c.fSide==="left"||c.fSide==="right")S.fSide=c.fSide;if(c.fG!=null)S.fG=Math.round(num(c.fG,0,3));
-  if(c.L!=null)S.L=num(c.L,3,50);if(c.B!=null)S.B=num(c.B,3,50);if(["front","back","left","right"].includes(c.pHigh))S.pHigh=c.pHigh;if(c.sockelH!=null)S.sockelH=num(c.sockelH,0.5,3);if(c.osides&&typeof c.osides==="object")for(const k of["front","back","left","right"])if(k in c.osides)S.osides[k]=!!c.osides[k];if(c.H!=null)S.H=r10(num(c.H,2,8));if(c.L!=null)S.L=r10(S.L);if(c.B!=null)S.B=r10(S.B);if(c.sockelH!=null)S.sockelH=r10(S.sockelH);if(c.P!=null)S.P=num(c.P,5,25);
-  for(const k of["dach","wand","dh","torGr","torTyp","kran"])if(typeof c[k]==="string"&&c[k]!==undefined)S[k]=c[k];
-  if(Array.isArray(c.extras))S.extras=c.extras.filter(x=>typeof x==="string");
-  if(c.veh&&typeof c.veh==="object"){S.veh={};for(const k in c.veh){if(VEH.some(v=>v.k===k)&&+c.veh[k]>0)S.veh[k]=Math.min(12,Math.round(+c.veh[k]))}}
-  if(c.store&&typeof c.store==="object")for(const k of["rund","quader","pal","pkw"])if(c.store[k]!=null)S.store[k]=Math.max(0,Math.round(+c.store[k]));
-  if(c.walls&&typeof c.walls==="object")for(const k of["front","back","left","right"])if(c.walls[k])for(const q of["g","d","w"])if(c.walls[k][q]!=null)S.walls[k][q]=num(c.walls[k][q],0,8);
-  if(c.aus&&typeof c.aus==="object")for(const k in c.aus)if(k in S.aus){S.aus[k]=Array.isArray(S.aus[k])?(Array.isArray(c.aus[k])?c.aus[k]:S.aus[k]):String(c.aus[k])}
-  // Pflicht-Konsistenz: Torhöhe unter Traufe, First unter 10 m
-  const th=+S.torGr.split("x")[1];if(th>S.H-0.3)S.H=Math.min(8,Math.ceil((th+0.5)*10)/10);
-  while(geometry().ridge>10&&S.P>5)S.P--;
-  S.layoutAuto=true;syncForm();readForm();renderVeh();fitCamera();draw();if(step===ST_PLAN)renderPlan();
-}
-let aiCtl=null;
-async function aiSend(text){
-  text=(text||$("aiIn").value).trim();if(!text||!CAP.sample)return;$("aiIn").value="";aiAdd("u",text);AI_TURNS.push({role:"user",content:text});
-  const wait=aiAdd("a","Denkt nach …");$("aiSend").disabled=true;$("aiMsg").textContent="";
-  aiCtl=new AbortController();
-  try{const res=await CAP.sample.json([{role:"user",content:aiContext()},...AI_TURNS.slice(-10)],{cache:false,signal:aiCtl.signal,modelTier:"default"});
-    wait.remove();const reply=typeof res==="object"&&res&&res.reply?String(res.reply):String(res);const ch=res&&typeof res==="object"&&res.changes&&typeof res.changes==="object"&&Object.keys(res.changes).length?res.changes:null;
-    aiAdd("a",reply+(ch&&res.why?"\n\n"+res.why:""),ch);AI_TURNS.push({role:"assistant",content:JSON.stringify(res)});}
-  catch(e){wait.remove();const m={not_granted:"Sie haben dem Assistenten keinen Zugriff erlaubt. Der Planer funktioniert ohne ihn weiter.",rate_limited:"Gerade zu viele Anfragen. Bitte in einer Minute noch einmal.",invalid_json:"Die Antwort war unbrauchbar, bitte noch einmal senden.",cancelled:""}[e.code];
-    $("aiMsg").textContent=m!==undefined?m:"Der Assistent ist gerade nicht erreichbar.";if(e.code==="not_granted"||e.code==="sampling_disabled")$("aiBtn").hidden=true;}
-  finally{$("aiSend").disabled=false}
-}
-$("aiBtn").onclick=()=>{$("dlgAI").showModal();if(!$("chat").children.length)aiAdd("a","Guten Tag! Sagen Sie mir, was in die Halle soll, zum Beispiel Maschinen, Fahrzeuge, Ballen oder Paletten, und wofür Sie die Halle nutzen. Ich schlage Ihnen Maße, Tore und Ausstattung vor.");$("aiIn").focus()};
-$("aiSend").onclick=()=>aiSend();$("aiIn").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend()}});
-$("aiChips").addEventListener("click",e=>{const b=e.target.closest("button");if(b)aiSend(b.textContent)});
 
 /* ---------- Anfrage ---------- */
 function validate(){
