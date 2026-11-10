@@ -591,6 +591,13 @@ h1{font-size:30px}
 .pvnum span{font-size:13px;color:var(--muted)}
 .pvbox p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
 @media (max-width:640px){.pvnum b{font-size:22px}.wrow{grid-template-columns:repeat(3,minmax(0,1fr));padding:8px 6px;row-gap:6px}.wrow b{grid-column:1/-1}.wrow.wh span:first-child{display:none}.wrow .opn{grid-column:1/-1}.wrow .ctl button{width:30px}}
+.card .row2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.dims{display:grid;grid-template-columns:repeat(3,minmax(64px,1fr)) auto;gap:8px;align-items:center}
+.dims input{text-align:right;font:600 16px var(--body);font-variant-numeric:tabular-nums;min-width:0}
+.dims .btn{white-space:nowrap}
+@media (max-width:640px){.dims{grid-template-columns:repeat(3,minmax(0,1fr))}.dims .btn{grid-column:1/-1}}
+.planstat b,.suggest b,.sheet,.code,.cmp td b,.vars .chip b,.choice span i{font-family:var(--body)}
+.sheet{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
 </style>
 
 <div class="wrap">
@@ -825,12 +832,6 @@ h1{font-size:30px}
             <div class="field"><label for="kran">Kran</label>
               <select id="kran"><option value="">Kein Kran</option><option>Vorbereitung für späteren Kran</option><option>Säulenschwenkkran 1 t</option><option>Brückenkran bis 5 t</option><option>Brückenkran 5 bis 10 t</option></select></div>
           </div>
-          <div class="checks">
-            <label><input type="checkbox" name="werkX" value="Grubenpaket: Rollabdeckung, Lüftung, LED, Druckluft"> Grubenpaket: Rollabdeckung, Grubenlüftung, LED-Licht, Druckluft in der Grube</label>
-            <label><input type="checkbox" name="werkX" value="Druckluft-Ringleitung"> Druckluft-Ringleitung mit Zapfstellen alle 6 m</label>
-            <label><input type="checkbox" name="werkX" value="Abgasabsaugung"> Abgasabsaugung an den Stellplätzen</label>
-            <label><input type="checkbox" name="werkX" value="Bremsenprüfstand"> Rollen-Bremsenprüfstand (Fundament vorsehen)</label>
-          </div>
         </fieldset></details>
         <details class="acc"><summary><span>Landwirtschaft und Lager</span><em class="cnt"></em></summary><fieldset><legend>Landwirtschaft und Lager</legend>
           <div class="row2">
@@ -861,11 +862,11 @@ h1{font-size:30px}
         </div>
         <div class="row2" id="planCustom">
           <div class="field"><label for="cuName">Eigenes Objekt (Name)</label><input type="text" id="cuName" placeholder="z. B. Drehmaschine, Siloblock"></div>
-          <div class="field"><label>Länge × Breite × Höhe in m</label><div class="plantools" style="margin:0"><input type="number" id="cuL" min="0.1" max="50" step="0.1" value="4" aria-label="Länge"><input type="number" id="cuB" min="0.1" max="50" step="0.1" value="2" aria-label="Breite"><input type="number" id="cuH" min="0.1" max="10" step="0.1" value="2" aria-label="Höhe"><button type="button" class="btn small" id="cuAdd">Dazu</button></div></div>
+          <div class="field"><label>Länge × Breite × Höhe in m</label><div class="dims"><input type="number" id="cuL" min="0.1" max="50" step="0.1" value="4" aria-label="Länge"><input type="number" id="cuB" min="0.1" max="50" step="0.1" value="2" aria-label="Breite"><input type="number" id="cuH" min="0.1" max="10" step="0.1" value="2" aria-label="Höhe"><button type="button" class="btn small" id="cuAdd">Dazu</button></div></div>
         </div>
         <div class="row2" id="planRoom">
           <div class="field"><label for="rmName">Raum oder Trennwand einzeichnen</label><select id="rmName"><option>Büro</option><option>Sozialraum</option><option>Umkleide</option><option>WC</option><option>Lager</option><option>Werkstatt</option><option>Technikraum</option><option value="twand">Trennwand quer durch die Halle</option></select></div>
-          <div class="field"><label>Länge × Breite × Höhe in m</label><div class="plantools" style="margin:0"><input type="number" id="rmL" min="1" max="50" step="0.1" value="6" aria-label="Raumlänge"><input type="number" id="rmB" min="1" max="50" step="0.1" value="4" aria-label="Raumbreite"><input type="number" id="rmH" min="2" max="10" step="0.1" value="3" aria-label="Raumhöhe"><button type="button" class="btn small" id="rmAdd">Einzeichnen</button></div></div>
+          <div class="field"><label>Länge × Breite × Höhe in m</label><div class="dims"><input type="number" id="rmL" min="1" max="50" step="0.1" value="6" aria-label="Raumlänge"><input type="number" id="rmB" min="1" max="50" step="0.1" value="4" aria-label="Raumbreite"><input type="number" id="rmH" min="2" max="10" step="0.1" value="3" aria-label="Raumhöhe"><button type="button" class="btn small" id="rmAdd">Einzeichnen</button></div></div>
         </div>
         <p class="note" style="margin-top:-4px">Räume erscheinen als Wände mit Tür im Grundriss und im 3D-Modell. Verschieben und drehen wie jedes Objekt; Maschinen dürfen in einem Raum stehen.</p>
         <div class="planlist" id="planList"></div>
@@ -886,7 +887,7 @@ h1{font-size:30px}
             <div class="field"><label for="kupA">Abstand der Kuppeln in m</label>
               <input type="number" id="kupA" min="0" max="50" step="0.1" value="0" aria-describedby="kupNote"><small class="note" id="kupNote">0 = gleichmäßig verteilt</small></div>
             <div class="field"><label for="lueft">Lüftung</label>
-              <select id="lueft" data-a="lueft"><option value="">Natürlich über Tore und Fenster</option><option>Firstentlüftung</option><option>Dachventilatoren</option><option>Zu- und Abluft mit Wärmerückgewinnung</option></select></div>
+              <select id="lueft" data-a="lueft"><option value="">Natürlich (Tore und Fenster)</option><option>Firstentlüftung</option><option>Dachventilatoren</option><option>Zu- und Abluft mit Wärmerückgewinnung</option></select></div>
           </div>
           <div class="checks">
             <label><input type="checkbox" name="extra" value="Lichtband im Dach"> Lichtband im First</label>
@@ -1063,7 +1064,7 @@ const fmt=(n,d=0)=>n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFrac
 /* ---------- Daten ---------- */
 const PRESETS=[
   {n:"Fahrzeughalle",d:"Lkw, Busse, Landmaschinen",L:42,B:16,H:6,dach:"Pultdach",P:6,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:1,walls:{front:{g:7,d:0,w:0},back:{g:0,d:0,w:0},left:{g:0,d:1,w:0},right:{g:0,d:0,w:0}},torGr:"4x4.5",torTyp:"Sektionaltor mit Verglasung",aus:{boden:"Stapler/Lkw 22 cm Stahlfaser",licht:"Lager 150 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m"}},
-  {n:"Werkstatt / Produktion",d:"beheizt, Kran, Tageslicht",L:36,B:20,H:7.5,dach:"Satteldach",P:8,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:0,walls:{front:{g:2,d:1,w:4},back:{g:0,d:1,w:4},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}},extra:["Lichtband im Dach"],kran:"Brückenkran bis 5 t",aus:{boden:"Schwerlast 25–30 cm",bodenX:["Beschichtung (Epoxid/PUR)","Bodenabläufe mit Ölabscheider"],grube:"lkw12",buehne:"2s",werkX:["Druckluft-Ringleitung","Abgasabsaugung"],heiz:"Gas-Dunkelstrahler (zonal, Werkstatt)",licht:"Werkstatt 300 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m",buero:"60"}},
+  {n:"Werkstatt / Produktion",d:"Kran, Tageslicht, Arbeitsplätze",L:36,B:20,H:7.5,dach:"Satteldach",P:8,wand:"Sandwichpaneel gedämmt",dh:"Sandwichpaneel gedämmt",cw:0,cr:2,cf:0,walls:{front:{g:2,d:1,w:4},back:{g:0,d:1,w:4},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}},extra:["Lichtband im Dach"],kran:"Brückenkran bis 5 t",aus:{boden:"Schwerlast 25–30 cm",bodenX:["Beschichtung (Epoxid/PUR)","Bodenabläufe mit Ölabscheider"],grube:"lkw12",buehne:"2s",werkX:["Druckluft-Ringleitung","Abgasabsaugung"],heiz:"Gas-Dunkelstrahler (zonal, Werkstatt)",licht:"Werkstatt 300 lx",elek:"Werkstatt: CEE 16/32/63 A alle 6 m",buero:"60"}},
   {n:"Lagerhalle",d:"Paletten, Material",L:30,B:15,H:6,dach:"Satteldach",P:12,wand:"Trapezblech ungedämmt",dh:"Trapezblech",walls:{front:{g:2,d:1,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:1,d:0,w:0}}},
   {n:"Maschinenhalle Landwirtschaft",d:"hohe Tore, Pultdach",L:40,B:20,H:6.5,dach:"Pultdach",P:8,wand:"Trapezblech ungedämmt",dh:"Trapezblech",walls:{front:{g:4,d:1,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:0,d:0,w:0}},torGr:"6x5.5",aus:{schuett:"3",agrX:["Traufgitter gegen Vögel und Nager"],pv:"statik"}},
   {n:"Offener Unterstand",d:"nur Dach und Stützen",L:24,B:12,H:5,dach:"Pultdach",P:7,wand:"Offen (Unterstand)",dh:"Trapezblech",walls:{front:{g:0,d:0,w:0},back:{g:0,d:0,w:0},left:{g:0,d:0,w:0},right:{g:0,d:0,w:0}}},
@@ -1336,20 +1337,20 @@ function drawElev(c,key,opts={}){const g=c.getContext("2d");const pr=elevProfile
   g.strokeStyle=line;g.lineWidth=1;for(let x=0;x<=pr.len;x++){g.beginPath();g.moveTo(X(x),Y(0));g.lineTo(X(x),Y(pr.top));g.stroke()}
   const opn=sideOpen(key);g.fillStyle=opn?"rgba(0,0,0,0)":dark?"#1b2531":"#eef1f4";g.beginPath();pr.pts.forEach((p,i)=>i?g.lineTo(X(p[0]),Y(p[1])):g.moveTo(X(p[0]),Y(p[1])));g.closePath();g.fill();g.strokeStyle=ink;g.lineWidth=2;if(opn)g.setLineDash([8,6]);g.stroke();g.setLineDash([]);
   if(opn){g.fillStyle=mut;g.font=`600 ${15*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="center";g.fillText("Seite offen, ohne Wand",X(pr.len/2),Y(pr.top/2))}
-  const sockH=S.extras.includes("Betonsockel 1 m")&&!opn&&!S.wand.startsWith("Offen")?Math.min(S.sockelH||1,S.H-0.5):0;if(sockH){g.fillStyle=dark?"#3a3f45":"#d5d3cd";g.fillRect(X(0),Y(sockH),pr.len*sc,sockH*sc);g.strokeStyle=mut;g.lineWidth=1;g.strokeRect(X(0),Y(sockH),pr.len*sc,sockH*sc);g.fillStyle=mut;g.font=`500 ${11*KF}px IBM Plex Mono, Menlo, monospace`;g.textAlign="left";g.fillText(`Sockel ${fmt(sockH,2)} m`,X(0)+6,Y(sockH)-4)}
+  const sockH=S.extras.includes("Betonsockel 1 m")&&!opn&&!S.wand.startsWith("Offen")?Math.min(S.sockelH||1,S.H-0.5):0;if(sockH){g.fillStyle=dark?"#3a3f45":"#d5d3cd";g.fillRect(X(0),Y(sockH),pr.len*sc,sockH*sc);g.strokeStyle=mut;g.lineWidth=1;g.strokeRect(X(0),Y(sockH),pr.len*sc,sockH*sc);g.fillStyle=mut;g.font=`500 ${11*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="left";g.fillText(`Sockel ${fmt(sockH,2)} m`,X(0)+6,Y(sockH)-4)}
   for(const o of items){const x1=X(o.x-o.w/2),y1=Y(o.y0+o.h),w=o.w*sc,h=o.h*sc;g.fillStyle=o.k==="g"?(dark?"#3a2a2e":"#fbe7e9"):o.k==="d"?(dark?"#2a3340":"#e3e8ee"):(dark?"#1f3550":"#dbe9fb");g.fillRect(x1,y1,w,h);g.strokeStyle=o.k==="g"?red:o.k==="d"?ink:blue;g.lineWidth=1.5;g.strokeRect(x1,y1,w,h);
     if(o.k==="g"){g.strokeStyle=red;g.lineWidth=.8;for(let k=1;k<4;k++){g.beginPath();g.moveTo(x1,y1+h*k/4);g.lineTo(x1+w,y1+h*k/4);g.stroke()}}
-    g.fillStyle=ink;g.font=`500 ${11*KF}px IBM Plex Mono, Menlo, monospace`;g.textAlign="center";if(w>34)g.fillText(`${fmt(o.w,1)}×${fmt(o.h,1)}`,x1+w/2,y1-4)}
+    g.fillStyle=ink;g.font=`500 ${11*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="center";if(w>34)g.fillText(`${fmt(o.w,1)}×${fmt(o.h,1)}`,x1+w/2,y1-4)}
   // Maßkette unten
   const edges=[0];for(const o of items.filter(o=>o.k!=="w")){edges.push(o.x-o.w/2,o.x+o.w/2)}edges.push(pr.len);const yc=oy+26;
   g.strokeStyle=blue;g.lineWidth=1;g.beginPath();g.moveTo(X(0),yc);g.lineTo(X(pr.len),yc);g.stroke();
-  g.font="500 10.5px IBM Plex Mono, Menlo, monospace";g.textAlign="center";
+  g.font="500 10.5px Barlow Semi Condensed, Arial, sans-serif";g.textAlign="center";
   for(let i=0;i<edges.length;i++){const x=X(edges[i]);g.beginPath();g.moveTo(x,yc-6);g.lineTo(x,yc+6);g.stroke();g.beginPath();g.moveTo(x-4,yc+4);g.lineTo(x+4,yc-4);g.stroke();g.strokeStyle=line;g.setLineDash([2,3]);g.beginPath();g.moveTo(x,Y(0));g.lineTo(x,yc-6);g.stroke();g.setLineDash([]);g.strokeStyle=blue;
     if(i<edges.length-1){const d=edges[i+1]-edges[i];if(d>0.04){g.fillStyle=i%2?red:ink;const tw2=g.measureText(fmt(d,2)).width;if(tw2<d*sc-4||i%2)g.fillText(fmt(d,2),X((edges[i]+edges[i+1])/2),yc-9)}}}
-  g.strokeStyle=blue;g.beginPath();g.moveTo(X(0),yc+30);g.lineTo(X(pr.len),yc+30);g.stroke();for(const x of[0,pr.len]){g.beginPath();g.moveTo(X(x),yc+24);g.lineTo(X(x),yc+36);g.stroke()}g.fillStyle=ink;g.font=`600 ${12*KF}px IBM Plex Mono, Menlo, monospace`;g.fillText(`${fmt(pr.len,2)} m`,X(pr.len/2),yc+26);
+  g.strokeStyle=blue;g.beginPath();g.moveTo(X(0),yc+30);g.lineTo(X(pr.len),yc+30);g.stroke();for(const x of[0,pr.len]){g.beginPath();g.moveTo(X(x),yc+24);g.lineTo(X(x),yc+36);g.stroke()}g.fillStyle=ink;g.font=`600 ${12*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.fillText(`${fmt(pr.len,2)} m`,X(pr.len/2),yc+26);
   // Höhen rechts
   const hs=[...new Set([...items.filter(o=>o.k!=="w").map(o=>+(o.y0+o.h).toFixed(2)),+S.H.toFixed(2),+pr.top.toFixed(2)])].sort((a,b)=>a-b);const xr=X(pr.len)+28;
-  g.strokeStyle=blue;g.beginPath();g.moveTo(xr,Y(0));g.lineTo(xr,Y(pr.top));g.stroke();g.textAlign="left";g.font="500 10.5px IBM Plex Mono, Menlo, monospace";
+  g.strokeStyle=blue;g.beginPath();g.moveTo(xr,Y(0));g.lineTo(xr,Y(pr.top));g.stroke();g.textAlign="left";g.font="500 10.5px Barlow Semi Condensed, Arial, sans-serif";
   let last=null;for(const h of [0,...hs]){g.beginPath();g.moveTo(xr-6,Y(h));g.lineTo(xr+6,Y(h));g.stroke();g.strokeStyle=line;g.setLineDash([2,3]);g.beginPath();g.moveTo(X(pr.len),Y(h));g.lineTo(xr-6,Y(h));g.stroke();g.setLineDash([]);g.strokeStyle=blue;if(h>0&&(last==null||Y(last)-Y(h)>11)){g.fillStyle=ink;g.fillText(fmt(h,2),xr+10,Y(h)+4);last=h}}
   g.fillStyle=mut;g.font=`600 ${11*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="left";g.fillText(`${WALL_N[key]||key}  ·  Ansicht von außen, Maße in m  ·  Tore rot, Türen schwarz, Fenster blau`,12,20);
   g.textAlign="right";g.fillText(`Gellhaus Hallenplaner  ·  ${fmt(S.L,1)} × ${fmt(S.B,1)} m, Traufe ${fmt(S.H,2)} m`,W-12,20);
@@ -1509,7 +1510,7 @@ function renderPlan(){
   // Maßkette der Öffnungen (Vorderseite unten, Rückseite oben)
   for(const key of["front","back"]){const os=OPEN.filter(o=>o.key===key&&o.k!=="w").sort((a,b)=>a.u-b.u);if(!os.length)continue;const edges=[-L/2];for(const o of os)edges.push(o.u-o.w/2,o.u+o.w/2);edges.push(L/2);
     const zc=key==="front"?Z(B/2)+34:Z(-B/2)-22;const mx=u=>key==="front"?X(u):X(-u);g.strokeStyle=dark?"#78abe8":"#2c68ae";g.lineWidth=1;g.beginPath();g.moveTo(X(-L/2),zc);g.lineTo(X(L/2),zc);g.stroke();
-    g.font=`500 ${10*KF}px IBM Plex Mono, Menlo, monospace`;for(let i=0;i<edges.length;i++){const x=mx(edges[i]);g.beginPath();g.moveTo(x,zc-4);g.lineTo(x,zc+4);g.stroke();if(i<edges.length-1){const d=edges[i+1]-edges[i];const xm=(mx(edges[i])+mx(edges[i+1]))/2;if(d*sc>18){g.fillStyle=i%2?(dark?"#e9707a":"#b8232f"):(dark?"#e9eef3":"#101a26");g.fillText(fmt(d,2),xm,key==="front"?zc+14:zc-5)}}}}
+    g.font=`500 ${10*KF}px Barlow Semi Condensed, Arial, sans-serif`;for(let i=0;i<edges.length;i++){const x=mx(edges[i]);g.beginPath();g.moveTo(x,zc-4);g.lineTo(x,zc+4);g.stroke();if(i<edges.length-1){const d=edges[i+1]-edges[i];const xm=(mx(edges[i])+mx(edges[i+1]))/2;if(d*sc>18){g.fillStyle=i%2?(dark?"#e9707a":"#b8232f"):(dark?"#e9eef3":"#101a26");g.fillText(fmt(d,2),xm,key==="front"?zc+14:zc-5)}}}}
   // Objekte
   let bad=0,used=0,pitTor=0,pitAbst=0;
   for(const it of [...S.layout].sort((a,b)=>!!objDef(b).room-!!objDef(a).room)){const f=foot(it);const pi=pitIssues(it);if(pi.includes("tor"))pitTor++;if(pi.includes("abstand"))pitAbst++;const col=S.layout.some(o=>o!==it&&overlap(it,o))||outside(it)||pi.length>0;if(col)bad++;used+=f.l*f.w;
