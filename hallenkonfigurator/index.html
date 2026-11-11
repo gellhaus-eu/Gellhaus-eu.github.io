@@ -628,6 +628,9 @@ h1{font-size:30px}
 @media (prefers-reduced-transparency:reduce){.pop,.cutbar{background:#f6f6f8;-webkit-backdrop-filter:none;backdrop-filter:none}}
 .caption .stage-cap{white-space:nowrap}
 .caption .stage-cap:not([hidden])+.hint{display:none}
+
+/* v36: Schrittleiste – Beschriftungen trennen statt aneinanderstoßen */
+.steps button{font-size:12px;line-height:1.2;padding:0 3px;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere;min-width:0}
 </style>
 
 <div class="wrap">
@@ -706,7 +709,7 @@ h1{font-size:30px}
     </section>
 
     <form id="cfg" novalidate>
-      <nav class="steps" id="stepNav" aria-label="Schritte"></nav>
+      <nav class="steps" id="stepNav" lang="de" aria-label="Schritte"></nav>
 
       <!-- 1 Vorlage -->
       <div class="card" data-step="0">
@@ -1540,7 +1543,8 @@ $("planDel").onclick=()=>{const it=S.layout.find(i=>i.id===planSel);if(!it)retur
 $("planSweep").onchange=()=>renderPlan();
 $("planAuto").onclick=()=>{S.layoutAuto=true;autoLayout();renderPlan();draw()};
 $("planList").addEventListener("click",e=>{const b=e.target.closest("[data-id]");if(b){planSel=b.dataset.id;renderPlan()}});
-function planXf(){const c=$("planC");const bd=viewBounds();const EW=bd.x2-bd.x1,EH=bd.z2-bd.z1;const sc=Math.min((c.width-60)/EW,(c.height-60)/EH);return{sc,ox:c.width/2-(bd.x1+bd.x2)/2*sc,oz:c.height/2-(bd.z1+bd.z2)/2*sc}}
+function planPads(c){const KF=Math.max(1,c.width/(c.clientWidth||c.width));const has=k=>OPEN.some(o=>o.key===k&&o.k!=="w");return{pT:has("back")?34*KF:0,pB:has("front")?34*KF:0}}
+function planXf(){const c=$("planC");const bd=viewBounds();const EW=bd.x2-bd.x1,EH=bd.z2-bd.z1;const {pT,pB}=planPads(c);const sc=Math.min((c.width-60)/EW,(c.height-60-pT-pB)/EH);return{sc,ox:c.width/2-(bd.x1+bd.x2)/2*sc,oz:(c.height+pT-pB)/2-(bd.z1+bd.z2)/2*sc}}
 function renderPlan(){
   const c=$("planC"),g=c.getContext("2d");const L=S.L,B=S.B;
   const W=c.width,Hc=c.height;const KF=Math.max(1,c.width/(c.clientWidth||c.width));const {sc,ox,oz}=planXf();const X=x=>ox+x*sc,Z=z=>oz+z*sc;const bd=viewBounds(),WG=wings();
@@ -1560,12 +1564,19 @@ function renderPlan(){
     if(t.key.startsWith("wing")){const w=WG[+t.key.slice(4)];if(!w)continue;const x=w.cx+t.u,z=-B/2-w.fL;g.moveTo(X(x-t.w/2),Z(z));g.lineTo(X(x+t.w/2),Z(z))}else if(t.key==="front"){g.moveTo(X(t.u-t.w/2),Z(B/2));g.lineTo(X(t.u+t.w/2),Z(B/2))}else if(t.key==="back"){g.moveTo(X(-t.u-t.w/2),Z(-B/2));g.lineTo(X(-t.u+t.w/2),Z(-B/2))}
     else if(t.key==="right"){g.moveTo(X(L/2),Z(-t.u-t.w/2));g.lineTo(X(L/2),Z(-t.u+t.w/2))}else{g.moveTo(X(-L/2),Z(t.u-t.w/2));g.lineTo(X(-L/2),Z(t.u+t.w/2))}g.stroke()}
   if(S.layout.some(it=>it.k==="grube")){g.setLineDash([2,6]);g.lineWidth=1;g.strokeStyle="rgba(184,35,47,.45)";for(const a of gateAxes()){g.beginPath();if(a.ax==="x"){g.moveTo(X(a.p),Z(a.wall==="wing"?bd.z1:-B/2));g.lineTo(X(a.p),Z(B/2))}else{g.moveTo(X(-L/2),Z(a.p));g.lineTo(X(L/2),Z(a.p))}g.stroke()}g.setLineDash([])}
-  g.font=`600 ${12*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.fillStyle=dark?"#9eabb8":"#5a6673";g.textAlign="center";g.fillText("Vorderseite · Tore",X(0),Z(B/2)+18);g.fillText(`${fmt(L,1)} m`,X(0),Z(bd.z1)-8);for(const w of WG)g.fillText(`Flügel ${fmt(w.fL,1)} × ${fmt(w.fB,1)} m`,X(w.cx),Z(-B/2-w.fL/2));
+  g.font=`600 ${12*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.fillStyle=dark?"#9eabb8":"#5a6673";g.textAlign="center";g.fillText(`${fmt(L,1)} m`,X(0),Math.max(13*KF,Z(bd.z1)-7*KF-planPads(c).pT));g.save();g.font=`600 ${10.5*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="left";g.fillStyle=dark?"#7d8a97":"#7a8591";g.fillText("VORDERSEITE",X(-L/2)+8*KF,Z(B/2)-7*KF);g.restore();for(const w of WG)g.fillText(`Flügel ${fmt(w.fL,1)} × ${fmt(w.fB,1)} m`,X(w.cx),Z(-B/2-w.fL/2));
   g.save();g.translate(X(-L/2)-10,Z(0));g.rotate(-Math.PI/2);g.fillText(`${fmt(B,1)} m`,0,0);g.restore();
   // Maßkette der Öffnungen (Vorderseite unten, Rückseite oben)
   for(const key of["front","back"]){const os=OPEN.filter(o=>o.key===key&&o.k!=="w").sort((a,b)=>a.u-b.u);if(!os.length)continue;const edges=[-L/2];for(const o of os)edges.push(o.u-o.w/2,o.u+o.w/2);edges.push(L/2);
-    const zc=key==="front"?Z(B/2)+34:Z(-B/2)-22;const mx=u=>key==="front"?X(u):X(-u);g.strokeStyle=dark?"#78abe8":"#2c68ae";g.lineWidth=1;g.beginPath();g.moveTo(X(-L/2),zc);g.lineTo(X(L/2),zc);g.stroke();
-    g.font=`500 ${10*KF}px Barlow Semi Condensed, Arial, sans-serif`;for(let i=0;i<edges.length;i++){const x=mx(edges[i]);g.beginPath();g.moveTo(x,zc-4);g.lineTo(x,zc+4);g.stroke();if(i<edges.length-1){const d=edges[i+1]-edges[i];const xm=(mx(edges[i])+mx(edges[i+1]))/2;if(d*sc>18){g.fillStyle=i%2?(dark?"#e9707a":"#b8232f"):(dark?"#e9eef3":"#101a26");g.fillText(fmt(d,2),xm,key==="front"?zc+14:zc-5)}}}}
+    const fr=key==="front",zw=fr?Z(B/2):Z(-B/2),sg=fr?1:-1,zc=zw+sg*20*KF;const mx=u=>fr?X(u):X(-u);const cB=dark?"#78abe8":"#2c68ae",cR=dark?"#e9707a":"#b8232f";
+    g.lineWidth=Math.max(1,0.8*KF);g.strokeStyle=dark?"rgba(255,255,255,.28)":"rgba(0,0,0,.28)";for(const e of edges){const x=mx(e);g.beginPath();g.moveTo(x,zw+sg*3*KF);g.lineTo(x,zc+sg*4*KF);g.stroke()}
+    g.strokeStyle=cB;g.beginPath();g.moveTo(X(-L/2),zc);g.lineTo(X(L/2),zc);g.stroke();
+    for(const e of edges){const x=mx(e);g.beginPath();g.moveTo(x-3*KF,zc+3*KF);g.lineTo(x+3*KF,zc-3*KF);g.stroke()}
+    const nf=d=>fmt(d,2).replace(/,00$/,"").replace(/(,\d)0$/,"$1");g.textAlign="center";
+    const cx=i=>(mx(edges[i])+mx(edges[i+1]))/2;g.lineJoin="round";
+    for(let i=0;i<edges.length-1;i++){const d=edges[i+1]-edges[i];if(d<0.05)continue;const xm=cx(i),op=i%2===1,t=nf(d),room=Math.min(i>=2?Math.abs(xm-cx(i-2)):1e9,i+3<edges.length?Math.abs(cx(i+2)-xm):1e9,op?1e9:Math.abs(mx(edges[i+1])-mx(edges[i]))+40*KF)-3*KF;
+      let fs=10.5;g.font=`600 ${fs*KF}px Barlow Semi Condensed, Arial, sans-serif`;if(g.measureText(t).width>room){fs=7.5;g.font=`600 ${fs*KF}px Barlow Semi Condensed, Arial, sans-serif`}if(g.measureText(t).width>room)continue;
+      g.strokeStyle=dark?"#1b242e":"#f2f4f6";g.lineWidth=3*KF;g.strokeText(t,xm,op?zc+sg*(fr?13:5)*KF:zc-sg*(fr?5:13)*KF);g.fillStyle=op?cR:cB;g.fillText(t,xm,op?zc+sg*(fr?13:5)*KF:zc-sg*(fr?5:13)*KF)}}
   // Objekte
   let bad=0,used=0,pitTor=0,pitAbst=0;
   for(const it of [...S.layout].sort((a,b)=>!!objDef(b).room-!!objDef(a).room)){const f=foot(it);const pi=pitIssues(it);if(pi.includes("tor"))pitTor++;if(pi.includes("abstand"))pitAbst++;const col=S.layout.some(o=>o!==it&&overlap(it,o))||outside(it)||pi.length>0;if(col)bad++;used+=f.l*f.w;
@@ -2582,14 +2593,14 @@ function sheetLines(nr,d){
   return lines;
 }
 /* ---------- PDF-Datenblatt mit vier Ansichten ---------- */
-async function captureViews(){const out=[];const was={xray,inside,explode,az:cam.az,pol:cam.pol,dist:cam.dist,t:cam.target.clone(),stage,cut:CUT.on};stage=99;explode=0;inside=false;CUT.on=false;labels.visible=true;
+async function captureViews(){const out=[];const was={xray,inside,explode,az:cam.az,pol:cam.pol,dist:cam.dist,t:cam.target.clone(),stage,cut:CUT.on,chain:showChain,hl:highlight};stage=99;showChain=false;highlight=false;explode=0;inside=false;CUT.on=false;labels.visible=true;
   const shot=()=>{build();placeCamera();return E.snapshot({frames:8,type:"image/jpeg",quality:0.88})};
   xray=false;cam.az=-0.8;cam.pol=1.26;fitCamera();out.push(["Außenansicht",shot()]);
   cam.az=2.3;out.push(["Rückseite",shot()]);
   xray=true;cam.az=-0.8;out.push(["Tragwerk und Einbauten",shot()]);
   xray=false;inside=true;cam.az=-0.8;cam.pol=1.26;out.push(["Innenansicht",shot()]);
   inside=false;const pc=$("planC");renderPlan();out.push(["Grundriss",pc.toDataURL("image/jpeg",0.9)]);
-  xray=was.xray;inside=was.inside;explode=was.explode;CUT.on=was.cut;cam.az=was.az;cam.pol=was.pol;cam.dist=was.dist;cam.target.copy(was.t);stage=was.stage;build();if(explode)applyExplode();render();return out}
+  xray=was.xray;inside=was.inside;explode=was.explode;CUT.on=was.cut;showChain=was.chain;highlight=was.hl;cam.az=was.az;cam.pol=was.pol;cam.dist=was.dist;cam.target.copy(was.t);stage=was.stage;build();if(explode)applyExplode();render();return out}
 async function saveFile(name,blob,msgEl){if(CAP.downloads){try{await CAP.downloads.save({filename:name,data:blob});if(msgEl)msgEl.textContent=name+" gespeichert.";return}catch(e){if(msgEl)msgEl.textContent="Speichern abgebrochen.";return}}
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);if(msgEl)msgEl.textContent=name+" wird heruntergeladen."}
 async function makePDF(msgEl){if(!THREE_OK){msgEl.textContent="Ohne 3D-Ansicht kein PDF.";return}msgEl.textContent="PDF wird erstellt …";
