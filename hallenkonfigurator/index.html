@@ -631,16 +631,52 @@ h1{font-size:30px}
 
 /* v36: Schrittleiste – Beschriftungen trennen statt aneinanderstoßen */
 .steps button{font-size:12px;line-height:1.2;padding:0 3px;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere;min-width:0}
+
+/* v37: Kopfzeile neu. Durchgehende helle Leiste wie die Navigation einer Produktseite, ohne Farbstreifen. Links Logo und Titel, rechts die drei Fakten im Stil eines Zeichnungs-Schriftfelds und der Beratungskontakt. Blau nur am Kontakt. */
+.wrap{padding-top:0}
+.embed .wrap{padding-top:0}
+.mh{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;align-items:center;min-height:88px;padding-block:16px;margin:0 0 24px;background:var(--panel);box-shadow:0 0 0 100vmax var(--panel),0 1px 0 100vmax var(--line-2);clip-path:inset(-100vmax -100vmax -1px)}
+.mh-logo{display:block;height:48px;width:auto;max-width:100%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mh-logo{filter:brightness(1.55) saturate(.9)}}
+:root[data-theme="dark"] .mh-logo{filter:brightness(1.55) saturate(.9)}
+.mh-sep{width:1px;height:40px;background:var(--line);margin-inline:28px}
+.mh-title{min-width:0}
+.mh h1{margin:0;font:800 26px/1.05 var(--display);letter-spacing:-.03em;text-transform:none;color:var(--ink)}
+.mh-tag{margin:4px 0 0;font:400 14px/1.3 var(--body);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.mh-facts{display:flex;margin:0;padding:0}
+.mh-facts div{display:flex;flex-direction:column;gap:3px;padding:2px 24px;border-left:1px solid var(--line-2)}
+.mh-facts div:first-child{border-left:0}
+.mh-facts dt{font:600 11px/1 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.mh-facts dd{margin:0;font:700 15px/1.25 var(--display);letter-spacing:-.012em;color:var(--ink);white-space:nowrap}
+.mh-call{display:inline-flex;align-items:center;gap:12px;margin-left:16px;padding:8px 20px 8px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue-deep);text-decoration:none;transition:background .2s,transform .12s}
+.mh-call:hover{background:color-mix(in srgb,var(--blue) 18%,transparent)}
+.mh-call:active{transform:scale(.98)}
+.mh-ic{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;flex:none}
+.mh-ct{display:flex;flex-direction:column;line-height:1.15}
+.mh-ct small{font:500 12px var(--body);color:var(--muted)}
+.mh-ct b{font:700 15px var(--display);letter-spacing:-.005em;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--blue-deep)}
+@media (max-width:1320px){.mh-facts div:nth-child(3){display:none}}
+@media (max-width:1120px){.mh-facts{display:none}}
+@media (max-width:760px){.mh-tag{display:none}.mh-sep{margin-inline:18px;height:32px}}
+@media (max-width:640px){.mh{grid-template-columns:auto auto minmax(0,1fr);min-height:64px;padding-block:12px;margin-bottom:16px}.mh-logo{height:34px}.mh-sep{margin-inline:14px;height:28px}.mh h1{font-size:20px}.mh-call{display:none}}
 </style>
 
 <div class="wrap">
-  <header class="hero">
-    <img class="logo" src="assets/logo-blau.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG">
-    <div class="herotext">
+  <header class="mh" aria-label="Gellhaus Hallenplaner">
+    <img class="mh-logo" src="assets/logo-blau.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG" width="900" height="264">
+    <span class="mh-sep" aria-hidden="true"></span>
+    <div class="mh-title">
       <h1>Hallenplaner</h1>
-      <p class="sub"><span id="miniStep">Planen Sie Ihre Halle. Wir bauen sie.</span></p>
+      <p class="mh-tag">Planen Sie Ihre Halle. Wir bauen sie.</p>
+      <span class="vh" id="miniStep" aria-live="polite"></span>
     </div>
-    <ul class="usp"><li><b>Eigene Fertigung</b><span>in Vechta</span></li><li><b>Eigene Montage</b><span>mit eigenem Team</span></li><li><b>Bis 50 m</b><span>Spannweite, stützenfrei</span></li></ul>
+    <dl class="mh-facts">
+      <div><dt>Fertigung</dt><dd>Eigene, in Vechta</dd></div>
+      <div><dt>Montage</dt><dd>Eigenes Team</dd></div>
+      <div><dt>Spannweite</dt><dd>Bis 50 m stützenfrei</dd></div>
+    </dl>
+    <a class="mh-call" href="tel:+4944413804" aria-label="Beratung anrufen: 0 44 41 / 38 04"><span class="mh-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.6l1.4 4.3-2 1.5a12.4 12.4 0 0 0 6.1 6.1l1.5-2 4.3 1.4v2.6a1.8 1.8 0 0 1-2 1.8A16.6 16.6 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg></span><span class="mh-ct"><small>Beratung</small><b>0 44 41 / 38 04</b></span></a>
   </header>
 
   <div class="grid">
