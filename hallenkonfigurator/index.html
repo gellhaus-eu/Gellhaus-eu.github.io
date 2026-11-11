@@ -1543,7 +1543,7 @@ $("planDel").onclick=()=>{const it=S.layout.find(i=>i.id===planSel);if(!it)retur
 $("planSweep").onchange=()=>renderPlan();
 $("planAuto").onclick=()=>{S.layoutAuto=true;autoLayout();renderPlan();draw()};
 $("planList").addEventListener("click",e=>{const b=e.target.closest("[data-id]");if(b){planSel=b.dataset.id;renderPlan()}});
-function planPads(c){const KF=Math.max(1,c.width/(c.clientWidth||c.width));const has=k=>OPEN.some(o=>o.key===k&&o.k!=="w");return{pT:has("back")?34*KF:0,pB:has("front")?34*KF:0}}
+function planPads(c){const KF=Math.max(1,c.width/(c.clientWidth||c.width));const has=k=>OPEN.some(o=>o.key===k&&o.k!=="w");const sw=$("planSweep")&&$("planSweep").checked&&sweeps().length;return{pT:(has("back")?34*KF:0)+14*KF,pB:has("front")&&!sw?34*KF:0,pC:has("back")?34*KF:0}}
 function planXf(){const c=$("planC");const bd=viewBounds();const EW=bd.x2-bd.x1,EH=bd.z2-bd.z1;const {pT,pB}=planPads(c);const sc=Math.min((c.width-60)/EW,(c.height-60-pT-pB)/EH);return{sc,ox:c.width/2-(bd.x1+bd.x2)/2*sc,oz:(c.height+pT-pB)/2-(bd.z1+bd.z2)/2*sc}}
 function renderPlan(){
   const c=$("planC"),g=c.getContext("2d");const L=S.L,B=S.B;
@@ -1564,7 +1564,7 @@ function renderPlan(){
     if(t.key.startsWith("wing")){const w=WG[+t.key.slice(4)];if(!w)continue;const x=w.cx+t.u,z=-B/2-w.fL;g.moveTo(X(x-t.w/2),Z(z));g.lineTo(X(x+t.w/2),Z(z))}else if(t.key==="front"){g.moveTo(X(t.u-t.w/2),Z(B/2));g.lineTo(X(t.u+t.w/2),Z(B/2))}else if(t.key==="back"){g.moveTo(X(-t.u-t.w/2),Z(-B/2));g.lineTo(X(-t.u+t.w/2),Z(-B/2))}
     else if(t.key==="right"){g.moveTo(X(L/2),Z(-t.u-t.w/2));g.lineTo(X(L/2),Z(-t.u+t.w/2))}else{g.moveTo(X(-L/2),Z(t.u-t.w/2));g.lineTo(X(-L/2),Z(t.u+t.w/2))}g.stroke()}
   if(S.layout.some(it=>it.k==="grube")){g.setLineDash([2,6]);g.lineWidth=1;g.strokeStyle="rgba(184,35,47,.45)";for(const a of gateAxes()){g.beginPath();if(a.ax==="x"){g.moveTo(X(a.p),Z(a.wall==="wing"?bd.z1:-B/2));g.lineTo(X(a.p),Z(B/2))}else{g.moveTo(X(-L/2),Z(a.p));g.lineTo(X(L/2),Z(a.p))}g.stroke()}g.setLineDash([])}
-  g.font=`600 ${12*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.fillStyle=dark?"#9eabb8":"#5a6673";g.textAlign="center";g.fillText(`${fmt(L,1)} m`,X(0),Math.max(13*KF,Z(bd.z1)-7*KF-planPads(c).pT));g.save();g.font=`600 ${10.5*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="left";g.fillStyle=dark?"#7d8a97":"#7a8591";g.fillText("VORDERSEITE",X(-L/2)+8*KF,Z(B/2)-7*KF);g.restore();for(const w of WG)g.fillText(`Flügel ${fmt(w.fL,1)} × ${fmt(w.fB,1)} m`,X(w.cx),Z(-B/2-w.fL/2));
+  g.font=`600 ${12*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.fillStyle=dark?"#9eabb8":"#5a6673";g.textAlign="center";g.fillText(`${fmt(L,1)} m`,X(0),Z(bd.z1)-6*KF-planPads(c).pC);g.save();g.font=`600 ${10.5*KF}px Barlow Semi Condensed, Arial, sans-serif`;g.textAlign="left";g.fillStyle=dark?"#7d8a97":"#7a8591";g.fillText("VORDERSEITE",X(-L/2)+8*KF,Z(B/2)-7*KF);g.restore();for(const w of WG)g.fillText(`Flügel ${fmt(w.fL,1)} × ${fmt(w.fB,1)} m`,X(w.cx),Z(-B/2-w.fL/2));
   g.save();g.translate(X(-L/2)-10,Z(0));g.rotate(-Math.PI/2);g.fillText(`${fmt(B,1)} m`,0,0);g.restore();
   // Maßkette der Öffnungen (Vorderseite unten, Rückseite oben)
   for(const key of["front","back"]){const os=OPEN.filter(o=>o.key===key&&o.k!=="w").sort((a,b)=>a.u-b.u);if(!os.length)continue;const edges=[-L/2];for(const o of os)edges.push(o.u-o.w/2,o.u+o.w/2);edges.push(L/2);
