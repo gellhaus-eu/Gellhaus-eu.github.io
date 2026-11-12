@@ -355,7 +355,7 @@ function create(view,opt){
     renderer.autoClear=true;renderer.setRenderTarget(null);
   }
   /* Verfeinerung im Stillstand */
-  let accN=0,accRAF=0,accTimer=0,lastT=0,slow=0;
+  let accN=0,accRAF=0,accTimer=0,lastT=0,slow=0,fast=0;
   const jit=new V3(),ax=new V3(),ay=new V3();
   function jitterOn(i){
     const bw=renderer.domElement.width,bh=renderer.domElement.height;
@@ -382,7 +382,7 @@ function create(view,opt){
     cancelRefine();E.refined=false;
     const now=performance.now(),dt=now-lastT;lastT=now;
     /* Bildrate während der Bewegung beobachten und bei Bedarf die Verschattung nur noch im Stillstand rechnen */
-    if(!direct&&!opt.fixed){if(dt<500){if(dt>45){if(++slow>8){slow=0;if(Q.aoMotion)Q.aoMotion=false;else if(Q.prMax>1){Q.prMax=1;E.resize()}}}else if(dt<24)slow=Math.max(0,slow-1)}else slow=0}
+    if(!direct&&!opt.fixed){if(dt<500){if(dt>45){fast=0;if(++slow>8){slow=0;if(Q.aoMotion)Q.aoMotion=false;else if(Q.prMax>1){Q.prMax=1;E.resize()}}}else if(dt<24){slow=Math.max(0,slow-1);if(Q.prMax<2&&++fast>240){fast=0;Q.prMax=2;E.resize()}}}else slow=0}
     frame(null,false,Q.aoMotion);
     if(Q.refine>0&&!E.noRefine)accTimer=setTimeout(()=>{accRAF=requestAnimationFrame(refineLoop)},180);
   };

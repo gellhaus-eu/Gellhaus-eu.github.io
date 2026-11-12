@@ -9,7 +9,7 @@ var auto=!!(window.matchMedia&&matchMedia("(pointer:coarse)").matches&&Math.min(
 if(q)try{localStorage.setItem("hp_ui",q)}catch(e){}
 if(q?q==="handy":s?s==="handy":auto)document.documentElement.classList.add("m")})();</script>
 <script src="assets/three-r187.min.js"></script>
-<script src="assets/hp-engine.js"></script>
+<script src="assets/hp-engine.js?v=37"></script>
 <style>
 /* Konzept „Werkhalle in Glas“: Apple-Systematik für einen Stahlbauer. Ruhige Gruppenflächen, schwebende Material-Leisten über dem Modell, Systemschrift mit größenabhängiger Laufweite. Gellhaus-Blau führt, Tor-Rot bleibt Signal. */
 :root{
@@ -456,7 +456,7 @@ input,select,textarea{font-size:16px}
 .embed .proto{display:none}
 .embed .hero,.embed .nav#mainNav{position:static}
 .embed .stage{position:static}
-@media (min-width:901px){.embed .view{height:auto;aspect-ratio:16/10;max-height:720px}.embed .stage{position:relative;top:auto;will-change:transform}.embed #mainNav{will-change:transform}}
+@media (min-width:901px){.embed .view{height:auto;aspect-ratio:16/10;max-height:720px}.embed .stage{position:relative;top:auto}}
 .embed dialog{position:absolute;margin:0 auto;bottom:auto;max-height:none}
 .dimedit{position:absolute;z-index:5;background:var(--panel);color:var(--ink);border-radius:16px;padding:10px 12px 12px;box-shadow:var(--shadow-lg);width:max-content;max-width:calc(100% - 16px);cursor:default;touch-action:auto}
 .dimedit label{display:block;font:600 12.5px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
@@ -2872,15 +2872,20 @@ function mUpdate(n){const gi=mgOf(n);
    Nach Vorgabe von experia (2026-11-12). Ab 901 px Breite, darunter bleibt alles statisch. */
 if(EMBED&&!MOB){
   const stage=document.querySelector(".stage");const mnav=$("mainNav");const desktop=matchMedia("(min-width:901px)");let vp=null,raf=0;
-  function place(){raf=0;if(!stage)return;stage.style.transform="";mnav.style.transform="";
-    if(!vp||!desktop.matches)return;
-    const col=stage.parentElement.getBoundingClientRect();const r=stage.getBoundingClientRect();
-    const maxShift=Math.max(0,col.bottom-r.bottom);const shift=Math.min(Math.max(0,vp.top+8-r.top),maxShift);
-    stage.style.transform=shift?`translateY(${shift}px)`:"";
-    if(!mnav.hidden){const n=mnav.getBoundingClientRect();const form=$("cfg").getBoundingClientRect();
-      const up=Math.min(0,Math.max(form.top-n.top,vp.top+vp.height-8-n.bottom));mnav.style.transform=up?`translateY(${up}px)`:""}}
+  /* Nur schreiben, wenn sich der Wert ändert, und auf ganze Pixel runden: Jede Stiländerung löst sonst das
+     Höhen-Skript aus, die Website antwortet mit neuen Werten, und es entsteht eine Dauerschleife, die das Bild
+     ausbremst und unscharf macht (Bildregler senkt die Auflösung). */
+  let curS=0,curN=0;const set=(el,v,cur)=>{if(v!==cur)el.style.transform=v?`translateY(${v}px)`:"";return v};
+  function place(){raf=0;if(!stage)return;
+    if(!vp||!desktop.matches){curS=set(stage,0,curS);curN=set(mnav,0,curN);return}
+    const col=stage.parentElement.getBoundingClientRect();const r=stage.getBoundingClientRect();const top0=r.top-curS,bot0=r.bottom-curS;
+    const maxShift=Math.max(0,col.bottom-bot0);const shift=Math.round(Math.min(Math.max(0,vp.top+8-top0),maxShift));
+    curS=set(stage,shift,curS);
+    let up=0;if(!mnav.hidden){const n=mnav.getBoundingClientRect();const nt=n.top-curN,nb=n.bottom-curN;const form=$("cfg").getBoundingClientRect();
+      up=Math.round(Math.min(0,Math.max(form.top-nt,vp.top+vp.height-8-nb)))}
+    curN=set(mnav,up,curN)}
   const ask=()=>{if(!raf)raf=requestAnimationFrame(place)};
-  window.addEventListener("message",e=>{if(e.source!==window.parent||!e.data||e.data.type!=="parentViewport")return;vp=e.data;ask()});
+  window.addEventListener("message",e=>{if(e.source!==window.parent||!e.data||e.data.type!=="parentViewport")return;const d=e.data;if(vp&&vp.top===d.top&&vp.height===d.height)return;vp={top:+d.top,height:+d.height};ask()});
   window.addEventListener("resize",ask);new ResizeObserver(ask).observe($("cfg"));
   window.parent.postMessage({type:"requestViewport"},"*");
 }
