@@ -743,7 +743,7 @@ html.m.embed .mstart{display:block;background:var(--panel);border-radius:22px;pa
 </style>
 
 <div class="wrap">
-  <div class="mstart" id="mStart"><img src="assets/logo-blau.png" alt="Gellhaus" width="900" height="264"><h2>Hallenplaner</h2><p>Planen Sie Ihre Halle in 3D: Größe, Dach, Tore, Farben. Die Anfrage geht mit einem Tipp direkt an unser Büro.</p><button type="button" class="btn primary" id="mStartBtn">Hallenplaner öffnen</button></div>
+  <div class="mstart" id="mStart"><img src="assets/logo-blau.png" alt="Gellhaus" width="900" height="264"><h2>Hallenplaner</h2><p>Planen Sie Ihre Halle in 3D: Größe, Dach, Tore, Farben. Am Ende schicken Sie uns Ihre Anfrage mit Datenblatt.</p><button type="button" class="btn primary" id="mStartBtn">Hallenplaner öffnen</button></div>
   <header class="mh" aria-label="Gellhaus Hallenplaner">
     <img class="mh-logo" src="assets/logo-blau.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG" width="900" height="264">
     <span class="mh-sep" aria-hidden="true"></span>
@@ -2601,9 +2601,9 @@ const STAGES=["Fundament und Bodenplatte","Stützen stellen","Binder, Pfetten un
 function playStages(){
   clearInterval(stageTimer);stage=0;inside=false;xray=false;explode=0;$("tExplode").setAttribute("aria-pressed",false);$("tInside").setAttribute("aria-pressed",false);$("tXray").setAttribute("aria-pressed",false);
   const cap=$("stageCap");cap.hidden=false;
-  const tick=()=>{cap.textContent=`Bauablauf ${Math.min(stage+1,STAGES.length)}/${STAGES.length}: ${STAGES[Math.min(stage,STAGES.length-1)]}`;build();render();
+  const stTick=()=>{cap.textContent=`Bauablauf ${Math.min(stage+1,STAGES.length)}/${STAGES.length}: ${STAGES[Math.min(stage,STAGES.length-1)]}`;build();render();
     if(stage>=STAGES.length-1){stage=99;clearInterval(stageTimer);build();render();orbit=true;tick();setTimeout(()=>{orbit=false},14000);return}stage++};
-  tick();stageTimer=setInterval(tick,1300);
+  stTick();stageTimer=setInterval(stTick,1300);
 }
 
 /* ---------- Hoffoto: Halle freigestellt rendern und ins Foto legen ---------- */
