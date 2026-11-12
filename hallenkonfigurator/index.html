@@ -749,7 +749,7 @@ html.m.embed .mstart{display:block;background:var(--panel);border-radius:22px;pa
 html.embed:not(.m) .emb-only{display:inline-flex!important}
 html.embed:not(.m) #tExplode,html.embed:not(.m) #tCut,html.embed:not(.m) #tSun,html.embed:not(.m) #tNight,html.embed:not(.m) .view .tools.bl,html.embed:not(.m) .view .tools2{display:none!important}
 html.embed:not(.m) #tMore{align-items:center;padding:0 12px;font-weight:600}
-html.embed:not(.m) .nav#mainNav{background:var(--panel)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;border-top:1px solid var(--line-2)!important;border-radius:0 0 22px 22px!important;box-shadow:0 -10px 20px -12px rgba(0,0,0,.18)!important;padding:12px 16px!important;margin:0!important}
+html.embed:not(.m) .nav#mainNav{background:var(--panel)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;border-top:1px solid var(--line-2)!important;border-radius:0!important;box-shadow:0 -10px 20px -12px rgba(0,0,0,.18)!important;padding:12px 16px!important;margin:0!important}
 dialog.mview{border:0;border-radius:22px;padding:16px;background:var(--panel);color:var(--ink);width:min(520px,calc(100% - 32px));box-shadow:var(--shadow-lg)}
 .mstart .mprev{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:14px;margin:0 0 14px;display:block}
 </style>
@@ -2904,7 +2904,7 @@ if(EMBED&&!MOB){
     const maxShift=Math.max(0,col.bottom-bot0);const shift=Math.round(Math.min(Math.max(0,vp.top+8-top0),maxShift));
     curS=set(stage,shift,curS);
     let up=0;if(!mnav.hidden){const n=mnav.getBoundingClientRect();const nt=n.top-curN,nb=n.bottom-curN;const form=$("cfg").getBoundingClientRect();
-      up=Math.round(Math.min(0,Math.max(form.top-nt,vp.top+vp.height-8-nb)))}
+      up=Math.round(Math.min(0,Math.max(form.top-nt,vp.top+vp.height-nb)))}
     curN=set(mnav,up,curN)}
   const ask=()=>{if(!raf)raf=requestAnimationFrame(place)};
   window.addEventListener("message",e=>{if(e.source!==window.parent||!e.data||e.data.type!=="parentViewport")return;const d=e.data;if(vp&&vp.top===d.top&&vp.height===d.height)return;vp={top:+d.top,height:+d.height};EMB.vp=vp;if(EMB.onVp)EMB.onVp();ask()});
