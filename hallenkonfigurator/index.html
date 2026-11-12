@@ -2,8 +2,12 @@
 <title>Gellhaus Hallenplaner</title>
 <meta name="robots" content="noindex, nofollow"><!-- © 2026 Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH & Co. KG, Vechta. Hallenplaner. Alle Rechte vorbehalten. Nutzung nur auf gellhaus.eu. -->
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500..800&family=Barlow+Semi+Condensed:wght@500;600&family=Inter:opsz,wght@14..32,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/fonts.css">
+<script>/* Handy-Fassung: automatisch bei Fingerbedienung auf kleinem Bildschirm, umschaltbar mit ?ui=handy / ?ui=pc */
+(function(){var q=(location.search.match(/[?&]ui=(pc|handy)/)||[])[1],s=null;try{s=localStorage.getItem("hp_ui")}catch(e){}
+var auto=!!(window.matchMedia&&matchMedia("(pointer:coarse)").matches&&Math.min(screen.width,screen.height)<=600);
+if(q)try{localStorage.setItem("hp_ui",q)}catch(e){}
+if(q?q==="handy":s?s==="handy":auto)document.documentElement.classList.add("m")})();</script>
 <script src="assets/three-r187.min.js"></script>
 <script src="assets/hp-engine.js"></script>
 <style>
@@ -660,9 +664,84 @@ h1{font-size:30px}
 @media (max-width:1120px){.mh-facts{display:none}}
 @media (max-width:760px){.mh-tag{display:none}.mh-sep{margin-inline:18px;height:32px}}
 @media (max-width:640px){.mh{grid-template-columns:auto auto minmax(0,1fr);min-height:64px;padding-block:12px;margin-bottom:16px}.mh-logo{height:34px}.mh-sep{margin-inline:14px;height:28px}.mh h1{font-size:20px}.mh-call{display:none}}
+/* ================= Handy-Fassung (html.m) =================
+   Modell oben fest, Bedienfläche darunter scrollt für sich, fünf Schritte, Bedienelemente ab 44 px. */
+.m-only{display:none}html.m .m-only{display:revert}html.m .pc-only{display:none!important}
+.uisw{text-align:center;margin:16px 0 0;font-size:13px}.uisw a{color:var(--muted)}
+.mbar,.mtools,.mstart{display:none}
+html.m,html.m body{height:100%;overflow:hidden;overscroll-behavior:none}
+html.m .wrap{height:100vh;height:100dvh;display:flex;flex-direction:column;padding:0!important;max-width:none}
+html.m .mh{flex:none;margin:0!important;min-height:0!important;padding:calc(env(safe-area-inset-top,0px) + 6px) 12px 6px!important;grid-template-columns:auto auto minmax(0,1fr) auto!important;box-shadow:0 1px 0 var(--line-2);clip-path:none}
+html.m .mh-logo{height:26px}html.m .mh-sep{margin-inline:10px;height:22px}html.m .mh h1{font-size:17px;margin:0}
+html.m .mh-tag,html.m .mh-facts,html.m .mh-ct{display:none!important}
+html.m .mh-call{display:inline-flex!important;margin:0;padding:0;width:44px;height:44px;justify-content:center;gap:0}
+html.m .grid{flex:1;min-height:0;display:flex!important;flex-direction:column;align-items:stretch!important;gap:0!important;margin:0}html.m .grid>*{width:auto;align-self:stretch;min-width:0}
+html.m .stage{flex:none;height:var(--mv,40vh);position:relative!important;top:auto!important;border:0!important;border-radius:0!important;box-shadow:none!important;transition:height .25s ease}
+html.m.mdrag .stage{transition:none}
+html.m.mbig{--mv:74vh}
+html.m .stage>:not(.view){display:none!important}
+html.m .view{height:100%!important;aspect-ratio:auto!important;max-height:none!important;border-radius:0}
+html.m .view .tools,html.m .view .tools2,html.m .caption .hint{display:none!important}
+html.m .mtools{display:flex;position:absolute;right:10px;top:10px;z-index:4;gap:8px}
+html.m .mtools button{min-width:44px;height:44px;padding:0 14px;border:0;border-radius:22px;font:600 15px var(--body);color:#1d1d1f;background:rgba(250,250,252,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 2px 10px rgba(0,0,0,.18)}
+html.m .mtools button[aria-pressed="true"]{background:var(--blue);color:#fff}
+html.m .pop,html.m .cutbar{left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;max-width:none!important;width:auto!important}
+html.m #cfg{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 0 calc(104px + env(safe-area-inset-bottom,0px));background:var(--bg);border-radius:18px 18px 0 0;margin-top:-14px;position:relative;z-index:3;box-shadow:0 -6px 18px rgba(0,0,0,.12)}
+html.m .steps{display:none!important}
+html.m .mbar{display:block;position:sticky;top:0;z-index:6;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);padding:0 16px 10px;border-bottom:.5px solid var(--line-2)}
+.mgrip{display:block;width:100%;height:26px;border:0;background:none;padding:0;touch-action:none;cursor:ns-resize}
+.mgrip::before{content:"";display:block;width:44px;height:5px;border-radius:3px;background:rgba(120,120,128,.45);margin:10px auto 0}
+.mhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 8px}
+.mhead b{font:700 17px var(--display)}.mhead span{font-size:13px;color:var(--muted);white-space:nowrap}
+.mnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.mnav button{min-height:44px;border:0;border-radius:10px;background:var(--fill);color:var(--ink);font:600 11.5px/1.15 var(--body);padding:4px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mnav button i{font-style:normal;font-size:13px;font-weight:700}
+.mnav button.done{background:var(--blue-soft);color:var(--blue-deep)}
+.mnav button[aria-current="step"]{background:var(--blue);color:#fff}
+html.m .card{border-radius:0!important;margin:0!important;padding:20px 16px 24px!important;box-shadow:none!important;border:0!important;background:var(--bg)!important}
+html.m .card+.card:not([hidden]){border-top:8px solid var(--panel-2)!important}
+html.m .card h2{font-size:24px}
+html.m #mainNav{position:fixed!important;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom,0px));margin:0;z-index:40}
+html.m #mainNav .btn{min-height:50px;font-size:16px}
+html.m .navinfo{display:none}
+html.m button,html.m .btn,html.m select,html.m input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),html.m textarea{min-height:44px;font-size:16px}
+html.m .ctl button{width:44px!important;height:44px;font-size:20px}
+html.m .checks label,html.m .checks2 label{min-height:44px;display:flex;align-items:center;gap:10px}
+html.m input[type=checkbox],html.m input[type=radio]{width:22px;height:22px;flex:none}
+html.m input[type=range]{height:40px}
+html.m .wrow{grid-template-columns:repeat(3,minmax(0,1fr))!important;row-gap:8px}
+html.m .wrow b{grid-column:1/-1}
+html.m .range{grid-template-columns:minmax(0,1fr) auto!important}html.m .num{display:flex;align-items:center;gap:6px}html.m .num input{width:78px!important;flex:none!important;text-align:center}
+.mstep{display:none}html.m .mstep{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:12px;background:var(--fill);color:var(--ink);font:600 22px var(--body);flex:none;padding:0}
+html.m #vars,html.m #moreBar,html.m #elevBtn2,html.m #expBtn2,html.m #passBtn{display:none!important}
+html.m .uisw{margin:24px 0 8px}
+html.m dialog.mview{width:min(560px,calc(100% - 16px));border:0;border-radius:22px;padding:16px;margin:auto auto 8px;background:var(--panel);color:var(--ink)}
+dialog.mview::backdrop{background:rgba(0,0,0,.35)}
+.mvh{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}.mvh b{font:700 18px var(--display)}
+.mvh button{width:44px;height:44px;border:0;border-radius:22px;background:var(--fill);font-size:22px;color:var(--ink)}
+.mvg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mvg button{min-height:64px;border:0;border-radius:14px;background:var(--fill);color:var(--ink);font:600 14px/1.2 var(--body);padding:8px}
+.mvg button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.mvg button[hidden]{display:none}
+@media (orientation:landscape){
+  html.m .mh{display:none!important}
+  html.m .grid{flex-direction:row}
+  html.m .stage{height:auto!important;width:56%!important;flex:none}
+  html.m #cfg{margin:0;border-radius:0;box-shadow:none}
+  html.m .mgrip{display:none}html.m .mbar{padding-top:10px}
+  html.m #mainNav{left:calc(56% + 8px)}
+}
+/* Handy eingebettet auf gellhaus.eu: nur Startkachel, Planer öffnet bildschirmfüllend */
+html.m.embed,html.m.embed body{height:auto;overflow:visible}
+html.m.embed .wrap{height:auto;display:block;padding:16px!important}
+html.m.embed .grid,html.m.embed .mh{display:none!important}
+html.m.embed .mstart{display:block;background:var(--panel);border-radius:22px;padding:20px;box-shadow:var(--shadow)}
+.mstart img{width:150px;height:auto;display:block;margin:0 0 12px}.mstart h2{font:800 24px var(--display);margin:0 0 6px}.mstart p{margin:0 0 16px;color:var(--muted);line-height:1.45}
+.mstart .btn{width:100%;min-height:52px;font-size:17px}
 </style>
 
 <div class="wrap">
+  <div class="mstart" id="mStart"><img src="assets/logo-blau.png" alt="Gellhaus" width="900" height="264"><h2>Hallenplaner</h2><p>Planen Sie Ihre Halle in 3D: Größe, Dach, Tore, Farben. Die Anfrage geht mit einem Tipp direkt an unser Büro.</p><button type="button" class="btn primary" id="mStartBtn">Hallenplaner öffnen</button></div>
   <header class="mh" aria-label="Gellhaus Hallenplaner">
     <img class="mh-logo" src="assets/logo-blau.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG" width="900" height="264">
     <span class="mh-sep" aria-hidden="true"></span>
@@ -731,6 +810,7 @@ h1{font-size:30px}
           <button type="button" id="tAR" title="Auf dem Hof in Originalgröße ansehen">AR / QR</button>
         </div>
         <div class="dimedit" id="dimEdit" hidden><label for="dimEditI" id="dimEditL"></label><div class="row"><input type="text" id="dimEditI" inputmode="decimal" autocomplete="off"><select id="dimEditS" hidden aria-label="Torgröße"></select><span id="dimEditU">m</span><button type="button" class="btn small primary" id="dimEditOk">Übernehmen</button></div></div>
+        <div class="mtools"><button type="button" id="mViewBtn" aria-haspopup="dialog">Ansicht</button><button type="button" id="mBig" aria-pressed="false" aria-label="Modell größer">Groß</button></div>
         <div class="caption" id="caption"><span class="stage-cap" id="stageCap" hidden></span><span class="hint">Ziehen dreht, Rollen zoomt, rechte Maustaste verschiebt. Blaue Maßzahl anklicken ändert das Maß. Tor antippen öffnet, ziehen verschiebt es.</span></div>
       </div>
       <div class="vars" id="vars"></div>
@@ -746,6 +826,7 @@ h1{font-size:30px}
 
     <form id="cfg" novalidate>
       <nav class="steps" id="stepNav" lang="de" aria-label="Schritte"></nav>
+      <div class="mbar" id="mBar"><button type="button" class="mgrip" id="mGrip" aria-label="Modell größer oder kleiner ziehen"></button><div class="mhead"><b id="mStepT"></b><span id="mFacts"></span></div><nav class="mnav" id="mNav" aria-label="Schritte"></nav></div>
 
       <!-- 1 Vorlage -->
       <div class="card" data-step="0">
@@ -880,7 +961,7 @@ h1{font-size:30px}
         <h3 class="sub">2. Wie viele an welcher Wand?</h3>
         <div class="walls" id="wallTabs" role="tablist" hidden></div>
         <div id="wallEditor" class="wtab"></div>
-        <p class="note wtip">Im Modell: Tor mit der Maus an die gewünschte Stelle ziehen. Für genaue Abstände „Maßkette“ einschalten und die blaue Zahl anklicken.</p>
+        <p class="note wtip"><span class="pc-only">Im Modell: Tor mit der Maus an die gewünschte Stelle ziehen. Für genaue Abstände „Maßkette“ einschalten und die blaue Zahl anklicken.</span><span class="m-only">Im Modell: Tor antippen öffnet es, mit dem Finger ziehen verschiebt es. Für genaue Abstände die blaue Zahl der Maßkette antippen und den Wert eintippen.</span></p>
         <p class="err" id="torErr"></p>
         <h3 class="sub">3. Zubehör und Sonderwünsche</h3>
         <div class="checks">
@@ -1070,7 +1151,8 @@ h1{font-size:30px}
         <div class="field"><label for="msg">Sonderwünsche oder Hinweise</label><textarea id="msg" rows="3" placeholder="z. B. Hofstelle mit Altbestand, Zufahrt nur von Norden, Maße außerhalb der Regler"></textarea></div>
         <div class="field"><label for="plan">Skizze oder Lageplan (optional)</label><input type="file" id="plan" accept="image/*,.pdf"></div>
         <div class="checks"><label><input type="checkbox" id="rueck"> Bitte rufen Sie mich zurück</label>
-          <label><input type="checkbox" id="dsgvo"> Ich bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</label></div>
+          <label><input type="checkbox" id="dsgvo"> Ich bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden (<a href="https://www.gellhaus.eu/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>). *</label></div>
+        <p class="hint sendhint">Mit „Anfrage senden“ geht Ihre Planung samt PDF-Datenblatt und Grundriss verschlüsselt direkt an unser Büro (info@gellhaus.eu). Ein eigenes E-Mail-Programm brauchen Sie nicht.</p>
         <p class="err" id="formErr"></p>
       </div>
 
@@ -1078,6 +1160,7 @@ h1{font-size:30px}
       <div class="card" data-step="8" hidden>
         <h2>Vielen Dank!</h2>
         <p class="okline" id="okline"></p>
+        <p class="err" id="sendFail" hidden>Bitte schicken Sie die Anfrage mit dem Knopf „Per E-Mail ans Büro senden“ weiter unten ab oder rufen Sie uns an: <a href="tel:+4944413804">0 44 41 / 38 04</a>. Ihre Planung bleibt in diesem Browser gespeichert.</p>
         <p class="note">So geht es weiter:</p>
         <div class="timeline">
           <div><b>2 Werktage</b><span>Rückruf aus Vechta, Rückfragen klären</span></div>
@@ -1087,7 +1170,7 @@ h1{font-size:30px}
         <p class="note">Im Modell läuft gerade der Bauablauf Ihrer Halle, so wie wir sie aufstellen. Darunter das Datenblatt, das im Büro ankommt.</p>
         <img class="shot" id="shot" alt="Ansicht Ihrer Halle">
         <div class="sheet" id="sheet"></div>
-        <div class="plantools"><button type="button" class="btn primary" id="pdfBtn2">PDF-Datenblatt mit 4 Ansichten</button><button type="button" class="btn" id="passBtn">Hallenpass mit QR-Code</button><button type="button" class="btn" id="elevBtn2">Ansichten mit Maßketten</button><button type="button" class="btn" id="mailOffice">Ans Büro mailen</button><button type="button" class="btn" id="icsBtn" hidden>Termin in den Kalender</button><button type="button" class="btn" id="expBtn2">Export (JSON, CSV, DXF)</button></div>
+        <div class="plantools"><button type="button" class="btn primary" id="pdfBtn2">PDF-Datenblatt mit 4 Ansichten</button><button type="button" class="btn" id="passBtn">Hallenpass mit QR-Code</button><button type="button" class="btn" id="elevBtn2">Ansichten mit Maßketten</button><button type="button" class="btn" id="mailOffice" hidden>Per E-Mail ans Büro senden</button><button type="button" class="btn" id="icsBtn" hidden>Termin in den Kalender</button><button type="button" class="btn" id="expBtn2">Export (JSON, CSV, DXF)</button></div>
         <p class="note" id="pdfMsg"></p>
         <details class="acc" open><summary><span>Ihre Checkliste bis zur Montage</span><em class="cnt" id="chkCnt"></em></summary><fieldset><legend>Checkliste</legend>
           <p class="hint">Das können Sie schon jetzt anstoßen. Die Haken bleiben in diesem Browser gespeichert, die Liste steht auch im PDF-Datenblatt.</p>
@@ -1101,9 +1184,11 @@ h1{font-size:30px}
         <span class="navinfo" id="navInfo" aria-hidden="true"></span>
         <button type="button" class="btn primary" id="next">Weiter</button>
       </div>
+      <p class="uisw" id="uiSwP" hidden><a href="#" id="uiSw"></a></p>
     </form>
+    <dialog class="mview" id="mView" aria-label="Ansicht wählen"><div class="mvh"><b>Ansicht</b><button type="button" id="mViewX" aria-label="Schließen">×</button></div><div class="mvg" id="mViewG"></div></dialog>
   </div>
-  <p class="proto"><strong>Prototyp</strong> · Anfragen werden hier noch nicht verschickt. Am Ende sehen Sie das Datenblatt, das später per E-Mail ins Büro geht.</p>
+  
 
   <dialog id="dlgCmp"><div class="dlg"><button type="button" class="x" data-close>×</button><h3>Varianten vergleichen</h3><p>Gespeicherte Varianten dieses Browsers. Laden setzt die Planung auf die Variante.</p><div id="cmpBody"></div></div></dialog>
   <dialog id="dlgCode"><div class="dlg"><button type="button" class="x" data-close>×</button><h3>Hallen-Code</h3>
@@ -1150,6 +1235,7 @@ if(!(window.claude&&typeof window.claude.use==="function")&&!hostOk(location.hos
 const $=id=>document.getElementById(id);
 /* Eingebettet auf der Website (iFrame mit automatischer Höhe): keine Höhen nach Fenstergröße, Dialoge erscheinen dort, wo geklickt wurde */
 const EMBED=window.parent!==window&&!(window.claude&&typeof window.claude.use==="function");
+const MOB=document.documentElement.classList.contains("m");
 if(EMBED){document.documentElement.classList.add("embed");let lastY=0;document.addEventListener("pointerdown",e=>{lastY=e.pageY},true);
   const SM=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=function(){SM.call(this);const h=this.offsetHeight,H=document.documentElement.getBoundingClientRect().height;this.style.top=Math.max(16,Math.min(H-h-16,lastY-h/2))+"px"}}
 const fmt=(n,d=0)=>n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -1258,12 +1344,14 @@ function go(n){
   $("cfg").dataset.dir=n>=(go.prev??0)?"fwd":"back";go.prev=n;
   step=n;
   document.querySelectorAll("[data-step]").forEach(c=>c.hidden=+c.dataset.step!==n);
+  if(MOB&&n<ST_RESULT){const g=MG[mgOf(n)];document.querySelectorAll("[data-step]").forEach(c=>c.hidden=!g.s.includes(+c.dataset.step))}
   nav.querySelectorAll("button").forEach((b,i)=>{if(i===n)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");b.classList.toggle("done",i<n)});
   nav.hidden=n===ST_RESULT;$("mainNav").hidden=n===ST_RESULT;nav.style.setProperty("--p",String(Math.min(1,n/(STEPS.length-1))));
   document.body.classList.toggle("compact",n>0);document.body.classList.toggle("s0",n===0);$("miniStep").textContent=n===ST_RESULT?"Ihre Anfrage":n===0?"Planen Sie Ihre Halle. Wir bauen sie.":`Schritt ${n+1} von ${STEPS.length}: ${STEPS[n]}`;
   if(n===4||n===5)accCounts();
   $("back").style.visibility=n===0?"hidden":"visible";
   $("next").textContent=n===ST_CONTACT?"Anfrage senden":n<ST_CONTACT?"Weiter: "+STEPS[n+1]:"Weiter";$("navInfo").textContent=n<ST_RESULT?`Schritt ${n+1} von ${STEPS.length}`:"";
+  if(MOB)mUpdate(n);
   if(n===3)renderWallEditor();
   highlight=n===3;
   if(chainAuto){showChain=n===3;$("tChain").setAttribute("aria-pressed",showChain)}
@@ -1271,12 +1359,13 @@ function go(n){
   if((n===4||n===ST_PLAN)&&!xray){xray=true;go.autoX=true;$("tXray").setAttribute("aria-pressed",true)}else if(n!==4&&n!==ST_PLAN&&go.autoX){xray=false;go.autoX=false;$("tXray").setAttribute("aria-pressed",false)}
   if(n===ST_PLAN){syncLayout();renderPlan()}
   if(n!==ST_RESULT){stage=99;$("stageCap").hidden=true;clearInterval(stageTimer)}
-  if(go.ready&&window.innerWidth<900)document.querySelector('[data-step="'+n+'"]').scrollIntoView({block:"start",behavior:"smooth"});
+  if(go.ready&&MOB)$("cfg").scrollTo({top:0});
+  else if(go.ready&&window.innerWidth<900)document.querySelector('[data-step="'+n+'"]').scrollIntoView({block:"start",behavior:"smooth"});
   else if(go.ready&&EMBED)document.querySelector(".grid").scrollIntoView({block:"start",behavior:"smooth"});
   draw();
 }
-$("back").onclick=()=>go(Math.max(0,step-1));
-$("next").onclick=()=>{if(step===ST_CONTACT){if(validate())submit();return}go(step+1)};
+$("back").onclick=()=>{if(MOB){go(MG[Math.max(0,mgOf(step)-1)].k);return}go(Math.max(0,step-1))};
+$("next").onclick=()=>{if(step===ST_CONTACT){if(validate())submit();return}if(MOB){go(MG[Math.min(MG.length-1,mgOf(step)+1)].k);return}go(step+1)};
 $("toContact").onclick=e=>{e.preventDefault();go(ST_CONTACT);$("msg").focus()};
 
 /* Formular <-> State */
@@ -1396,7 +1485,7 @@ function renderChecklist(){const box=$("chkList");if(!box)return;let done={};try
 
 /* ---------- Hallenpass mit QR-Code ---------- */
 async function makePass(msgEl){msgEl.textContent="Hallenpass wird erstellt …";
-  try{await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");await loadScript("https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js")}catch(e){msgEl.textContent="PDF- oder QR-Bibliothek konnte nicht geladen werden (kein Internet?).";return}
+  try{await loadScript("assets/lib/jspdf.umd.min.js");await loadScript("assets/lib/qrcode-generator.js")}catch(e){msgEl.textContent="PDF- oder QR-Bibliothek konnte nicht geladen werden (kein Internet?).";return}
   if(CAP.db&&!S.code){try{const c=makeCode();await CAP.db.doc("plans/"+c).set({s:encodeState(),t:Date.now(),L:S.L,B:S.B});S.code=c}catch(e){}}
   const base=location.href.split("#")[0];const link=S.code?`${base}#code=${S.code}`:`${base}#${encodeState()}`;
   let qrUrl=null;try{const q=window.qrcode(0,"M");q.addData(link);q.make();qrUrl=q.createDataURL(6,0)}catch(e){try{const q=window.qrcode(0,"L");q.addData(link);q.make();qrUrl=q.createDataURL(4,0)}catch(e2){}}
@@ -2393,7 +2482,7 @@ function ausHints(G){
 
 /* ---------- Draw ---------- */
 let blinkTimer=null;
-function setFact(id,t){const el=$(id);if(el.dataset.v===t)return;el.dataset.v=t;const m=t.match(/^(.*?\d)\s*([^\d]*)$/);el.innerHTML=m?`<b>${m[1]}</b><small>${m[2]}</small>`:t;el.classList.remove("tick");void el.offsetWidth;el.classList.add("tick")}
+function setFact(id,t){const el=$(id);if(MOB&&(id==="fA"||id==="fF"))setTimeout(mFacts);if(el.dataset.v===t)return;el.dataset.v=t;const m=t.match(/^(.*?\d)\s*([^\d]*)$/);el.innerHTML=m?`<b>${m[1]}</b><small>${m[2]}</small>`:t;el.classList.remove("tick");void el.offsetWidth;el.classList.add("tick")}
 function accCounts(){document.querySelectorAll('[data-step="4"] details.acc,[data-step="5"] details.acc').forEach(d=>{let n=0;d.querySelectorAll("input[type=checkbox]:checked").forEach(()=>n++);d.querySelectorAll("select").forEach(sel=>{if(sel.value&&sel.value!=="0"&&!(sel.id==="grubeN"))n++});d.querySelectorAll("input.cntn").forEach(i=>{if(+i.value>0)n++});const c=d.querySelector(".cnt");if(c)c.textContent=n?n+" gewählt":""})}
 function draw(){
   const G=geometry();
@@ -2577,8 +2666,8 @@ async function openAR(){
   if(arURL)URL.revokeObjectURL(arURL);arURL=URL.createObjectURL(blob);
   const link=location.href.split("#")[0]+"#"+encodeState()+"~ar";
   body.innerHTML=`<div class="row2"><div><div class="qr" id="qr"></div><p style="text-align:center;font-size:13px">Mit dem Handy scannen</p></div><div><model-viewer id="mv" src="${arURL}" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" camera-controls shadow-intensity="1" style="display:block;position:relative;width:100%;height:300px;background:#dfe7ee;border-radius:8px"><button slot="ar-button" class="btn primary" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%)">Auf dem Hof aufstellen</button></model-viewer><div class="plantools" style="margin-top:8px"><a class="btn small" href="${arURL}" download="gellhaus-halle.glb">3D-Datei (GLB) herunterladen</a></div></div></div><p style="margin-top:10px">Maßstab 1:1, ${fmt(S.L,1)} × ${fmt(S.B,1)} m. Auf dem Handy auf "Auf dem Hof aufstellen" tippen, dann auf den Boden zielen.</p>`;
-  try{await loadScript("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js");new QRCode($("qr"),{text:link,width:168,height:168,correctLevel:QRCode.CorrectLevel.L})}catch(e){$("qr").innerHTML=`<a href="${link}">Link zum Öffnen am Handy</a>`}
-  try{await loadScript("https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js",true)}catch(e){const mv=$("mv");if(mv)mv.remove();body.insertAdjacentHTML("beforeend","<p>Die 3D-Vorschau konnte nicht geladen werden. Die GLB-Datei lässt sich trotzdem herunterladen.</p>")}
+  try{await loadScript("assets/lib/qrcodejs.min.js");new QRCode($("qr"),{text:link,width:168,height:168,correctLevel:QRCode.CorrectLevel.L})}catch(e){$("qr").innerHTML=`<a href="${link}">Link zum Öffnen am Handy</a>`}
+  try{await loadScript("assets/lib/model-viewer.min.js",true)}catch(e){const mv=$("mv");if(mv)mv.remove();body.insertAdjacentHTML("beforeend","<p>Die 3D-Vorschau konnte nicht geladen werden. Die GLB-Datei lässt sich trotzdem herunterladen.</p>")}
 }
 $("tAR").onclick=openAR;
 
@@ -2600,11 +2689,40 @@ function ausLines(){
   add("Schüttwand",+A.schuett?A.schuett+" m":"");add("Lagerbühne",+A.lager?A.lager+" m²":"");add("Agrar/Lager",A.agrX.join(", "));add("Anbau",+A.anbau?o("anbau"):"");add("Büro",A.buero==="extern"?"separates Bürogebäude":+A.buero?"Hallenbüro "+A.buero+" m²":"");add("Wünsche",A.wunsch.join(", "));
   return out.length?out:["  –"];
 }
-function submit(){
+/* ---------- Anfrage direkt ins Büro ----------
+   endpoint: Adresse des Formulardienstes (z. B. https://formcarry.com/s/ABC123). Der Dienst leitet die Anfrage samt
+   PDF und DXF als E-Mail an office weiter. Leer = Notlösung über das E-Mail-Programm des Kunden. */
+const INQ=Object.assign({endpoint:"",office:"info@gellhaus.eu",timeout:60000},window.HP_INQ||{});
+document.querySelectorAll(".sendhint").forEach(el=>el.hidden=!INQ.endpoint);
+async function sendInquiry(nr,d,txt){
+  if(!INQ.endpoint)return{ok:false,why:"aus"};
+  const fd=new FormData();const pr=prio();const link=location.href.split("#")[0]+"#"+encodeState();
+  const add=(k,v)=>fd.append(k,v==null?"":String(v));
+  add("_subject",`[Hallenanfrage ${pr.k}] ${nr} ${fmt(S.L,1)} × ${fmt(S.B,1)} m, ${$("firma").value||$("name").value}, ${($("plz").value+" "+$("ort").value).trim()}`);
+  add("nummer",nr);add("name",$("name").value.trim());add("email",$("mail").value.trim());add("firma",$("firma").value.trim());add("telefon",$("tel").value.trim());
+  add("rueckruf",$("rueck").checked?"ja":"nein");add("bauort",($("plz").value+" "+$("ort").value).trim());add("prioritaet",pr.t);
+  add("halle",`${PRESETS[S.preset].n}, ${fmt(S.L,1)} × ${fmt(S.B,1)} m, Traufe ${fmt(S.H,2)} m, ${S.dach}`);add("link_zur_planung",link);add("datenblatt",txt);
+  add("einwilligung","Ja, Datenschutzerklärung gelesen ("+d.toLocaleString("de-DE")+")");add("_gotcha","");
+  const base=`Gellhaus-Hallenplanung-${nr}`;
+  if(THREE_OK){try{fd.append("pdf_datenblatt",await buildPDF(nr,d),base+".pdf")}catch(e){add("hinweis","PDF konnte im Browser nicht erstellt werden, bitte über den Link öffnen.")}}
+  try{fd.append("dxf_grundriss",new Blob([dxfPlan()],{type:"application/dxf"}),base+"-Grundriss.dxf")}catch(e){}
+  const sk=$("plan").files[0];if(sk&&sk.size<10e6)fd.append("skizze_kunde",sk,sk.name);
+  const ac=new AbortController();const to=setTimeout(()=>ac.abort(),INQ.timeout);
+  try{const r=await fetch(INQ.endpoint,{method:"POST",body:fd,headers:{Accept:"application/json"},signal:ac.signal});clearTimeout(to);return{ok:r.ok,why:r.ok?"":"http "+r.status}}
+  catch(e){clearTimeout(to);return{ok:false,why:e.name==="AbortError"?"zeit":"netz"}}
+}
+let sending=false;
+async function submit(){
+  if(sending)return;sending=true;const btn=$("next");const was=btn.textContent;btn.disabled=true;btn.textContent="Wird gesendet …";$("formErr").textContent="";
   const G=geometry();const d=new Date();
   const nr="H-"+d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(Math.floor(Math.random()*900)+100);
-  $("sheet").textContent=sheetLines(nr,d).join("\n");
-  $("okline").textContent=`Ihre Anfrage ${nr} ist eingegangen.`;
+  const txt=sheetLines(nr,d).join("\n");$("sheet").textContent=txt;
+  let res={ok:false,why:"aus"};try{res=await sendInquiry(nr,d,txt)}catch(e){res={ok:false,why:"fehler"}}
+  btn.disabled=false;btn.textContent=was;sending=false;
+  document.body.classList.toggle("sent",res.ok);
+  const off=res.why==="aus";
+  $("okline").textContent=res.ok?`Ihre Anfrage ${nr} ist bei Gellhaus im Büro angekommen.`:off?`Ihre Anfrage ${nr} ist fertig. Bitte schicken Sie sie jetzt mit dem Knopf „Per E-Mail ans Büro senden“ an uns.`:`Ihre Anfrage ${nr} ist fertig, konnte aber nicht automatisch übertragen werden.`;
+  $("sendFail").hidden=res.ok||off;$("mailOffice").hidden=res.ok;$("mailOffice").classList.toggle("primary",!res.ok);
   $("icsBtn").hidden=!$("tDatum").value;renderChecklist();
   if(THREE_OK){inside=false;$("tInside").setAttribute("aria-pressed",false);cam.az=-0.8;cam.pol=1.26;fitCamera();highlight=false;stage=99;cutOff();build();placeCamera();$("shot").src=E.snapshot({frames:6,type:"image/jpeg",quality:0.86});render()}
   go(ST_RESULT);if(THREE_OK)playStages();
@@ -2640,8 +2758,11 @@ async function captureViews(){const out=[];const was={xray,inside,explode,az:cam
 async function saveFile(name,blob,msgEl){if(CAP.downloads){try{await CAP.downloads.save({filename:name,data:blob});if(msgEl)msgEl.textContent=name+" gespeichert.";return}catch(e){if(msgEl)msgEl.textContent="Speichern abgebrochen.";return}}
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);if(msgEl)msgEl.textContent=name+" wird heruntergeladen."}
 async function makePDF(msgEl){if(!THREE_OK){msgEl.textContent="Ohne 3D-Ansicht kein PDF.";return}msgEl.textContent="PDF wird erstellt …";
-  try{await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")}catch(e){msgEl.textContent="PDF-Bibliothek konnte nicht geladen werden (kein Internet?).";return}
-  const views=await captureViews();const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:"mm",format:"a4"});const d=new Date();const nr=(step===ST_RESULT&&$("okline").textContent.match(/H-[\d-]+/)||["Entwurf"])[0];
+  const nr=(step===ST_RESULT&&$("okline").textContent.match(/H-[\d-]+/)||["Entwurf"])[0];let blob;
+  try{blob=await buildPDF(nr,new Date())}catch(e){msgEl.textContent="PDF-Bibliothek konnte nicht geladen werden (kein Internet?).";return}
+  await saveFile(`Gellhaus-Hallenplanung-${nr}.pdf`,blob,msgEl)}
+async function buildPDF(nr,d){await loadScript("assets/lib/jspdf.umd.min.js");
+  const views=await captureViews();const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:"mm",format:"a4"});
   const W=210,M=14;const head=(title)=>{doc.setFillColor(44,104,174);doc.rect(0,0,W,22,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(15);doc.text("Gellhaus Hallenplaner",M,10);doc.setFontSize(9);doc.setFont("helvetica","normal");doc.text("Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH & Co. KG · Vechta · EN 1090-2",M,16);doc.setFillColor(184,35,47);doc.rect(0,22,W,1.2,"F");doc.setTextColor(24,34,44);doc.setFont("helvetica","bold");doc.setFontSize(13);doc.text(title,M,33)};
   const foot=(n)=>{doc.setFontSize(8);doc.setTextColor(90,102,115);doc.setFont("helvetica","normal");doc.text(`Visbeker Damm 158 · 49377 Vechta · 0 44 41 / 38 04 · info@gellhaus.eu · Unverbindliche Planungsskizze, kein Angebot. Seite ${n}`,M,290)};
   head(`Hallenplanung ${nr} · ${d.toLocaleDateString("de-DE")}`);doc.setFont("helvetica","normal");doc.setFontSize(10);
@@ -2650,7 +2771,7 @@ async function makePDF(msgEl){if(!THREE_OK){msgEl.textContent="Ohne 3D-Ansicht k
   y=46+2*(ih+10)+2;const [,plan]=views[4];const ph=Math.min(70,290-12-y);doc.addImage(plan,"JPEG",M,y,ph*1.5,ph);doc.setTextColor(44,104,174);doc.text("Grundriss mit Innenfläche",M,y+ph+4);foot(1);
   doc.addPage();head("Ansichten mit Maßketten");{const ev=renderElevs(true);let ey=38;for(const [t,c] of ev){const eh=(W-2*M)*c.height/c.width;doc.addImage(c.toDataURL("image/jpeg",0.9),"JPEG",M,ey,W-2*M,eh);ey+=eh+4;if(ey>240&&t!=="Giebel rechts"){foot(2);doc.addPage();head("Ansichten mit Maßketten (Fortsetzung)");ey=38}}renderElevs();foot(2)}
   doc.addPage();head("Datenblatt");doc.setFont("courier","normal");doc.setFontSize(8.5);doc.setTextColor(24,34,44);const lines=sheetLines(nr,d).flatMap(l=>doc.splitTextToSize(l||" ",W-2*M));let yy=40,pg=3;for(const l of lines){if(yy>282){foot(pg);doc.addPage();head("Datenblatt (Fortsetzung)");pg++;yy=40;doc.setFont("courier","normal");doc.setFontSize(8.5);doc.setTextColor(24,34,44)}doc.text(l,M,yy);yy+=3.8}foot(pg);
-  await saveFile(`Gellhaus-Hallenplanung-${nr}.pdf`,doc.output("blob"),msgEl)}
+  return doc.output("blob")}
 $("pdfBtn").onclick=()=>makePDF($("shareMsg"));$("pdfBtn2").onclick=()=>makePDF($("pdfMsg"));
 
 /* ---------- E-Mail: Planung an mich / ans Büro ---------- */
@@ -2698,12 +2819,51 @@ $("quickGo").onclick=()=>{const pre={agrar:3,lkw:0,werk:1,lager:2}[QA.q1];applyP
   S.dach=QA.q3;S.P=QA.q3==="Satteldach"?12:QA.q3==="Pultdach"?7:S.P;
   if(QA.q1==="lkw"){S.torGr="4x4.5";S.H=Math.max(S.H,6)}if(QA.q1==="agrar"){S.torGr="5x5";S.H=Math.max(S.H,6)}
   syncForm();readForm();fitCamera();$("dlgQuick").close();go(1);draw()};
-try{if(!location.hash&&!sessionStorage.getItem("gh_quick")){sessionStorage.setItem("gh_quick","1");setTimeout(()=>{if(step===0)$("dlgQuick").showModal()},900)}}catch(e){}
+try{if(!location.hash&&!(MOB&&EMBED)&&!sessionStorage.getItem("gh_quick")){sessionStorage.setItem("gh_quick","1");setTimeout(()=>{if(step===0)$("dlgQuick").showModal()},900)}}catch(e){}
 
 $("copy").onclick=()=>{const txt=$("sheet").textContent;
   navigator.clipboard.writeText(txt).then(()=>{$("copy").textContent="Kopiert"},()=>{const r=document.createRange();r.selectNodeContents($("sheet"));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);$("copy").textContent="Text markiert, bitte kopieren"})};
 $("restart").onclick=()=>{$("copy").textContent="Datenblatt kopieren";S.veh={};applyPreset(0);readForm();fitCamera();go(0)};
 
+/* ---------- Handy-Fassung ---------- */
+const MG=[{s:[0],t:"Nutzung",k:0},{s:[1],t:"Größe und Dach",k:1},{s:[2,3],t:"Wände und Tore",k:3,sh:"Tore"},{s:[4,5],t:"Innen und Solar",k:4,sh:"Innen"},{s:[6,7],t:"Anfrage",k:7}];
+function mgOf(n){const i=MG.findIndex(g=>g.s.includes(n));return i<0?MG.length-1:i}
+function mFacts(){const a=$("fA").dataset.v,f=$("fF").dataset.v;$("mFacts").textContent=a?`${a} · First ${f}`:""}
+function mUpdate(n){const gi=mgOf(n);
+  $("mStepT").textContent=n===ST_RESULT?"Ihre Anfrage":`${gi+1}/${MG.length} ${MG[gi].t}`;
+  $("mNav").querySelectorAll("button").forEach((b,i)=>{if(i===gi&&n<ST_RESULT)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");b.classList.toggle("done",i<gi||n===ST_RESULT)});
+  $("mNav").hidden=n===ST_RESULT;
+  if(n<ST_CONTACT)$("next").textContent=gi===3?"Weiter (oder überspringen)":"Weiter: "+MG[gi+1].t;}
+(function(){
+  const sw=$("uiSw"),swp=$("uiSwP");const coarse=!!(window.matchMedia&&matchMedia("(pointer:coarse)").matches);
+  if(MOB||coarse||window.innerWidth<760){swp.hidden=false;sw.textContent=MOB?"Zur PC-Ansicht wechseln":"Zur Handy-Ansicht wechseln"}
+  sw.onclick=e=>{e.preventDefault();try{localStorage.setItem("hp_ui",MOB?"pc":"handy")}catch(er){}const u=new URL(location.href);u.searchParams.delete("ui");u.hash=encodeState();location.replace(u.toString());setTimeout(()=>location.reload(),50)};
+  if(!MOB)return;
+  const ft=document.querySelector(".ft");if(ft)$("cfg").appendChild(ft);
+  if(EMBED){$("mStartBtn").onclick=()=>{const u=new URL(location.href);u.searchParams.set("ui","handy");u.hash="";window.open(u.toString(),"_blank","noopener")}}
+  MG.forEach((g,i)=>$("mNav").insertAdjacentHTML("beforeend",`<button type="button" data-mg="${i}"><i>${i+1}</i>${g.sh||g.t.split(" ")[0]}</button>`));
+  $("mNav").addEventListener("click",e=>{const b=e.target.closest("[data-mg]");if(b&&step<ST_RESULT)go(MG[+b.dataset.mg].k)});
+  /* Modellgröße: Griff ziehen oder antippen */
+  const root=document.documentElement;const setBig=v=>{root.classList.toggle("mbig",v);root.style.removeProperty("--mv");$("mBig").setAttribute("aria-pressed",v);$("mBig").textContent=v?"Klein":"Groß"};
+  $("mBig").onclick=()=>setBig(!root.classList.contains("mbig"));
+  let gy=null,moved=false;const grip=$("mGrip");
+  grip.addEventListener("pointerdown",e=>{gy=e.clientY;moved=false;grip.setPointerCapture(e.pointerId);root.classList.add("mdrag")});
+  grip.addEventListener("pointermove",e=>{if(gy==null)return;if(Math.abs(e.clientY-gy)>6)moved=true;if(!moved)return;const top=document.querySelector(".stage").getBoundingClientRect().top;const vh=window.innerHeight;const h=Math.max(vh*0.22,Math.min(vh*0.8,e.clientY-top+14));root.classList.remove("mbig");root.style.setProperty("--mv",h+"px")});
+  const end=()=>{if(gy==null)return;gy=null;root.classList.remove("mdrag");if(!moved)setBig(!root.classList.contains("mbig"))};
+  grip.addEventListener("pointerup",end);grip.addEventListener("pointercancel",end);
+  /* Ansicht-Menü statt zwölf Knöpfen im Modell */
+  const MV=[["tXray","Tragwerk"],["tInside","Innen"],["tExplode","Aufbau"],["tCut","Schnitt"],["tSun","Sonnenstand"],["tNight","Abend"],["tDim","Maße"],["tChain","Maßkette"],["tScale","Vergleich"],["vp:front","Von vorn"],["vp:side","Von der Seite"],["vp:top","Von oben"],["tReset","Gesamtansicht"],["tAR","Auf dem Hof (AR)"],["tFoto","Ins Hoffoto setzen"]];
+  const tgt=k=>k.startsWith("vp:")?document.querySelector(`[data-vp="${k.slice(3)}"]`):$(k);
+  const fill=()=>{$("mViewG").innerHTML=MV.map(([k,t])=>{const el=tgt(k);if(!el)return"";const pr=el.getAttribute("aria-pressed");return `<button type="button" data-k="${k}"${pr!=null?` aria-pressed="${pr}"`:""}${el.hidden?" hidden":""}>${t}</button>`}).join("")};
+  $("mViewBtn").onclick=()=>{fill();$("mView").showModal()};$("mViewX").onclick=()=>$("mView").close();
+  $("mView").addEventListener("click",e=>{if(e.target===$("mView")){$("mView").close();return}const b=e.target.closest("[data-k]");if(!b)return;$("mView").close();const el=tgt(b.dataset.k);if(el)el.click()});
+  /* Maße: Minus/Plus neben jeder Zahl, Ziffernblock */
+  const ST={L:.5,B:.5,H:.25,P:1,fL:.5,fB:.5};
+  document.querySelectorAll(".range").forEach(r=>{const rg=r.querySelector('input[type="range"]'),nm=r.querySelector('.num input[type="number"]');if(!rg||!nm)return;nm.setAttribute("inputmode","decimal");
+    const st=ST[rg.id]||+rg.step||1;const mk=(d,t)=>{const b=document.createElement("button");b.type="button";b.className="mstep";b.textContent=t;b.setAttribute("aria-label",(d<0?"weniger ":"mehr ")+(r.querySelector("label")?.firstChild?.textContent||"").trim());
+      b.onclick=()=>{const v=Math.round(((parseFloat(nm.value)||+rg.value)+d*st)/st)*st;const c=Math.max(+rg.min,Math.min(+rg.max,+v.toFixed(3)));rg.value=c;rg.dispatchEvent(new Event("input",{bubbles:true}));rg.dispatchEvent(new Event("change",{bubbles:true}))};return b};
+    const num=nm.parentElement;num.insertBefore(mk(-1,"−"),nm);num.appendChild(mk(1,"+"))});
+})();
 /* ---------- Start ---------- */
 if(THREE_OK)initGL();else view.insertAdjacentHTML("beforeend",'<p style="padding:40px;text-align:center;color:#3b474f">3D-Ansicht konnte nicht geladen werden.</p>');
 const hashRaw=location.hash.slice(1);const hashParts=hashRaw.split("~");const AR_FLAG=hashParts.includes("ar");

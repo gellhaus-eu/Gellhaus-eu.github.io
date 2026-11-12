@@ -1,0 +1,6 @@
+Lokal eingebundene Bibliotheken und Schriften (keine Verbindung zu fremden Servern):
+- jsPDF 2.5.1 (MIT)
+- qrcode-generator 1.4.4 (MIT)
+- qrcodejs 1.0.0 (MIT)
+- @google/model-viewer 3.5.0 (Apache-2.0)
+- Schriften Manrope, Inter, Barlow Semi Condensed, IBM Plex Mono (SIL Open Font License 1.1, ueber Fontsource)
