@@ -456,7 +456,7 @@ input,select,textarea{font-size:16px}
 .embed .proto{display:none}
 .embed .hero,.embed .nav#mainNav{position:static}
 .embed .stage{position:static}
-@media (min-width:901px){.embed .view{height:auto;aspect-ratio:16/10;max-height:720px}.embed .stage{position:sticky;top:8px}}
+@media (min-width:901px){.embed .view{height:auto;aspect-ratio:16/10;max-height:720px}.embed .stage{position:relative;top:auto;will-change:transform}.embed #mainNav{will-change:transform}}
 .embed dialog{position:absolute;margin:0 auto;bottom:auto;max-height:none}
 .dimedit{position:absolute;z-index:5;background:var(--panel);color:var(--ink);border-radius:16px;padding:10px 12px 12px;box-shadow:var(--shadow-lg);width:max-content;max-width:calc(100% - 16px);cursor:default;touch-action:auto}
 .dimedit label{display:block;font:600 12.5px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
@@ -732,6 +732,8 @@ dialog.mview::backdrop{background:rgba(0,0,0,.35)}
   html.m #mainNav{left:calc(56% + 8px)}
 }
 /* Handy eingebettet auf gellhaus.eu: nur Startkachel, Planer öffnet bildschirmfüllend */
+/* Eingebettet auf gellhaus.eu: keine eigene Kopfzeile, die Website zeigt Logo und Kontakt schon */
+.embed .mh{display:none!important}.embed .wrap{padding-top:8px}
 html.m.embed,html.m.embed body{height:auto;overflow:visible}
 html.m.embed .wrap{height:auto;display:block;padding:16px!important}
 html.m.embed .grid,html.m.embed .mh{display:none!important}
@@ -2864,6 +2866,24 @@ function mUpdate(n){const gi=mgOf(n);
       b.onclick=()=>{const v=Math.round(((parseFloat(nm.value)||+rg.value)+d*st)/st)*st;const c=Math.max(+rg.min,Math.min(+rg.max,+v.toFixed(3)));rg.value=c;rg.dispatchEvent(new Event("input",{bubbles:true}));rg.dispatchEvent(new Event("change",{bubbles:true}))};return b};
     const num=nm.parentElement;num.insertBefore(mk(-1,"−"),nm);num.appendChild(mk(1,"+"))});
 })();
+
+/* Eingebettet auf gellhaus.eu: Die Website scrollt, nicht der iFrame. Sie meldet den sichtbaren Bereich per
+   postMessage {type:'parentViewport', top, height}; damit laufen Vorschau (.stage) und Navigation (#mainNav) mit.
+   Nach Vorgabe von experia (2026-11-12). Ab 901 px Breite, darunter bleibt alles statisch. */
+if(EMBED&&!MOB){
+  const stage=document.querySelector(".stage");const mnav=$("mainNav");const desktop=matchMedia("(min-width:901px)");let vp=null,raf=0;
+  function place(){raf=0;if(!stage)return;stage.style.transform="";mnav.style.transform="";
+    if(!vp||!desktop.matches)return;
+    const col=stage.parentElement.getBoundingClientRect();const r=stage.getBoundingClientRect();
+    const maxShift=Math.max(0,col.bottom-r.bottom);const shift=Math.min(Math.max(0,vp.top+8-r.top),maxShift);
+    stage.style.transform=shift?`translateY(${shift}px)`:"";
+    if(!mnav.hidden){const n=mnav.getBoundingClientRect();const form=$("cfg").getBoundingClientRect();
+      const up=Math.min(0,Math.max(form.top-n.top,vp.top+vp.height-8-n.bottom));mnav.style.transform=up?`translateY(${up}px)`:""}}
+  const ask=()=>{if(!raf)raf=requestAnimationFrame(place)};
+  window.addEventListener("message",e=>{if(e.source!==window.parent||!e.data||e.data.type!=="parentViewport")return;vp=e.data;ask()});
+  window.addEventListener("resize",ask);new ResizeObserver(ask).observe($("cfg"));
+  window.parent.postMessage({type:"requestViewport"},"*");
+}
 /* ---------- Start ---------- */
 if(THREE_OK)initGL();else view.insertAdjacentHTML("beforeend",'<p style="padding:40px;text-align:center;color:#3b474f">3D-Ansicht konnte nicht geladen werden.</p>');
 const hashRaw=location.hash.slice(1);const hashParts=hashRaw.split("~");const AR_FLAG=hashParts.includes("ar");
