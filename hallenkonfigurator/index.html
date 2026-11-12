@@ -740,10 +740,22 @@ html.m.embed .grid,html.m.embed .mh{display:none!important}
 html.m.embed .mstart{display:block;background:var(--panel);border-radius:22px;padding:20px;box-shadow:var(--shadow)}
 .mstart img{width:150px;height:auto;display:block;margin:0 0 12px}.mstart h2{font:800 24px var(--display);margin:0 0 6px}.mstart p{margin:0 0 16px;color:var(--muted);line-height:1.45}
 .mstart .btn{width:100%;min-height:52px;font-size:17px}
+/* ===== Eingebettet auf gellhaus.eu: an die Website angeglichen (Design-Check 2026-11-12) ===== */
+.emb-only{display:none!important}
+.steps button{white-space:nowrap;hyphens:manual;-webkit-hyphens:manual}
+:root.embed:not(.zz){--blue:#006ab3;--blue-deep:#00558f;--blue-soft:rgba(0,106,179,.11);--bg:#f4f4f4;--panel-2:#f4f4f4}
+.embed body{background:#f4f4f4}
+.embed .ft{display:none!important}
+html.embed:not(.m) .emb-only{display:inline-flex!important}
+html.embed:not(.m) #tExplode,html.embed:not(.m) #tCut,html.embed:not(.m) #tSun,html.embed:not(.m) #tNight,html.embed:not(.m) .view .tools.bl,html.embed:not(.m) .view .tools2{display:none!important}
+html.embed:not(.m) #tMore{align-items:center;padding:0 12px;font-weight:600}
+html.embed:not(.m) .nav#mainNav{background:var(--panel)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;border-top:1px solid var(--line-2)!important;border-radius:0 0 22px 22px!important;box-shadow:0 -10px 20px -12px rgba(0,0,0,.18)!important;padding:12px 16px!important;margin:0!important}
+dialog.mview{border:0;border-radius:22px;padding:16px;background:var(--panel);color:var(--ink);width:min(520px,calc(100% - 32px));box-shadow:var(--shadow-lg)}
+.mstart .mprev{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:14px;margin:0 0 14px;display:block}
 </style>
 
 <div class="wrap">
-  <div class="mstart" id="mStart"><img src="assets/logo-blau.png" alt="Gellhaus" width="900" height="264"><h2>Hallenplaner</h2><p>Planen Sie Ihre Halle in 3D: Größe, Dach, Tore, Farben. Am Ende schicken Sie uns Ihre Anfrage mit Datenblatt.</p><button type="button" class="btn primary" id="mStartBtn">Hallenplaner öffnen</button></div>
+  <div class="mstart" id="mStart"><img class="mprev" src="assets/vorschau-halle.jpg" alt="Hallenplaner: 3D-Ansicht einer Fahrzeughalle" width="960" height="600" loading="lazy"><h2>Hallenplaner</h2><p>Planen Sie Ihre Halle in 3D: Größe, Dach, Tore, Farben. Am Ende schicken Sie uns Ihre Anfrage mit Datenblatt.</p><button type="button" class="btn primary" id="mStartBtn">Hallenplaner öffnen</button></div>
   <header class="mh" aria-label="Gellhaus Hallenplaner">
     <img class="mh-logo" src="assets/logo-blau.png" alt="Franz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH &amp; Co. KG" width="900" height="264">
     <span class="mh-sep" aria-hidden="true"></span>
@@ -783,6 +795,7 @@ html.m.embed .mstart{display:block;background:var(--panel);border-radius:22px;pa
             <button type="button" id="tNight" aria-pressed="false" title="Abendstimmung mit Hallenlicht" aria-label="Abend">☾</button>
             <button type="button" id="tFull" aria-pressed="false" title="Vollbild" aria-label="Vollbild"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M3 7.5V3h4.5M12.5 3H17v4.5M17 12.5V17h-4.5M7.5 17H3v-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <button type="button" id="tReset" title="Ansicht zurücksetzen" aria-label="Ansicht zurücksetzen">↺</button>
+            <button type="button" id="tMore" class="emb-only" aria-haspopup="dialog" title="Weitere Ansichten und Werkzeuge">Mehr</button>
           </div>
         </div>
         <div class="pop" id="sunPop" hidden>
@@ -1238,7 +1251,8 @@ const $=id=>document.getElementById(id);
 /* Eingebettet auf der Website (iFrame mit automatischer Höhe): keine Höhen nach Fenstergröße, Dialoge erscheinen dort, wo geklickt wurde */
 const EMBED=window.parent!==window&&!(window.claude&&typeof window.claude.use==="function");
 const MOB=document.documentElement.classList.contains("m");
-if(EMBED){document.documentElement.classList.add("embed");let lastY=0;document.addEventListener("pointerdown",e=>{lastY=e.pageY},true);
+const EMB={vp:null,onVp:null};
+if(EMBED){document.documentElement.classList.add("embed");document.documentElement.dataset.theme="light";let lastY=0;document.addEventListener("pointerdown",e=>{lastY=e.pageY},true);
   const SM=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=function(){SM.call(this);const h=this.offsetHeight,H=document.documentElement.getBoundingClientRect().height;this.style.top=Math.max(16,Math.min(H-h-16,lastY-h/2))+"px"}}
 const fmt=(n,d=0)=>n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d});
 
@@ -1325,7 +1339,8 @@ function suggestDims(){
   return{L,B,H,torGr:g[0],tw:g[1],torName:g[3],count:items.length,storeArea};
 }
 const nav=$("stepNav");
-STEPS.forEach((s,i)=>nav.insertAdjacentHTML("beforeend",`<button type="button" data-go="${i}" data-n="${i+1}" title="Schritt ${i+1}: ${s}">${s}</button>`));
+const STEPS_K=["Nutzung","Maße","Wände","Tore","Innen","Solar","Bauort","Kontakt"];
+STEPS.forEach((s,i)=>nav.insertAdjacentHTML("beforeend",`<button type="button" data-go="${i}" data-n="${i+1}" title="Schritt ${i+1}: ${s}">${STEPS_K[i]}</button>`));
 nav.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b&&step<ST_RESULT)go(+b.dataset.go)});
 WALLS.forEach(w=>$("wallTabs").insertAdjacentHTML("beforeend",`<button type="button" role="tab" data-w="${w[0]}">${w[1]}</button>`));
 $("wallTabs").addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(b){curWall=b.dataset.w;renderWallEditor();draw()}});
@@ -2821,7 +2836,12 @@ $("quickGo").onclick=()=>{const pre={agrar:3,lkw:0,werk:1,lager:2}[QA.q1];applyP
   S.dach=QA.q3;S.P=QA.q3==="Satteldach"?12:QA.q3==="Pultdach"?7:S.P;
   if(QA.q1==="lkw"){S.torGr="4x4.5";S.H=Math.max(S.H,6)}if(QA.q1==="agrar"){S.torGr="5x5";S.H=Math.max(S.H,6)}
   syncForm();readForm();fitCamera();$("dlgQuick").close();go(1);draw()};
-try{if(!location.hash&&!(MOB&&EMBED)&&!sessionStorage.getItem("gh_quick")){sessionStorage.setItem("gh_quick","1");setTimeout(()=>{if(step===0)$("dlgQuick").showModal()},900)}}catch(e){}
+try{if(!location.hash&&!(MOB&&EMBED)&&!sessionStorage.getItem("gh_quick")){
+  /* Eingebettet erst öffnen, wenn mindestens 320 px des Planers im sichtbaren Bereich der Website liegen, und dort mittig */
+  const openQ=()=>{if(step!==0)return;sessionStorage.setItem("gh_quick","1");const d=$("dlgQuick");d.showModal();
+    if(EMBED&&EMB.vp){d.style.top=Math.max(8,Math.round(EMB.vp.top+(EMB.vp.height-d.offsetHeight)/2))+"px"}};
+  if(EMBED){EMB.onVp=()=>{const v=EMB.vp;const H=document.documentElement.scrollHeight;if(v.top+v.height>=320&&v.top<H-320){EMB.onVp=null;setTimeout(openQ,400)}};if(EMB.vp)EMB.onVp()}
+  else setTimeout(openQ,900)}}catch(e){}
 
 $("copy").onclick=()=>{const txt=$("sheet").textContent;
   navigator.clipboard.writeText(txt).then(()=>{$("copy").textContent="Kopiert"},()=>{const r=document.createRange();r.selectNodeContents($("sheet"));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);$("copy").textContent="Text markiert, bitte kopieren"})};
@@ -2840,6 +2860,14 @@ function mUpdate(n){const gi=mgOf(n);
   const sw=$("uiSw"),swp=$("uiSwP");const coarse=!!(window.matchMedia&&matchMedia("(pointer:coarse)").matches);
   if(MOB||coarse||window.innerWidth<760){swp.hidden=false;sw.textContent=MOB?"Zur PC-Ansicht wechseln":"Zur Handy-Ansicht wechseln"}
   sw.onclick=e=>{e.preventDefault();try{localStorage.setItem("hp_ui",MOB?"pc":"handy")}catch(er){}const u=new URL(location.href);u.searchParams.delete("ui");u.hash=encodeState();location.replace(u.toString());setTimeout(()=>location.reload(),50)};
+  if(MOB||EMBED){
+  /* Ansicht-Menü statt zwölf Knöpfen im Modell */
+  const MV=MOB?[["tXray","Tragwerk"],["tInside","Innen"],["tExplode","Aufbau"],["tCut","Schnitt"],["tSun","Sonnenstand"],["tNight","Abend"],["tDim","Maße"],["tChain","Maßkette"],["tScale","Vergleich"],["vp:front","Von vorn"],["vp:side","Von der Seite"],["vp:top","Von oben"],["tReset","Gesamtansicht"],["tAR","Auf dem Hof (AR)"],["tFoto","Ins Hoffoto setzen"]]:[["tExplode","Aufbau"],["tCut","Schnitt"],["tSun","Sonnenstand"],["tNight","Abend"],["tDim","Maße"],["tChain","Maßkette"],["tScale","Vergleich"],["tShot","Bild speichern"],["tFoto","Ins Hoffoto setzen"],["tAR","Auf dem Hof (AR)"]];
+  const tgt=k=>k.startsWith("vp:")?document.querySelector(`[data-vp="${k.slice(3)}"]`):$(k);
+  const fill=()=>{$("mViewG").innerHTML=MV.map(([k,t])=>{const el=tgt(k);if(!el)return"";const pr=el.getAttribute("aria-pressed");return `<button type="button" data-k="${k}"${pr!=null?` aria-pressed="${pr}"`:""}${el.hidden?" hidden":""}>${t}</button>`}).join("")};
+  $("mViewBtn").onclick=$("tMore").onclick=()=>{fill();$("mView").showModal()};$("mViewX").onclick=()=>$("mView").close();
+  $("mView").addEventListener("click",e=>{if(e.target===$("mView")){$("mView").close();return}const b=e.target.closest("[data-k]");if(!b)return;$("mView").close();const el=tgt(b.dataset.k);if(el)el.click()});
+  }
   if(!MOB)return;
   const ft=document.querySelector(".ft");if(ft)$("cfg").appendChild(ft);
   if(EMBED){$("mStartBtn").onclick=()=>{const u=new URL(location.href);u.searchParams.set("ui","handy");u.hash="";window.open(u.toString(),"_blank","noopener")}}
@@ -2853,12 +2881,6 @@ function mUpdate(n){const gi=mgOf(n);
   grip.addEventListener("pointermove",e=>{if(gy==null)return;if(Math.abs(e.clientY-gy)>6)moved=true;if(!moved)return;const top=document.querySelector(".stage").getBoundingClientRect().top;const vh=window.innerHeight;const h=Math.max(vh*0.22,Math.min(vh*0.8,e.clientY-top+14));root.classList.remove("mbig");root.style.setProperty("--mv",h+"px")});
   const end=()=>{if(gy==null)return;gy=null;root.classList.remove("mdrag");if(!moved)setBig(!root.classList.contains("mbig"))};
   grip.addEventListener("pointerup",end);grip.addEventListener("pointercancel",end);
-  /* Ansicht-Menü statt zwölf Knöpfen im Modell */
-  const MV=[["tXray","Tragwerk"],["tInside","Innen"],["tExplode","Aufbau"],["tCut","Schnitt"],["tSun","Sonnenstand"],["tNight","Abend"],["tDim","Maße"],["tChain","Maßkette"],["tScale","Vergleich"],["vp:front","Von vorn"],["vp:side","Von der Seite"],["vp:top","Von oben"],["tReset","Gesamtansicht"],["tAR","Auf dem Hof (AR)"],["tFoto","Ins Hoffoto setzen"]];
-  const tgt=k=>k.startsWith("vp:")?document.querySelector(`[data-vp="${k.slice(3)}"]`):$(k);
-  const fill=()=>{$("mViewG").innerHTML=MV.map(([k,t])=>{const el=tgt(k);if(!el)return"";const pr=el.getAttribute("aria-pressed");return `<button type="button" data-k="${k}"${pr!=null?` aria-pressed="${pr}"`:""}${el.hidden?" hidden":""}>${t}</button>`}).join("")};
-  $("mViewBtn").onclick=()=>{fill();$("mView").showModal()};$("mViewX").onclick=()=>$("mView").close();
-  $("mView").addEventListener("click",e=>{if(e.target===$("mView")){$("mView").close();return}const b=e.target.closest("[data-k]");if(!b)return;$("mView").close();const el=tgt(b.dataset.k);if(el)el.click()});
   /* Maße: Minus/Plus neben jeder Zahl, Ziffernblock */
   const ST={L:.5,B:.5,H:.25,P:1,fL:.5,fB:.5};
   document.querySelectorAll(".range").forEach(r=>{const rg=r.querySelector('input[type="range"]'),nm=r.querySelector('.num input[type="number"]');if(!rg||!nm)return;nm.setAttribute("inputmode","decimal");
@@ -2885,7 +2907,7 @@ if(EMBED&&!MOB){
       up=Math.round(Math.min(0,Math.max(form.top-nt,vp.top+vp.height-8-nb)))}
     curN=set(mnav,up,curN)}
   const ask=()=>{if(!raf)raf=requestAnimationFrame(place)};
-  window.addEventListener("message",e=>{if(e.source!==window.parent||!e.data||e.data.type!=="parentViewport")return;const d=e.data;if(vp&&vp.top===d.top&&vp.height===d.height)return;vp={top:+d.top,height:+d.height};ask()});
+  window.addEventListener("message",e=>{if(e.source!==window.parent||!e.data||e.data.type!=="parentViewport")return;const d=e.data;if(vp&&vp.top===d.top&&vp.height===d.height)return;vp={top:+d.top,height:+d.height};EMB.vp=vp;if(EMB.onVp)EMB.onVp();ask()});
   window.addEventListener("resize",ask);new ResizeObserver(ask).observe($("cfg"));
   window.parent.postMessage({type:"requestViewport"},"*");
 }
