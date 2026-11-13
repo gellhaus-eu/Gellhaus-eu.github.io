@@ -697,6 +697,28 @@ html.m details.mmore>summary::after{content:"";margin-left:auto;width:9px;height
 html.m details.mmore[open]>summary::after{transform:rotate(-135deg)}
 html.m details.mmore>.mmore-in{padding:4px 16px 18px;background:var(--bg)}
 html.m #presetChoices{grid-template-columns:1fr 1fr!important;gap:8px}
+/* Eine Frage pro Bildschirm (Hebel 3, Auftrag Matthias 2026-11-13) und mehr Arbeitsfläche (Hebel 2) */
+html.m .qh,html.m .card.qoff{display:none!important}
+html.m:not(.embed) .mh{display:none!important}
+html.m .stage{height:var(--mv,31vh)}
+html.m input[type=range]{height:44px!important;min-height:44px}
+html.m input[type=file]{min-height:44px;padding:8px 0}
+html.m .checks a,html.m label a{display:inline-block;padding:11px 0;margin:-11px 0}
+html.m .mtools{top:calc(env(safe-area-inset-top,0px) + 10px)}
+html.m .mtools .mcall{display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;padding:0;background:var(--blue);color:#fff;border-radius:22px;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+html.m .mfacts{top:auto;bottom:24px}
+html.m .mgrip{height:14px}html.m .mgrip::before{margin-top:5px}
+html.m .mbar{padding-bottom:8px}
+.mq{display:none}html.m .mq{display:flex;justify-content:center;gap:6px;margin:8px 0 0}
+html.m .mq i{width:7px;height:7px;border-radius:4px;background:rgba(120,120,128,.35);transition:width .2s,background .2s}
+html.m .mq i.on{width:20px;background:var(--blue)}html.m .mq i.done{background:var(--blue-soft)}
+html.m .mq:empty{display:none}
+html.m .card>p.hint.qfirst{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;margin-bottom:10px}
+html.m .card{padding-top:14px!important}html.m .card h2{font-size:22px;margin-bottom:6px}
+html.m .checks label,html.m label:has(>input[type=checkbox]),html.m label:has(>input[type=radio]:not(.choice input)){min-height:44px}
+html.m input[type=checkbox],html.m input[type=radio]{width:26px;height:26px}
+html.m #toContact{display:inline-flex;align-items:center;min-height:44px}
+html.m .uisw a{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:12px;background:var(--fill);text-decoration:none;font-weight:600}
 html.m #presetChoices .choice span{padding:12px;font-size:15px;font-weight:600;line-height:1.25}
 html.m #presetChoices .choice span>svg,html.m #presetChoices .choice span>img,html.m #presetChoices .choice span>.pic{display:none}
 html.m #presetChoices .choice span em{font-weight:400;font-size:13px;margin-top:4px}
@@ -2887,7 +2909,9 @@ function mUpdate(n){const gi=mgOf(n);
   $("mStepT").textContent=n===ST_RESULT?"Ihre Anfrage":`${gi+1}/${MG.length} ${MG[gi].t}`;
   $("mNav").querySelectorAll("button").forEach((b,i)=>{if(i===gi&&n<ST_RESULT)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");b.classList.toggle("done",i<gi||n===ST_RESULT)});
   $("mNav").hidden=n===ST_RESULT;
-  if(n<ST_CONTACT)$("next").textContent=gi===3?"Weiter (oder überspringen)":"Weiter: "+MG[gi+1].t;}
+  if(n<ST_CONTACT)$("next").textContent=gi===3?"Weiter (oder überspringen)":"Weiter: "+MG[gi+1].t;
+  if(mqGo)mqGo(n);}
+let mqGo=null;
 (function(){
   const sw=$("uiSw"),swp=$("uiSwP");const coarse=!!(window.matchMedia&&matchMedia("(pointer:coarse)").matches);
   if(MOB||coarse||window.innerWidth<760){swp.hidden=false;sw.textContent=MOB?"Zur PC-Ansicht wechseln":"Zur Handy-Ansicht wechseln"}
@@ -2931,6 +2955,40 @@ function mUpdate(n){const gi=mgOf(n);
     mv.forEach(e=>box.appendChild(e));if(anchor)card.insertBefore(d,anchor);else{const tail=kids.filter(e=>e.classList.contains("err")&&!mv.includes(e));card.appendChild(d);tail.forEach(e=>card.appendChild(e))}
     d.addEventListener("toggle",()=>{if(d.open){window.dispatchEvent(new Event("resize"));if(st==="4"&&typeof renderPlan==="function")try{renderPlan()}catch(e){}}})});
   document.querySelectorAll('.card[data-step="5"] details.acc[open]').forEach(d=>d.open=false);
+  /* Inhalt der Berechnung direkt unter die Vorlagen (eigene Frage-Seite mit den Vorlagen) */
+  {const c0=document.querySelector('.card[data-step="0"]'),d0=c0&&c0.querySelector("details.mmore"),v0=c0&&c0.querySelector("fieldset");if(d0&&v0)v0.after(d0)}
+  /* Anruf-Knopf ins Modell, die Kopfzeile entfällt am Handy (mehr Platz) */
+  {const call=document.querySelector(".mh-call");if(call){const a=call.cloneNode(true);a.className="mcall";a.querySelectorAll(":scope>:not(.mh-ic)").forEach(x=>x.remove());document.querySelector(".mtools").prepend(a)}}
+  /* Eine Frage pro Bildschirm: jeden Schritt in Frage-Seiten teilen; Weiter/Zurück blättern erst durch die Fragen, dann durch die Schritte */
+  const QU={};const hasSw=e=>!!e.querySelector(".swatches");
+  document.querySelectorAll(".card[data-step]").forEach(card=>{const st=+card.dataset.step;if(st>=ST_RESULT)return;const us=[];let cur=null,has=false,last=null;
+    [...card.children].forEach((e,i)=>{
+      if(e.tagName==="H2"||e.classList.contains("err")||e.classList.contains("sendhint")){e.classList.add("qkeep");return}
+      if(!cur&&e.matches("p.hint")){e.classList.add("qfirst");return}
+      let nw=!cur||(has&&!(e.hidden||e.tagName==="P"||e.matches("details.mmore,div.zone")||(e.matches(".range")&&last.matches(".range"))||/^(pitchRow|pHighRow)$/.test(e.id)||(e.matches("details.acc")&&last.matches("details.acc"))||(hasSw(e)&&hasSw(last))));
+      if(e.matches("h3.sub")&&has)nw=true;
+      if(st===7&&us.length>=2)nw=false;
+      if(nw){cur=[];us.push(cur);has=false}cur.push(e);if(!e.hidden&&!e.matches("h3.sub,p,div.zone"))has=true;last=e});
+    QU[st]=us.map(u=>({card,els:u}))});
+  let ql=[],qi=0,qback=false;const mq=document.createElement("div");mq.className="mq";mq.id="mQ";$("mBar").appendChild(mq);
+  const nextTxt={};
+  function qShow(){ql.forEach((u,i)=>u.els.forEach(e=>e.classList.toggle("qh",i!==qi)));
+    const cc=ql[qi]&&ql[qi].card;ql.forEach(u=>u.card.classList.toggle("qoff",u.card!==cc));
+    if(cc){const firstOfCard=ql.findIndex(u=>u.card===cc)===qi;cc.querySelectorAll(":scope>.qfirst").forEach(e=>e.classList.toggle("qh",!firstOfCard))}
+    mq.innerHTML=ql.length>1?ql.map((u,i)=>`<i class="${i===qi?"on":i<qi?"done":""}"></i>`).join(""):"";
+    if(qi<ql.length-1)$("next").textContent="Weiter";else if(nextTxt.v)$("next").textContent=nextTxt.v;
+    $("back").style.visibility=(step===0&&qi===0)?"hidden":"visible";
+    const c=$("cfg");c.scrollTo({top:0});root.classList.remove("mmin");window.dispatchEvent(new Event("resize"));
+    if(ql[qi]&&ql[qi].els.some(e=>e.querySelector&&e.querySelector("#planBox"))&&typeof renderPlan==="function")try{renderPlan()}catch(e){}}
+  mqGo=n=>{document.querySelectorAll(".card.qoff").forEach(c=>c.classList.remove("qoff"));if(n>=ST_RESULT){ql=[];mq.innerHTML="";return}
+    ql=[];MG[mgOf(n)].s.forEach(st=>ql.push(...(QU[st]||[])));qi=qback?Math.max(0,ql.length-1):0;qback=false;nextTxt.v=$("next").textContent;qShow()};
+  const oNext=$("next").onclick,oBack=$("back").onclick;
+  $("next").onclick=e=>{if(step<ST_RESULT&&qi<ql.length-1){qi++;qShow();return}oNext(e);
+    if(step===ST_CONTACT&&$("formErr").textContent){const bad=!$("name").value.trim()||!/^\S+@\S+\.\S+$/.test($("mail").value.trim())||($("rueck").checked&&!$("tel").value.trim());
+      const t=bad?ql.findIndex(u=>u.els.some(x=>x.contains($("name")))):ql.length-1;if(t>=0&&t!==qi){qi=t;qShow()}
+      if(bad){const f=[$("name"),$("mail"),$("tel")].find(x=>!x.value.trim());if(f)f.focus()}}};
+  $("back").onclick=e=>{if(step<ST_RESULT&&qi>0){qi--;qShow();return}qback=true;oBack(e);qback=false};
+  mqGo(step);
   /* Maße: Minus/Plus neben jeder Zahl, Ziffernblock */
   const ST={L:.5,B:.5,H:.25,P:1,fL:.5,fB:.5};
   document.querySelectorAll(".range").forEach(r=>{const rg=r.querySelector('input[type="range"]'),nm=r.querySelector('.num input[type="number"]');if(!rg||!nm)return;nm.setAttribute("inputmode","decimal");
