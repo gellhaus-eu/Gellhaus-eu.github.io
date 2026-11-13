@@ -128,11 +128,15 @@ function create(view,opt){
   const E={T,opt,flags:{night:false,inside:false},sunDir:new V3(0.5,0.58,0.64).normalize(),night:false,ENV:[]};
   const GROUND=opt.ground;
   /* Der volle Bildaufbau braucht ein Zwischenbild mit hohem Helligkeitsumfang. Fehlt das (sehr alte Grafik), wird direkt gezeichnet. */
-  let hdrOk=false,soft=false;try{const gl=document.createElement("canvas").getContext("webgl2");hdrOk=!!(gl&&(gl.getExtension("EXT_color_buffer_float")||gl.getExtension("EXT_color_buffer_half_float")));
-    const di=gl.getExtension("WEBGL_debug_renderer_info");soft=/swiftshader|llvmpipe|softpipe|software|basic render/i.test(String(di?gl.getParameter(di.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)))}catch(e){}
+  let hdrOk=false,soft=false,weak=false;try{const gl=document.createElement("canvas").getContext("webgl2");hdrOk=!!(gl&&(gl.getExtension("EXT_color_buffer_float")||gl.getExtension("EXT_color_buffer_half_float")));
+    const di=gl.getExtension("WEBGL_debug_renderer_info");const rs=String(di?gl.getParameter(di.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER));soft=/swiftshader|llvmpipe|softpipe|software|basic render/i.test(rs);
+    /* schwache Onboard-Grafik: Intel HD/UHD/Iris ohne Xe, alte AMD-Vega/Radeon-Graphics im Büro-PC, Mali/Adreno-Tablets */
+    weak=!soft&&(/intel/i.test(rs)&&!/arc\b|iris\(r\) xe|iris xe/i.test(rs)||/mali|adreno|powervr|videocore/i.test(rs))}catch(e){}
   /* Sparbetrieb: Rechner ohne Grafikkarte (Software-Darstellung, etwa am Terminalserver) zeichnen direkt und etwas kleiner */
   const eco=E_eco(opt,soft);
-  const direct=!!opt.lowfi||opt.pipeline==="direct"||!hdrOk||eco;
+  /* Stufe "mittel": einfache Zeichnung wie beim Handy, aber volle Schärfe (Pixelverhältnis 1) und kleinere Schattenkarte */
+  const mid=!eco&&(opt.mid===undefined?weak:!!opt.mid);E.mid=mid;
+  const direct=!!opt.lowfi||opt.pipeline==="direct"||!hdrOk||eco||mid;
   const renderer=new T.WebGLRenderer({antialias:direct,alpha:true,powerPreference:"high-performance",preserveDrawingBuffer:false});
   E.renderer=renderer;
   renderer.setClearColor(0x000000,0);
@@ -277,7 +281,7 @@ function create(view,opt){
   const envScene=new T.Scene(),envMat=skyMaterial(4,0,0.55);envScene.add(new T.Mesh(new T.SphereGeometry(10,32,16),envMat));
   const pmrem=new T.PMREMGenerator(renderer);let envRT=null;
   const sun=new T.DirectionalLight(0xfff3df,3.6);sun.castShadow=true;
-  const ms=opt.lowfi||eco||renderer.capabilities.maxTextureSize<8192?2048:4096;sun.shadow.mapSize.set(ms,ms);sun.shadow.bias=-0.0002;sun.shadow.normalBias=0.035;sun.shadow.radius=1.4;
+  const ms=opt.lowfi||eco||mid||renderer.capabilities.maxTextureSize<8192?2048:4096;sun.shadow.mapSize.set(ms,ms);sun.shadow.bias=-0.0002;sun.shadow.normalBias=0.035;sun.shadow.radius=1.4;
   scene.add(sun);scene.add(sun.target);E.sun=sun;
   const FOG=0.0013;scene.fog=new T.FogExp2(0xdfe8f0,FOG);
   const shadowFit={cx:0,cz:0,r:40};
@@ -321,7 +325,7 @@ function create(view,opt){
   const copyMat=new T.RawShaderMaterial({uniforms:{tDiffuse:{value:null},weight:{value:1}},vertexShader:FS_VS,fragmentShader:COPY_FS,depthTest:false,depthWrite:false});
   const aoMat=new T.RawShaderMaterial({uniforms:{tAO:{value:null},intensity:{value:1}},vertexShader:FS_VS,fragmentShader:AO_FS,depthTest:false,depthWrite:false,transparent:true,
     blending:T.CustomBlending,blendEquation:T.AddEquation,blendSrc:T.DstColorFactor,blendDst:T.ZeroFactor,blendSrcAlpha:T.ZeroFactor,blendDstAlpha:T.OneFactor});
-  E.eco=eco;const Q=E.quality={ao:!direct,aoMotion:!direct,msaa:direct?0:4,refine:direct?0:(opt.refine??20),prMax:2,pxMax:2.8e6};
+  E.eco=eco;const Q=E.quality={ao:!direct,aoMotion:!direct,msaa:direct?0:4,refine:direct?0:(opt.refine??20),prMax:mid?1.5:2,prMin:mid?0.7:1,pxMax:mid?2.2e6:2.8e6};
   function setup(w,h){
     W=w;H=h;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
     if(direct)return;
@@ -335,7 +339,7 @@ function create(view,opt){
     gtao.setSize(bw,bh);
   }
   E.resize=function(){const w=view.clientWidth,h=view.clientHeight;if(!w||!h)return false;
-    pr=eco?0.8:Math.max(1,Math.min(window.devicePixelRatio||1,Q.prMax,Math.sqrt(Q.pxMax/(w*h))));renderer.setPixelRatio(pr);setup(w,h);return true};
+    pr=eco?0.8:mid?Math.max(Q.prMin,Math.min(window.devicePixelRatio||1,Q.prMax,Math.sqrt(Q.pxMax/(w*h)))):Math.max(1,Math.min(window.devicePixelRatio||1,Q.prMax,Math.sqrt(Q.pxMax/(w*h))));renderer.setPixelRatio(pr);setup(w,h);return true};
   function cutoutOn(){return !sky.visible}
   /* ein vollständiges Bild: target null = Bildschirm, sonst Sammelbild (additiv) */
   function frame(target,add,withAO){
@@ -382,6 +386,7 @@ function create(view,opt){
     cancelRefine();E.refined=false;
     const now=performance.now(),dt=now-lastT;lastT=now;
     /* Bildrate während der Bewegung beobachten und bei Bedarf die Verschattung nur noch im Stillstand rechnen */
+    if(mid&&!opt.fixed){if(dt<500){if(dt>40){fast=0;if(++slow>6){slow=0;if(Q.prMax>Q.prMin+0.05){Q.prMax=Math.max(Q.prMin,+(Q.prMax-0.2).toFixed(2));E.resize()}}}else if(dt<22){slow=Math.max(0,slow-1);if(Q.prMax<1.5&&++fast>300){fast=0;Q.prMax=Math.min(1.5,Q.prMax+0.2);E.resize()}}}else slow=0}
     if(!direct&&!opt.fixed){if(dt<500){if(dt>45){fast=0;if(++slow>8){slow=0;if(Q.aoMotion)Q.aoMotion=false;else if(Q.prMax>1){Q.prMax=1;E.resize()}}}else if(dt<24){slow=Math.max(0,slow-1);if(Q.prMax<2&&++fast>240){fast=0;Q.prMax=2;E.resize()}}}else slow=0}
     frame(null,false,Q.aoMotion);
     if(Q.refine>0&&!E.noRefine)accTimer=setTimeout(()=>{accRAF=requestAnimationFrame(refineLoop)},180);
