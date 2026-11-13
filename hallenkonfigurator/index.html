@@ -688,6 +688,19 @@ html.m .mnav button i{display:none}
 html.m .mnav button.done::before{content:"✓\2009";font-weight:700}
 html.m .mfacts{position:absolute;left:10px;top:10px;z-index:4;padding:0 12px;height:32px;line-height:32px;border-radius:16px;font:600 13px var(--body);color:#1d1d1f;background:rgba(250,250,252,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 2px 10px rgba(0,0,0,.18);white-space:nowrap;pointer-events:none}
 html.m .mfacts:empty{display:none}
+/* Handy: Zusatzoptionen je Schritt eingeklappt (Entscheidung Matthias 2026-11-13) */
+html.m details.mmore{margin:20px 0 0;border-radius:14px;background:var(--fill);overflow:hidden}
+html.m details.mmore>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:56px;padding:10px 16px;font:600 16px/1.25 var(--body);color:var(--blue-deep)}
+html.m details.mmore>summary::-webkit-details-marker{display:none}
+html.m details.mmore>summary small{display:block;font:400 13px/1.3 var(--body);color:var(--muted);margin-top:2px}
+html.m details.mmore>summary::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .25s;flex:none}
+html.m details.mmore[open]>summary::after{transform:rotate(-135deg)}
+html.m details.mmore>.mmore-in{padding:4px 16px 18px;background:var(--bg)}
+html.m #presetChoices{grid-template-columns:1fr 1fr!important;gap:8px}
+html.m #presetChoices .choice span{padding:12px;font-size:15px;font-weight:600;line-height:1.25}
+html.m #presetChoices .choice span>svg,html.m #presetChoices .choice span>img,html.m #presetChoices .choice span>.pic{display:none}
+html.m #presetChoices .choice span em{font-weight:400;font-size:13px;margin-top:4px}
+html.m #presetChoices .choice span i{font-size:11.5px;margin-top:6px}
 html.m #dlgQuick{margin:auto 0 0;max-width:none;width:100%;max-height:calc(100dvh - 24px);border-radius:24px 24px 0 0}
 html.m #dlgQuick .dlg{padding:18px 16px calc(14px + env(safe-area-inset-bottom,0px))}
 html.m #dlgQuick h3{font-size:21px;margin:0 50px 4px 0}html.m #dlgQuick p{margin:0 0 6px;font-size:14px}
@@ -2903,6 +2916,21 @@ function mUpdate(n){const gi=mgOf(n);
   grip.addEventListener("pointermove",e=>{if(gy==null)return;if(Math.abs(e.clientY-gy)>6)moved=true;if(!moved)return;const top=document.querySelector(".stage").getBoundingClientRect().top;const vh=window.innerHeight;const h=Math.max(vh*0.22,Math.min(vh*0.8,e.clientY-top+14));root.classList.remove("mbig");root.style.setProperty("--mv",h+"px")});
   const end=()=>{if(gy==null)return;gy=null;root.classList.remove("mdrag");if(!moved)setBig(!root.classList.contains("mbig"))};
   grip.addEventListener("pointerup",end);grip.addEventListener("pointercancel",end);
+  /* Zusatzoptionen einklappen: je Schritt Bereiche von "Anfang" bis vor "Ende" (Textanfang des Elements) in "Weitere Optionen" verschieben */
+  const MORE={0:[["Oder: Was soll","Projektart"]],1:[["Grundriss","Dachform"]],2:[["Welche Seiten bleiben","Dacheindeckung"],["Vordach","Wandfarbe"],["Tor- und Türrahmen",null]],
+    3:[["3. Zubehör",null]],4:[["Wo steht was?",null]],6:[["Grundstücks-Check","Gewünschte Fertigstellung"],["Wir bauen vielleicht",null]],7:[["Gesprächstermin","Sonderwünsche"],["Skizze oder Lageplan","Bitte rufen Sie"]]};
+  const MLBL={0:["Halle aus dem Inhalt berechnen","Fahrzeuge, Maschinen, Lagergut eintragen"],1:["Grundriss und Anbau","L-, T-, U-Form, Anbau an der Rückseite"],2:["Weitere Optionen","Offene Seiten, Sockel, Vordach, Rahmenfarbe"],
+    3:["Zubehör und Einfahrt-Test","Antrieb, Schlupftür, Rammschutz, Fahrzeug-Test"],4:["Im Grundriss anordnen","Fahrzeuge, Räume und Trennwände platzieren"],6:["Grundstück und Termin-Details","Grundstücks-Check, Baugenehmigung, Fundamente"],7:["Termin und Skizze","Gesprächstermin, Lageplan hochladen"]};
+  const txt=e=>e.textContent.trim().replace(/\s+/g," ");
+  Object.entries(MORE).forEach(([st,rs])=>{const card=document.querySelector(`.card[data-step="${st}"]`);if(!card)return;const kids=[...card.children];const mv=[];
+    rs.forEach(([a,z])=>{const i=kids.findIndex(e=>txt(e).startsWith(a));if(i<0)return;let j=z?kids.findIndex((e,k)=>k>i&&txt(e).startsWith(z)):kids.length;if(j<0)j=kids.length;
+      for(let k=i;k<j;k++){const e=kids[k];if(e.classList.contains("err")||e.classList.contains("sendhint"))continue;mv.push(e)}});
+    if(!mv.length)return;const d=document.createElement("details");d.className="mmore";const l=MLBL[st];
+    d.innerHTML=`<summary><span>${l[0]}<small>${l[1]}</small></span></summary><div class="mmore-in"></div>`;const box=d.lastChild;
+    const anchor=kids.find(e=>e.classList.contains("checks")&&st==="7")||null;
+    mv.forEach(e=>box.appendChild(e));if(anchor)card.insertBefore(d,anchor);else{const tail=kids.filter(e=>e.classList.contains("err")&&!mv.includes(e));card.appendChild(d);tail.forEach(e=>card.appendChild(e))}
+    d.addEventListener("toggle",()=>{if(d.open){window.dispatchEvent(new Event("resize"));if(st==="4"&&typeof renderPlan==="function")try{renderPlan()}catch(e){}}})});
+  document.querySelectorAll('.card[data-step="5"] details.acc[open]').forEach(d=>d.open=false);
   /* Maße: Minus/Plus neben jeder Zahl, Ziffernblock */
   const ST={L:.5,B:.5,H:.25,P:1,fL:.5,fB:.5};
   document.querySelectorAll(".range").forEach(r=>{const rg=r.querySelector('input[type="range"]'),nm=r.querySelector('.num input[type="number"]');if(!rg||!nm)return;nm.setAttribute("inputmode","decimal");
