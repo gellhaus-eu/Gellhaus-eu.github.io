@@ -806,6 +806,11 @@ html.embed:not(.m) #tMore{align-items:center;padding:0 12px;font-weight:600}
 html.embed:not(.m) .nav#mainNav{background:var(--panel)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;border-top:1px solid var(--line-2)!important;border-radius:0!important;box-shadow:0 -10px 20px -12px rgba(0,0,0,.18)!important;padding:12px 16px!important;margin:0!important}
 dialog.mview{border:0;border-radius:22px;padding:16px;background:var(--panel);color:var(--ink);width:min(520px,calc(100% - 32px));box-shadow:var(--shadow-lg)}
 .mstart .mprev{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:14px;margin:0 0 14px;display:block}
+/* Anfrage ohne Direktversand: sichtbarer Text zum Kopieren */
+.mailbox{background:var(--blue-soft);border-radius:16px;padding:16px 16px 12px;margin:12px 0 16px}
+.mailbox .mb-h{margin:0 0 8px;font-size:16px}
+.mb-steps{margin:0 0 12px;padding-left:20px;line-height:1.5}.mb-steps li{margin:0 0 8px}.mb-steps .btn{margin:4px 6px 0 0;vertical-align:middle}
+.mailbox textarea{width:100%;box-sizing:border-box;font:13px/1.45 var(--body);border-radius:12px;border:1px solid var(--line);padding:10px 12px;background:var(--panel);color:var(--ink);resize:vertical}
 </style>
 
 <div class="wrap">
@@ -1229,7 +1234,16 @@ dialog.mview{border:0;border-radius:22px;padding:16px;background:var(--panel);co
       <div class="card" data-step="8" hidden>
         <h2>Vielen Dank!</h2>
         <p class="okline" id="okline"></p>
-        <p class="err" id="sendFail" hidden>Bitte schicken Sie die Anfrage mit dem Knopf „Per E-Mail ans Büro senden“ weiter unten ab oder rufen Sie uns an: <a href="tel:+4944413804">0 44 41 / 38 04</a>. Ihre Planung bleibt in diesem Browser gespeichert.</p>
+        <div class="mailbox" id="sendFail" hidden>
+          <p class="mb-h"><b>Letzter Schritt: Anfrage an uns schicken</b></p>
+          <ol class="mb-steps">
+            <li>Text kopieren <button type="button" class="btn small primary" id="mbCopy">Text kopieren</button></li>
+            <li>In einer neuen E-Mail an <b>info@gellhaus.eu</b> einfügen und absenden <button type="button" class="btn small" id="mbAddr">Adresse kopieren</button> <a class="btn small" id="mbOpen" target="_top" rel="noopener" href="mailto:info@gellhaus.eu">E-Mail-Programm öffnen</a></li>
+            <li>Gern das PDF-Datenblatt anhängen <button type="button" class="btn small" id="mbPdf">PDF speichern</button></li>
+          </ol>
+          <textarea id="mbText" readonly rows="12" aria-label="Text Ihrer Anfrage"></textarea>
+          <p class="note" id="mbMsg" aria-live="polite">Oder rufen Sie uns an: <a href="tel:+4944413804">0 44 41 / 38 04</a>. Ihre Planung bleibt in diesem Browser gespeichert.</p>
+        </div>
         <p class="note">So geht es weiter:</p>
         <div class="timeline">
           <div><b>2 Werktage</b><span>Rückruf aus Vechta, Rückfragen klären</span></div>
@@ -2792,13 +2806,33 @@ async function submit(){
   btn.disabled=false;btn.textContent=was;sending=false;
   document.body.classList.toggle("sent",res.ok);
   const off=res.why==="aus";
-  $("okline").textContent=res.ok?`Ihre Anfrage ${nr} ist bei Gellhaus im Büro angekommen.`:off?`Ihre Anfrage ${nr} ist fertig. Bitte schicken Sie sie jetzt mit dem Knopf „Per E-Mail ans Büro senden“ an uns.`:`Ihre Anfrage ${nr} ist fertig, konnte aber nicht automatisch übertragen werden.`;
-  $("sendFail").hidden=res.ok||off;$("mailOffice").hidden=res.ok;$("mailOffice").classList.toggle("primary",!res.ok);
+  $("okline").textContent=res.ok?`Ihre Anfrage ${nr} ist bei Gellhaus im Büro angekommen.`:off?`Ihre Anfrage ${nr} ist fertig. Bitte schicken Sie sie jetzt wie unten beschrieben an uns.`:`Ihre Anfrage ${nr} ist fertig, konnte aber nicht automatisch übertragen werden.`;
+  $("sendFail").hidden=res.ok;$("mailOffice").hidden=true;
+  if(!res.ok){$("mbText").value=officeText(nr,false)+"\n\nDas PDF-Datenblatt enthält alle Einzelheiten und den Link zur Planung.";const subj=`Hallenanfrage ${nr} – ${$("firma").value||$("name").value}`;
+    let body=officeText(nr,false);if(body.length>1500)body=body.slice(0,1500)+"\n…";
+    $("mbOpen").href=`mailto:info@gellhaus.eu?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`}
   $("icsBtn").hidden=!$("tDatum").value;renderChecklist();
   if(THREE_OK){inside=false;$("tInside").setAttribute("aria-pressed",false);cam.az=-0.8;cam.pol=1.26;fitCamera();highlight=false;stage=99;cutOff();build();placeCamera();$("shot").src=E.snapshot({frames:6,type:"image/jpeg",quality:0.86});render()}
   go(ST_RESULT);if(THREE_OK)playStages();
 }
 function prio(){const t=$("termin").value,ph=$("phase").value;if(t==="So bald wie möglich"||ph==="Will zeitnah beauftragen")return{k:"A",t:"A, zeitnah (Rückruf am selben Tag)"};if(t==="In 3 bis 6 Monaten"||ph==="Konkrete Planung"||ph==="Vergleiche Angebote")return{k:"B",t:"B, konkret (Rückruf in 2 Werktagen)"};return{k:"C",t:"C, Orientierung (Rückruf in der Woche)"}}
+/* Lesbarer Text der Anfrage fürs Büro (ohne Tabellen-Code und ohne lange Links) */
+function officeText(nr,withLink){
+  const G=geometry();const [tw,th]=S.torGr.split("x").map(Number);const v=id=>($(id)&&$(id).value||"").trim();
+  const walls=WALLS.map(([k,n])=>{if(sideOpen(k))return `${n}: offen`;const w=S.walls[k];const a=[];if(w.g)a.push(`${w.g} Tor${w.g>1?"e":""}`);if(w.d)a.push(`${w.d} Tür${w.d>1?"en":""}`);if(w.w)a.push(`${w.w} Fenster`);return a.length?`${n}: ${a.join(", ")}`:""}).filter(Boolean);
+  const aus=ausLines().map(l=>l.trim()).filter(l=>l&&l!=="–");
+  const L=[`Hallenanfrage ${nr}`,``,
+`Kunde: ${v("name")}${v("firma")?", "+v("firma"):""}`,`Telefon: ${v("tel")||"–"}${$("rueck").checked?" (bitte zurückrufen)":""}`,`E-Mail: ${v("mail")}`,`Bauort: ${(v("plz")+" "+v("ort")).trim()||"–"}`,
+`Gesprächswunsch: ${$("tArt").value?$("tArt").value+(v("tDatum")?", "+new Date(v("tDatum")).toLocaleDateString("de-DE"):"")+", "+$("tZeit").value:"Rückruf"}`,`Fertigstellung: ${$("termin").value} · ${$("phase").value}`,``,
+`Halle: ${PRESETS[S.preset].n}, ${formText(S)}`,`Maße: ${fmt(S.L,1)} × ${fmt(S.B,1)} m, Grundfläche ${fmt(G.area)} m²`,`Höhe: Traufe ${fmt(S.H,2)} m, First ${fmt(G.ridge,2)} m`,
+`Dach: ${S.dach}${S.dach!=="Flachdach"?", "+S.P+"°":""}, ${S.dh}, ${RAL[S.cr][0]}`,`Wände: ${S.wand}, ${RAL[S.cw][0]}`,
+`Tore: ${S.torTyp} ${fmt(tw,1)} × ${fmt(th,1)} m${S.torE?", elektrisch":""}`,...walls.map(w=>"  "+w),
+...(extrasText(", ")?[`Extras: ${extrasText(", ")}`]:[]),...(aus.length?["Ausstattung:",...aus.map(a=>"  "+a.replace(/\s{2,}/g," "))]:[]),
+`Baugenehmigung: ${$("genehm").value} · Fundamente: ${$("fund").value}`,
+...(v("msg")?[``,`Hinweis: ${v("msg")}`]:[])];
+  if(withLink)L.push(``,`Planung im Hallenplaner öffnen:`,location.href.split("#")[0]+"#"+encodeState());
+  return L.join("\n");
+}
 function sheetLines(nr,d){
   const G=geometry();const [tw,th]=S.torGr.split("x").map(Number);
   const wl=WALLS.flatMap(([k,n])=>{if(sideOpen(k))return[`    ${n.padEnd(21)}offen, ohne Wand`];const w=S.walls[k];const len=(k==="front"||k==="back")?S.L:S.B;const os=OPEN.filter(o=>o.key===k).sort((a,b)=>a.u-b.u).map(o=>`      ${o.k==="g"?"Tor":o.k==="d"?"Tür":"Fenster"} ${fmt(o.w,1)} × ${fmt(o.h,1)} m  von ${fmt(o.u-o.w/2+len/2,2)} bis ${fmt(o.u+o.w/2+len/2,2)} m${o.k==="w"?`, Brüstung ${fmt(o.y0,2)} m`:""}`);return [`    ${n.padEnd(20)} ${w.g} Tore, ${w.d} Türen, ${w.w} Fenster${os.length?"  (Lage von links, von außen gesehen)":""}`,...os]});
@@ -2847,6 +2881,13 @@ $("pdfBtn").onclick=()=>makePDF($("shareMsg"));$("pdfBtn2").onclick=()=>makePDF(
 
 /* ---------- E-Mail: Planung an mich / ans Büro ---------- */
 $("mailSelf").onclick=()=>{const link=location.href.split("#")[0]+"#"+encodeState();const body=`Meine Hallenplanung bei Gellhaus (${fmt(S.L,1)} × ${fmt(S.B,1)} m, Traufe ${fmt(S.H,2)} m, ${S.dach}).\n\nLink zum Weiterplanen:\n${link}\n\nFranz-Josef Gellhaus Stahl- und Fahrzeugbau GmbH & Co. KG, Vechta`;location.href=`mailto:?subject=${encodeURIComponent("Meine Hallenplanung bei Gellhaus")}&body=${encodeURIComponent(body)}`};
+const copyTxt=async(t,okMsg)=>{try{await navigator.clipboard.writeText(t);$("mbMsg").textContent=okMsg;return}catch(e){}
+  const ta=$("mbText");const old=ta.value;ta.value=t;ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}ta.value=old;if(t===old)ta.select();
+  $("mbMsg").textContent=ok?okMsg:"Kopieren ging nicht automatisch. Bitte den Text im Feld markieren und kopieren (Strg+C)."};
+$("mbCopy").onclick=()=>copyTxt($("mbText").value,"Text kopiert. Jetzt in eine E-Mail an info@gellhaus.eu einfügen.");
+$("mbAddr").onclick=()=>copyTxt("info@gellhaus.eu","Adresse info@gellhaus.eu kopiert.");
+$("mbPdf").onclick=()=>makePDF($("mbMsg"));
+$("mbOpen").addEventListener("click",()=>{setTimeout(()=>{$("mbMsg").textContent="Falls sich kein E-Mail-Programm geöffnet hat: Text kopieren und in Ihrem Postfach (z. B. Gmail, Outlook, GMX) eine neue E-Mail an info@gellhaus.eu schreiben."},1500)});
 $("mailOffice").onclick=()=>{const nr=($("okline").textContent.match(/H-[\d-]+/)||["Entwurf"])[0];const pr=prio();const txt=$("sheet").textContent;const short=txt.length>1600?txt.slice(0,1600)+"\n… (gekürzt, vollständig über den Link)":txt;
   location.href=`mailto:info@gellhaus.eu?subject=${encodeURIComponent(`[Hallenanfrage ${pr.k}] ${nr} ${$("firma").value||$("name").value}`)}&body=${encodeURIComponent(short)}`};
 $("icsBtn").onclick=()=>{const dt=$("tDatum").value;if(!dt)return;const h=($("tZeit").value.match(/\d+/)||["9"])[0].padStart(2,"0");const ds=dt.replace(/-/g,"");const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Gellhaus//Hallenplaner//DE","BEGIN:VEVENT",`UID:${Date.now()}@gellhaus.eu`,`DTSTAMP:${ds}T${h}0000`,`DTSTART:${ds}T${h}0000`,`DTEND:${ds}T${String(+h+1).padStart(2,"0")}0000`,`SUMMARY:Gespräch Hallenplanung Gellhaus (${$("tArt").value||"Rückruf"})`,"LOCATION:Franz-Josef Gellhaus, Visbeker Damm 158, 49377 Vechta",`DESCRIPTION:Wunschtermin, Bestätigung durch Gellhaus folgt. ${location.href.split("#")[0]}#${encodeState()}`,"END:VEVENT","END:VCALENDAR"].join("\r\n");saveFile("Gellhaus-Termin.ics",new Blob([ics],{type:"text/calendar"}),$("pdfMsg"))};
